@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>담산 신촌 본점 - Place Detail</title>
+  <link rel="stylesheet" href="popupg.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+</head>
+<body>
+  <!-- 지도 배경 모달 오버레이 -->
+  <div class="modal-backdrop">
+    <div class="map-bg-pattern">
+      <div class="map-pin-focus">
+        <div class="pulse-ring"></div>
+        <span class="pin-icon">📍</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 메인 팝업 카키/오렌지 세련된 카드 -->
+  <article class="place-popup-card">
+    <button class="btn-close" aria-label="닫기">✕</button>
+
+    <!-- 상단 커버 대표 히어로 이미지 -->
+    <div class="place-hero">
+      <div class="hero-overlay"></div>
+      <div class="hero-tags">
+        <span class="badge-fire">🔥 인기 급상승</span>
+        <span class="badge-ai">AI 추천 98%</span>
+      </div>
+      <div class="hero-photo-credit">PHOTO · KAKAO PLACE</div>
+    </div>
+
+    <!-- 내용 영역 -->
+    <div class="popup-body">
+      <!-- 타이틀 섹션 -->
+      <header class="place-header">
+        <div class="category-row">
+          <span class="category-chip">한식</span>
+          <span class="category-chip">닭갈비 전문</span>
+        </div>
+        <div class="title-row">
+          <h2>담산 신촌 본점</h2>
+          <div class="rating-box">
+            <span class="star">★</span>
+            <span class="score">4.8</span>
+            <span class="count">(248)</span>
+          </div>
+        </div>
+        <p class="address-text">📍 서울 서대문구 신촌동 · <span>한성대입구역 기준 대중교통 12분</span></p>
+      </header>
+
+      <!-- 대표 메뉴 큐레이션 -->
+      <section class="menu-section">
+        <div class="menu-title">
+          <span>RECOMMENDED MENU</span>
+          <small>AI Pick 대표 메뉴</small>
+        </div>
+
+        <div class="menu-list">
+          <div class="menu-card featured">
+            <div class="menu-info">
+              <div class="menu-name">
+                <strong>매운 닭갈비</strong>
+                <span class="badge-signature">대표</span>
+              </div>
+              <p class="menu-desc">특제 매콤 양념과 부드러운 계육의 만남 (2인 기준)</p>
+            </div>
+            <div class="menu-price">40,000원</div>
+          </div>
+
+          <div class="menu-card">
+            <div class="menu-info">
+              <div class="menu-name">
+                <strong>로제 닭갈비</strong>
+              </div>
+              <p class="menu-desc">고소한 크림과 매콤함의 완벽한 조화</p>
+            </div>
+            <div class="menu-price">30,000원</div>
+          </div>
+
+          <div class="menu-card">
+            <div class="menu-info">
+              <div class="menu-name">
+                <strong>폭탄 계란찜</strong>
+              </div>
+            </div>
+            <div class="menu-price">4,000원</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 상세 매장 정보 링크 -->
+      <section class="contact-section">
+        <div class="contact-row">
+          <span class="icon">📞</span>
+          <span class="val">0507-1357-8469</span>
+        </div>
+        <a href="https://place.map.kakao.com/1480854338" target="_blank" class="contact-row map-link">
+          <span class="icon">🗺️</span>
+          <span class="val">카카오맵에서 위치 및 전체 리뷰 확인</span>
+          <span class="arrow">↗</span>
+        </a>
+      </section>
+    </div>
+
+    <!-- 하단 액션 바 -->
+    <footer class="popup-actions">
+      <button class="btn-action-sec">
+        <span class="heart-icon">♥</span> 저장
+      </button>
+      <button class="btn-action-pri">
+        점심 후보에 넣기 <span class="arr">→</span>
+      </button>
+    </footer>
+  </article>
+</body>
+</html>

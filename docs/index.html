@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>오늘 뭐 먹지 - NOON MENU</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+
+    <!-- 헤더 영역 -->
+    <header class="header">
+      <a class="brand" href="#">
+        <span class="brand-mark">N</span>
+        NOON MENU
+      </a>
+      
+      <div class="header-date">
+        <span>TUE · AUG 04, 2026</span>
+        <span class="dot">•</span>
+        <span class="weather">27° ☁</span>
+      </div>
+
+      <div class="header-actions">
+        <button class="social kakao" type="button" aria-label="카카오로그인">K</button>
+        <button class="social naver" type="button" aria-label="네이버로그인">N</button>
+        <button class="logout" type="button">로그아웃</button>
+      </div>
+    </header>
+
+    <main>
+      <!-- 메인 추천 배너 (Hero Section) -->
+      <section class="recommend-banner">
+        <div>
+          <p class="eyebrow">LUNCH CURATION / 11:14 AM</p>
+          <h1>오늘 점심,<br><strong>뭐가 당겨?</strong></h1>
+          <p class="hero-copy">지금 있는 곳과 오늘의 날씨, 예산을 바탕으로 가장 먹고 싶은 한 끼를 찾아볼게요.</p>
+        </div>
+        <button class="refresh-btn" type="button">
+          점심 추천받기 <span>↻</span>
+        </button>
+      </section>
+
+      <!-- 필터 설정 (Filter Card) -->
+      <section class="filter-card">
+        <div class="filter-heading">
+          <div class="filter-icon">⚙️</div>
+          <div>
+            <h2>점심 조건 설정</h2>
+            <p>위치, 날씨, 예산에 맞춰 맞춤 메뉴를 필터링합니다.</p>
+          </div>
+        </div>
+
+        <div class="filter-grid">
+          <!-- 위치 선택 -->
+          <div class="filter-group">
+            <label>WHERE</label>
+            <div class="segmented">
+              <button class="active" type="button">한성대입구</button>
+              <button type="button">혜화</button>
+              <button type="button">성북</button>
+            </div>
+          </div>
+
+          <!-- 날씨 반영 스위치 -->
+          <div class="filter-group">
+            <label>WEATHER</label>
+            <label class="switch">
+              <input type="checkbox" checked>
+              <span class="slider"></span>
+              <span class="switch-text">오늘 날씨(27° ☁) 반영</span>
+            </label>
+          </div>
+
+          <!-- 예산 범위 설정 -->
+          <div class="filter-group price-group">
+            <label>BUDGET</label>
+            <div class="range-wrap">
+              <span>₩5,000</span>
+              <input type="range" min="5000" max="50000" value="20000" step="1000">
+              <span>₩50,000</span>
+            </div>
+            <div class="price-result">
+              최대 예산: <strong>₩20,000</strong>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 대시보드 콘텐츠 영역 (지도 + 최근 기록) -->
+      <div class="content-grid">
+        <div class="left-column">
+          <!-- 지도 카드 -->
+          <section class="map-card">
+            <div class="map-toolbar">
+              <div>
+                <span class="live-dot"></span>
+                <span>NEARBY PLACES</span>
+              </div>
+              <button type="button">한성대입구 · 1.5 km</button>
+            </div>
+
+            <div class="map">
+              <div class="map-road road-a"></div>
+              <div class="map-road road-b"></div>
+              <div class="map-road road-c"></div>
+              <div class="map-road road-d"></div>
+
+              <span class="map-label label-1">한성대학교</span>
+              <span class="map-label label-2">한성대입구역</span>
+              <span class="map-label label-3">성북천</span>
+              <span class="map-label label-4">삼선교</span>
+
+              <div class="map-marker marker-1">1</div>
+              <div class="map-marker marker-2">2</div>
+              <div class="map-marker marker-3">3</div>
+              <div class="map-marker marker-4">4</div>
+              <div class="map-marker marker-5">5</div>
+
+              <div class="current-location"></div>
+
+              <div class="map-tooltip">
+                <strong>주변 추천 장소</strong>
+                <span>총 12곳 탐색됨</span>
+              </div>
+
+              <button class="map-go" type="button">
+                지도에서 보기 <span>↗</span>
+              </button>
+            </div>
+          </section>
+
+          <!-- 이상형 월드컵 카드 -->
+          <section class="worldcup-card">
+            <div class="worldcup-copy">
+              <span class="mini-badge">LUNCH DUEL</span>
+              <h2>고르는 재미가 <span>필요한 날</span></h2>
+              <p>먹고 싶은 메뉴를 직접 골라 마지막 한 끼를 결정해보세요.</p>
+            </div>
+
+            <div class="round-buttons">
+              <button class="round active" type="button">32강</button>
+              <button class="round" type="button">16강</button>
+              <button class="round" type="button">8강</button>
+              <button class="worldcup-start" type="button">월드컵 시작 ↗</button>
+            </div>
+          </section>
+        </div>
+
+        <!-- 우측 시이드바 (최근 추천 기록) -->
+        <aside class="recent-card">
+          <div class="card-title-row">
+            <div>
+              <p class="eyebrow">HISTORY</p>
+              <h2>RECENT PICKS</h2>
+            </div>
+            <button class="more" type="button">•••</button>
+          </div>
+
+          <ul class="history-list">
+            <li>
+              <div class="food-icon">🍱</div>
+              <div>
+                <strong>돈우마미</strong>
+                <small>덮밥 · 9,000원</small>
+              </div>
+            </li>
+            <li>
+              <div class="food-icon">🍜</div>
+              <div>
+                <strong>홍두깨</strong>
+                <small>칼국수 · 8,000원</small>
+              </div>
+            </li>
+            <li>
+              <div class="food-icon">🍲</div>
+              <div>
+                <strong>돌솥정식</strong>
+                <small>한식 · 10,000원</small>
+              </div>
+            </li>
+            <li>
+              <div class="food-icon">✨</div>
+              <div>
+                <strong>오늘의 AI 추천</strong>
+                <small>새로운 추천 메뉴 보기</small>
+              </div>
+            </li>
+          </ul>
+
+          <button class="history-btn" type="button">전체 추천 기록 보기</button>
+        </aside>
+      </div>
+
+      <!-- AI 챗봇 섹션 -->
+      <section class="chat-card">
+        <div class="chat-header">
+          <div class="chat-title">
+            <div class="bot-avatar">🤖</div>
+            <div>
+              <span class="online"><i></i>대화 가능</span>
+              <h2>NOON MENU BOT</h2>
+            </div>
+          </div>
+          <span class="chat-status">AI ONLINE</span>
+        </div>
+
+        <div class="chat-body">
+          <div class="message">
+            <div class="bubble">
+              오늘은 어떤 기분이야?<br>
+              <strong>“비 오는 날, 따뜻한 거”</strong>처럼 자유롭게 말해줘!
+            </div>
+          </div>
+          <div class="message user">
+            <div class="bubble">비 오는 날 먹기 좋은 메뉴 추천해줘!</div>
+          </div>
+        </div>
+
+        <div class="chat-suggestions">
+          <button type="button">🍲 국물요리</button>
+          <button type="button">🌶 매콤한 맛</button>
+          <button type="button">₩ 가성비 맛집</button>
+          <button type="button">🥗 가벼운 샐러드</button>
+        </div>
+
+        <div class="chat-input">
+          <input type="text" placeholder="메뉴나 먹고 싶은 상황을 입력하세요...">
+          <button type="button">전송</button>
+        </div>
+      </section>
+    </main>
+
+    <!-- 푸터 -->
+    <footer>
+      <b>NOON MENU</b>
+      <span>오늘의 점심을 더 쉽게. © 2026</span>
+    </footer>
+  </div>
+</body>
+</html>
