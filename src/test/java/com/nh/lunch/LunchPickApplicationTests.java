@@ -1,4 +1,4 @@
-package com.myspringboot.board1;
+package com.nh.lunch;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
