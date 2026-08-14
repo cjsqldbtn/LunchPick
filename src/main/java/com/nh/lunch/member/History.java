@@ -1,13 +1,12 @@
 package com.nh.lunch.member;
 
-import java.time.LocalDateTime;
-
 import com.nh.lunch.menu.Menu;
 
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,13 +15,21 @@ import lombok.Setter;
 @Getter
 @Setter
 public class History {
-	@Id
+//	@Id
+//	@ManyToOne
+//	@JoinColumn(name="member_id")
+//	private Member member;
+//	
+//	@Id
+//	private LocalDateTime finalDate;
+	
+	@EmbeddedId
+	private HistoryId historyId;
+	
+	@MapsId("memberId")
 	@ManyToOne
 	@JoinColumn(name="member_id")
 	private Member member;
-	
-	@Id
-	private LocalDateTime finalDate;
 	
 	@NotNull
 	@ManyToOne
