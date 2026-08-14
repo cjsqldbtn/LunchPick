@@ -1,5 +1,10 @@
 package com.nh.lunch.member;
 
-public class MemberService {
+import org.springframework.beans.factory.annotation.Autowired;
 
+public class MemberService {
+	@Autowired
+	private MemberRepository mRepo;
+	
+	
 }
