@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,10 +22,12 @@ public class ErrorReport {
 	private Integer errorId;
 	
 	@Column(columnDefinition="VARCHAR2(2000 BYTE)")
-	private String email;
+	private String img;
 	
 	@Column(columnDefinition="VARCHAR2(4000 BYTE)")
 	private String content;
 	
+	@Column(nullable = false)
+	@NotNull
 	private LocalDateTime finalDate;
 }

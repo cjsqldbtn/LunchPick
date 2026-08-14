@@ -1,8 +1,14 @@
 package com.nh.lunch.place;
 
+import java.util.List;
+
+import com.nh.lunch.menu.Menu;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,14 +17,19 @@ import lombok.Setter;
 @Setter
 public class Place {
 	@Id
-	private int place_id;
+	private Integer placeId;
 	
-	@Column(columnDefinition="VARCHAR2(1000 BYTE)")
+	@Column(columnDefinition="VARCHAR2(1000 BYTE)",nullable = false)
+	@NotNull
 	private String name;
 	
-	private double lat;
+	@Column(nullable = false)
+	@NotNull
+	private Double lat;
 	
-	private double lng;
+	@Column(nullable = false)
+	@NotNull
+	private Double lng;
 	
 	@Column(columnDefinition="VARCHAR2(15 BYTE)")
 	private String phone;
@@ -29,9 +40,13 @@ public class Place {
 	@Column(columnDefinition="VARCHAR2(2000 BYTE)")
 	private String url;
 	
-	@Column(columnDefinition="VARCHAR2(10 BYTE)")
+	@Column(columnDefinition="VARCHAR2(10 BYTE)",nullable = false)
+	@NotNull
 	private String type;
 	
 	@Column(columnDefinition="VARCHAR2(2000 BYTE)")
 	private String img;
+	
+	@OneToMany(mappedBy="place")
+	private List<Menu> menu;
 }
