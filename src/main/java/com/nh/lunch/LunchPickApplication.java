@@ -1,4 +1,4 @@
-package com.myspringboot.board1;
+package com.nh.lunch;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
