@@ -17,8 +17,6 @@ import lombok.Setter;
 @Setter
 public class History {
 	@Id
-	private Integer memberId;
-
 	@ManyToOne
 	@JoinColumn(name="member_id")
 	private Member member;
