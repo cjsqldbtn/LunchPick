@@ -1,9 +1,13 @@
 package com.nh.lunch;
 
+import java.util.Optional;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.nh.lunch.menu.Menu;
+import com.nh.lunch.menu.MenuRepository;
 import com.nh.lunch.place.Place;
 import com.nh.lunch.place.PlaceRepository;
 
@@ -11,6 +15,8 @@ import com.nh.lunch.place.PlaceRepository;
 class DummyTests {
 	@Autowired
 	PlaceRepository pRepo;
+	@Autowired
+	MenuRepository mRepo;
 
 	@Test
 	void testPlaceInsertDummy() {
@@ -50,6 +56,25 @@ class DummyTests {
 		p3.setImg("https://img1.kakaocdn.net/cthumb/local/C800x800.q50/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flocal%2FkakaomapPhoto%2Freview%2F495353072575d0099ce854583eefa73e3f3bd241%3Foriginal");
 		
 		pRepo.save(p3);
+	}
+	
+	@Test
+	void testMenuInsertDummy() {
+		
+		//부부식당
+		Optional<Place> op = pRepo.findById((long)839397094);
+		if(op.isEmpty()) {
+			System.out.println("부부식당을 못찾았습니다.");
+			return;
+		}
+		Place place1 = op.get();
+		
+		Menu m1 = new Menu();
+		m1.setName("오징어궁중떡볶이");
+		m1.setPrice(13800);
+		m1.setPlace(place1);
+		m1.setMenuId(267);
+		mRepo.save(m1);
 	}
 
 }
