@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 public class Menu {
 	@Id
-	private int menu;
+	private Integer menu;
 	
 	private int place_id;
 	

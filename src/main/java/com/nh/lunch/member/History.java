@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 public class History {
 	@Id
-	private int member_id;
+	private Integer member_id;
 	
 	private LocalDateTime final_date;
 	
