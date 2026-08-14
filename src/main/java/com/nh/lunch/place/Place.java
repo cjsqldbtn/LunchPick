@@ -17,7 +17,7 @@ import lombok.Setter;
 @Setter
 public class Place {
 	@Id
-	private Integer placeId;
+	private Long placeId;
 	
 	@Column(columnDefinition="VARCHAR2(1000 BYTE)",nullable = false)
 	@NotNull

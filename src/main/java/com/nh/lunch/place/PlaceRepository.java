@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface PlaceRepository extends JpaRepository<Place, Integer> {
+public interface PlaceRepository extends JpaRepository<Place, Long> {
 	@Query(
 			value = "SELECT p.place_id, p.lat, p.lng, p.phone, p.category, p.url, p.type"
 					+ " FROM place p INNER JOIN menu m ON p.place_id = m.place_id"
