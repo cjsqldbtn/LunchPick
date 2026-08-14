@@ -9,5 +9,5 @@ public interface MenuRepository extends JpaRepository<Menu, Integer> {
 			value="SELECT sum(m.count) FROM menu m",
 			nativeQuery = true
 	)
-	int totalMenuCnt();
+	int countTotalMenu();
 }

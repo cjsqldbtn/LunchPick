@@ -71,4 +71,12 @@ public class MenuService {
 		
 		return new MenuRecommendInfoDto(m.getPlace(),m.getName());
 	}
+	
+	/**
+	 * 메뉴가 조회된 횟수 조회.
+	 * @return
+	 */
+	public int getMenuCnt() {
+		return meRepo.countTotalMenu();
+	}
 }
