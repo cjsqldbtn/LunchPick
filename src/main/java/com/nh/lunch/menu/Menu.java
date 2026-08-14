@@ -1,8 +1,19 @@
 package com.nh.lunch.menu;
 
+import java.util.List;
+
+import org.hibernate.annotations.ColumnDefault;
+
+import com.nh.lunch.member.History;
+import com.nh.lunch.place.Place;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,14 +22,26 @@ import lombok.Setter;
 @Setter
 public class Menu {
 	@Id
-	private Integer menu;
+	private Integer menuId;
 	
-	private int place_id;
+	@ManyToOne
+	@JoinColumn(name="place_id")
+	private Place place;
 	
-	@Column(columnDefinition="VARCHAR2(1000 BYTE)")
+	@Column(columnDefinition="VARCHAR2(1000 BYTE)", nullable = false)
+	@NotNull
 	private String name;
 	
-	private int price;
+	@Column(nullable = false)
+	@NotNull
+	private Integer price;
 	
-	private int count;
+	@Column(nullable = false)
+	@NotNull
+	@ColumnDefault("0")
+	private Integer count;
+	
+	
+	@OneToMany(mappedBy="menu")
+	private List<History> history;
 }
