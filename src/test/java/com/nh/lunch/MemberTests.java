@@ -9,14 +9,14 @@ import com.nh.lunch.member.MemberRepository;
 
 @SpringBootTest
 class MemberTests {
-	//@Autowired
+	@Autowired
 	private MemberRepository mRepo;
 	
 	@Test
 	void testMemberInsertDummy() {
 		Member m = new Member();
-		m.setEmail("a");
-		m.setPw("a");
+		m.setEmail("b");
+		m.setPw("b");
 		mRepo.save(m);
 	}
 	
