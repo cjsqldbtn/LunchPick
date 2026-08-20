@@ -810,3 +810,147 @@ footer {
 
   footer { flex-direction: column; gap: 6px; }
 }
+
+
+/* ==================================================
+   Login Modal Styles
+   ================================================== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(36, 35, 58, 0.5); /* 어두운 반투명 배경 */
+  backdrop-filter: blur(4px); /* 배경 블러 효과 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.25s ease-in-out;
+}
+
+/* 모달이 활성화되었을 때 */
+.modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-content {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  background: white;
+  padding: 32px 28px;
+  border-radius: var(--radius);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  transform: translateY(20px);
+  transition: transform 0.25s ease-in-out;
+}
+
+.modal-overlay.active .modal-content {
+  transform: translateY(0);
+}
+
+.modal-close {
+  position: absolute;
+  top: 18px;
+  right: 20px;
+  border: none;
+  background: transparent;
+  font-size: 24px;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.modal-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.modal-header .brand-mark {
+  margin: 0 auto 12px;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 20px;
+  color: var(--text);
+}
+
+.modal-header p {
+  margin: 6px 0 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #777489;
+}
+
+.form-group input {
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  outline: none;
+  font-size: 13px;
+  background: #faf9fd;
+}
+
+.form-group input:focus {
+  border-color: var(--primary);
+}
+
+.submit-btn {
+  margin-top: 8px;
+  padding: 13px;
+  border: none;
+  border-radius: 10px;
+  background: var(--primary);
+  color: white;
+  font-weight: 700;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.submit-btn:hover {
+  background: #d04936;
+}
+
+.modal-social {
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  text-align: center;
+}
+
+.modal-social p {
+  margin: 0 0 12px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.social-btns {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+
+

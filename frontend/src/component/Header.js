@@ -1,28 +1,63 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState }from 'react';
+import LoginPopup from './LoginPopup';
+import naverLogo from '../img/NAVER_login_Dark_KR_green_icon_H48.png';
+import kakaoLogo from '../img/kakao.png';
 
 const Header = () => {
+	
+	
+	const [isLoginOpen, setIsLoginOpen] = useState(false);
+
+	  
+	  
+	const naverLogin = () => {
+		alert("네이버 로그인!");
+	};
+	
+	const kakaoLogin = () => {
+		alert("카카오 로그인!");
+	};	
+	
+	const login = () => {
+		alert("로그인!");
+		setIsLoginOpen(true);
+	};
+	
+	const closeLogin = () => {
+        setIsLoginOpen(false);
+    };
+	
+	const signUp = () => {
+		alert("회원가입!");
+	};
+	
+	const logout = () => {
+		alert("로그아웃!");
+	};
 	return (
 		<>
-			<header class="header">
- 				<a class="brand" href="#">
-			       <span class="brand-mark">N</span>
-			       NOON MENU
-			     </a>
-			     
-			     <div class="header-date">
-			       <span>TUE · AUG 04, 2026</span>
-			       <span class="dot">•</span>
-			       <span class="weather">27° ☁</span>
-			     </div>
-	
-			     <div class="header-actions">
-			       <button class="social kakao" type="button" aria-label="카카오로그인">K</button>
-			       <button class="social naver" type="button" aria-label="네이버로그인">N</button>
-			       <button class="header-btn" type="button">로그인</button>
-			       <button class="header-btn" type="button">로그아웃</button>
-			     </div>
-			</header>
+            <header className="header">
+                <a className="brand" href="/">
+                    <span className="brand-mark">N</span>
+                    NOON MENU
+                </a>
+
+                <div className="header-date">
+                    <span>TUE · AUG 04, 2026</span>
+                    <span className="dot">•</span>
+                    <span className="weather">27° ☁</span>
+                </div>
+
+                <div className="header-actions">
+                    <img src={naverLogo} className="social" onClick={naverLogin}/>
+                    <img src={kakaoLogo} className="social" onClick={kakaoLogin}/>
+                    <button className="header-btn" type="button" onClick={login}>로그인</button>
+                    <button className="header-btn" type="button" onClick={signUp}>회원가입</button>
+                    <button className="header-btn" type="button" onClick={logout}>로그아웃</button>
+                </div>
+            </header>
+			
+			<LoginPopup isOpen={isLoginOpen} onClose={closeLogin} />
 		</>
 	);
 }

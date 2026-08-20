@@ -88,10 +88,9 @@ button { cursor: pointer; }
   border-radius: 50%;
   font-size: 15px;
   font-weight: 800;
+  cursor: pointer;
 }
 
-.kakao { background: var(--yellow); color: #181600; }
-.naver { background: var(--green); color: white; }
 
 .header-btn {
   padding: 0 15px;
