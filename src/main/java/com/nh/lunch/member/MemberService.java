@@ -4,12 +4,15 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class MemberService {
 	@Autowired
 	private MemberRepository mRepo;
+	@Autowired
+	private PasswordEncoder pwEncoder;
 	
 	/**
 	 * memberId로 멤버 정보 가져오기.
@@ -70,7 +73,7 @@ public class MemberService {
 		// 이미 존재안하면 멤버 삽입, true리턴
 		Member m = new Member();
 		m.setEmail(email);
-		m.setPw(pw);
+		m.setPw(pwEncoder.encode(pw));
 		mRepo.save(m);
 		
 		return true;
