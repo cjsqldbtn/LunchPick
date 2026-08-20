@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>오늘 뭐 먹지 - NOON MENU</title>
   <link rel="stylesheet" href="style.css">
+  <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=발급받은 APP KEY를 사용하세요"></script>
 </head>
 <body>
   <div class="app-shell">
@@ -25,7 +26,8 @@
       <div class="header-actions">
         <button class="social kakao" type="button" aria-label="카카오로그인">K</button>
         <button class="social naver" type="button" aria-label="네이버로그인">N</button>
-        <button class="logout" type="button">로그아웃</button>
+        <button class="header-btn" type="button">로그인</button>
+        <button class="header-btn" type="button">로그아웃</button>
       </div>
     </header>
 
@@ -33,9 +35,9 @@
       <!-- 메인 추천 배너 (Hero Section) -->
       <section class="recommend-banner">
         <div>
-          <p class="eyebrow">LUNCH CURATION / 11:14 AM</p>
+          <p class="eyebrow">LUNCH CURATION</p>
           <h1>오늘 점심,<br><strong>뭐가 당겨?</strong></h1>
-          <p class="hero-copy">지금 있는 곳과 오늘의 날씨, 예산을 바탕으로 가장 먹고 싶은 한 끼를 찾아볼게요.</p>
+          <p class="hero-copy">오늘의 날씨, 예산을 바탕으로 가장 먹고 싶은 한 끼를 찾아볼게요.</p>
         </div>
         <button class="refresh-btn" type="button">
           점심 추천받기 <span>↻</span>
@@ -58,8 +60,7 @@
             <label>WHERE</label>
             <div class="segmented">
               <button class="active" type="button">한성대입구</button>
-              <button type="button">혜화</button>
-              <button type="button">성북</button>
+              <button type="button">신촌</button>
             </div>
           </div>
 
@@ -98,9 +99,10 @@
                 <span class="live-dot"></span>
                 <span>NEARBY PLACES</span>
               </div>
-              <button type="button">한성대입구 · 1.5 km</button>
             </div>
-
+			<!-- 지도를 표시할 div 입니다 -->
+			<div id="map" style="width:100%;height:350px;"></div>
+			
             <div class="map">
               <div class="map-road road-a"></div>
               <div class="map-road road-b"></div>
@@ -126,13 +128,13 @@
               </div>
 
               <button class="map-go" type="button">
-                지도에서 보기 <span>↗</span>
+               	 GO <span>↗</span>
               </button>
             </div>
           </section>
 
           <!-- 이상형 월드컵 카드 -->
-          <section class="worldcup-card">
+          <!-- <section class="worldcup-card">
             <div class="worldcup-copy">
               <span class="mini-badge">LUNCH DUEL</span>
               <h2>고르는 재미가 <span>필요한 날</span></h2>
@@ -145,7 +147,7 @@
               <button class="round" type="button">8강</button>
               <button class="worldcup-start" type="button">월드컵 시작 ↗</button>
             </div>
-          </section>
+          </section> -->
         </div>
 
         <!-- 우측 시이드바 (최근 추천 기록) -->
