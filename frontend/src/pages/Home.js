@@ -1,69 +1,97 @@
-import React from 'react';
+import React, { useState, createContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import Header from '../component/Header';
+import RecommendBanner from '../component/RecommendBanner';
+import FilterCard from '../component/FilterCard';
 import Map from '../component/Map'
 import "../css/style.css";
 
-const Home = () => {
-	return (
-		<div>
-			<Header/>
-			<div class="content-grid">
-		        <div class="left-column">
-					<section class="map-card">
-						<div class="map-toolbar">
-			              <div>
-			                <span class="live-dot"></span>
-			                <span>NEARBY PLACES</span>
-			              </div>
-			            </div>
-						<Map/>
-					</section>
-				</div>
-				<aside class="recent-card">
-		          <div class="card-title-row">
-		            <div>
-		              <p class="eyebrow">HISTORY</p>
-		              <h2>RECENT PICKS</h2>
-		            </div>
-		            <button class="more" type="button">•••</button>
-		          </div>
+export const MapContext = createContext(null);
 
-		          <ul class="history-list">
-		            <li>
-		              <div class="food-icon">🍱</div>
-		              <div>
-		                <strong>돈우마미</strong>
-		                <small>덮밥 · 9,000원</small>
-		              </div>
-		            </li>
-		            <li>
-		              <div class="food-icon">🍜</div>
-		              <div>
-		                <strong>홍두깨</strong>
-		                <small>칼국수 · 8,000원</small>
-		              </div>
-		            </li>
-		            <li>
-		              <div class="food-icon">🍲</div>
-		              <div>
-		                <strong>돌솥정식</strong>
-		                <small>한식 · 10,000원</small>
-		              </div>
-		            </li>
-		            <li>
-		              <div class="food-icon">✨</div>
-		              <div>
-		                <strong>오늘의 AI 추천</strong>
-		                <small>새로운 추천 메뉴 보기</small>
-		              </div>
-		            </li>
-		          </ul>
-		        </aside>
-			</div>
-			홈~ <br/>
-			<Link to="/about">소개</Link>
-		</div>
+const Home = () => {
+    const [map, setMap] = useState(null);
+	const [placeList, setPlaceList] = useState([]);
+
+    const panTo = (lat, lng) => {
+        if (!map) return;
+
+        const position = new window.kakao.maps.LatLng(lat, lng);
+
+        map.panTo(position);
+    };
+    const getPlaceList = (type, price) => {
+        axios.get(`/place/list?type=${type}&price=${price}`)
+        .then(res => {
+            console.log(res.data);
+            setPlaceList(res.data);
+        })
+        .catch(err => {
+            console.error(err);
+        });
+    };
+    const mapContextValues = {
+        map,
+        setMap,
+        panTo,
+		getPlaceList
+    };
+	
+	useEffect(() => {
+		getPlaceList("한성대",70000);
+	},[]);
+		
+	return (
+        <MapContext.Provider value={mapContextValues}>
+            <Header />
+            <main>
+                <RecommendBanner/>
+				<FilterCard/>
+                <div class="content-grid">
+                    <div class="left-column">
+                        <Map />
+                    </div>
+                    <aside class="recent-card">
+                        <div class="card-title-row">
+                            <div>
+                                <p class="eyebrow">HISTORY</p>
+                                <h2>RECENT PICKS</h2>
+                            </div>
+                        </div>
+                        <ul class="history-list">
+                            <li>
+                                <div class="food-icon">🍱</div>
+                                <div>
+                                    <strong>돈우마미</strong>
+                                    <small>덮밥 · 9,000원</small>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="food-icon">🍜</div>
+                                <div>
+                                    <strong>홍두깨</strong>
+                                    <small>칼국수 · 8,000원</small>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="food-icon">🍲</div>
+                                <div>
+                                    <strong>돌솥정식</strong>
+                                    <small>한식 · 10,000원</small>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="food-icon">✨</div>
+                                <div>
+                                    <strong>오늘의 AI 추천</strong>
+                                    <small>새로운 추천 메뉴 보기</small>
+                                </div>
+                            </li>
+                        </ul>
+                    </aside>
+                </div>
+            </main>
+        </MapContext.Provider>
 	);
 }
 

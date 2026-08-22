@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 public class PlaceMapDto {
 	private Long placeId;
-	private Integer memuId;
+	private Integer menuId;
 	private Double lat;
 	private Double lng;
 	
@@ -16,6 +16,6 @@ public class PlaceMapDto {
 		this.placeId = placeId;
 		this.lat = lat;
 		this.lng = lng;
-		this.memuId = memuId;
+		this.menuId = menuId;
 	}
 }
