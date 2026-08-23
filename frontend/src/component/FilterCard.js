@@ -1,7 +1,16 @@
-import { useEffect, useContext } from "react";
+import { useEffect, useContext, useState } from "react";
 import { MapContext } from "../pages/Home";
 
 const FilterCard = () => {
+	const { panTo, getPlaceList } = useContext(MapContext);
+	const [active, setActive] = useState("한성대");
+	
+	const handleWhere = (location, lat, lng) => {
+		getPlaceList(location, 70000);
+		setActive(location);
+		panTo(lat, lng);
+	}
+	
 	return (
         <section className="filter-card">
             <div className="filter-heading">
@@ -15,16 +24,28 @@ const FilterCard = () => {
                 <div className="filter-group">
                     <label>WHERE</label>
                     <div className="segmented">
-                        <button className="active" type="button">한성대입구</button>
-                        <button type="button">신촌</button>
+                        <button
+                            className={active == "한성대" ? "active" : ""}
+                            type="button"
+                            onClick={() => handleWhere("한성대", 37.5884, 127.0062)}
+                        >
+                            한성대입구
+                        </button>
+                        <button
+                            className={active == "신촌" ? "active" : ""}
+                            type="button"
+                            onClick={() => handleWhere("신촌", 37.5552, 126.9374)}
+                        >
+                            신촌
+                        </button>
                     </div>
                 </div>
                 <div class="filter-group">
                     <label>WEATHER</label>
-                    <label class="switch">
+                    <label className="switch">
                         <input type="checkbox" checked />
-                        <span class="slider"></span>
-                        <span class="switch-text">오늘 날씨(27° ☁) 반영</span>
+                        <span className="slider"></span>
+                        <span className="switch-text">오늘 날씨(27° ☁) 반영</span>
                     </label>
                 </div>
                 <div className="filter-group price-group">

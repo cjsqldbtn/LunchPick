@@ -12,6 +12,7 @@ export const MapContext = createContext(null);
 const Home = () => {
     const [map, setMap] = useState(null);
 	const [placeList, setPlaceList] = useState([]);
+	const [markerList, setMarkerList] = useState([]);
 
     const panTo = (lat, lng) => {
         if (!map) return;
@@ -23,7 +24,7 @@ const Home = () => {
     const getPlaceList = (type, price) => {
         axios.get(`/place/list?type=${type}&price=${price}`)
         .then(res => {
-            console.log(res.data);
+            //console.log(res.data);
             setPlaceList(res.data);
         })
         .catch(err => {
@@ -34,7 +35,10 @@ const Home = () => {
         map,
         setMap,
         panTo,
-		getPlaceList
+		getPlaceList,
+		placeList,
+		setMarkerList,
+		markerList
     };
 	
 	useEffect(() => {
@@ -47,41 +51,41 @@ const Home = () => {
             <main>
                 <RecommendBanner/>
 				<FilterCard/>
-                <div class="content-grid">
-                    <div class="left-column">
+                <div className="content-grid">
+                    <div className="left-column">
                         <Map />
                     </div>
-                    <aside class="recent-card">
-                        <div class="card-title-row">
+                    <aside className="recent-card">
+                        <div className="card-title-row">
                             <div>
-                                <p class="eyebrow">HISTORY</p>
+                                <p className="eyebrow">HISTORY</p>
                                 <h2>RECENT PICKS</h2>
                             </div>
                         </div>
-                        <ul class="history-list">
+                        <ul className="history-list">
                             <li>
-                                <div class="food-icon">🍱</div>
+                                <div className="food-icon">🍱</div>
                                 <div>
                                     <strong>돈우마미</strong>
                                     <small>덮밥 · 9,000원</small>
                                 </div>
                             </li>
                             <li>
-                                <div class="food-icon">🍜</div>
+                                <div className="food-icon">🍜</div>
                                 <div>
                                     <strong>홍두깨</strong>
                                     <small>칼국수 · 8,000원</small>
                                 </div>
                             </li>
                             <li>
-                                <div class="food-icon">🍲</div>
+                                <div className="food-icon">🍲</div>
                                 <div>
                                     <strong>돌솥정식</strong>
                                     <small>한식 · 10,000원</small>
                                 </div>
                             </li>
                             <li>
-                                <div class="food-icon">✨</div>
+                                <div className="food-icon">✨</div>
                                 <div>
                                     <strong>오늘의 AI 추천</strong>
                                     <small>새로운 추천 메뉴 보기</small>
