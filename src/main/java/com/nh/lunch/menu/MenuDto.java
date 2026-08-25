@@ -17,5 +17,8 @@ public class MenuDto {
 	public MenuDto(Menu menu) {
 		menuId = menu.getMenuId();
 		placeId = menu.getPlace().getPlaceId();
+		name = menu.getName();
+		price = menu.getPrice();
+		count = menu.getCount();
 	}
 }

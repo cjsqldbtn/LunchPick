@@ -47,54 +47,57 @@ const Home = () => {
 		
 	return (
         <MapContext.Provider value={mapContextValues}>
-            <Header />
-            <main>
-                <RecommendBanner/>
-				<FilterCard/>
-                <div className="content-grid">
-                    <div className="left-column">
-                        <Map />
-                    </div>
-                    <aside className="recent-card">
-                        <div className="card-title-row">
-                            <div>
-                                <p className="eyebrow">HISTORY</p>
-                                <h2>RECENT PICKS</h2>
-                            </div>
+            <div className="app-shell">
+                <Header />
+                <main>
+                    <RecommendBanner />
+                    <FilterCard />
+                    <div className="content-grid">
+                        <div className="left-column">
+                            <Map />
                         </div>
-                        <ul className="history-list">
-                            <li>
-                                <div className="food-icon">🍱</div>
+                        <aside className="recent-card">
+                            <div className="card-title-row">
                                 <div>
-                                    <strong>돈우마미</strong>
-                                    <small>덮밥 · 9,000원</small>
+                                    <p className="eyebrow">HISTORY</p>
+                                    <h2>RECENT PICKS</h2>
                                 </div>
-                            </li>
-                            <li>
-                                <div className="food-icon">🍜</div>
-                                <div>
-                                    <strong>홍두깨</strong>
-                                    <small>칼국수 · 8,000원</small>
-                                </div>
-                            </li>
-                            <li>
-                                <div className="food-icon">🍲</div>
-                                <div>
-                                    <strong>돌솥정식</strong>
-                                    <small>한식 · 10,000원</small>
-                                </div>
-                            </li>
-                            <li>
-                                <div className="food-icon">✨</div>
-                                <div>
-                                    <strong>오늘의 AI 추천</strong>
-                                    <small>새로운 추천 메뉴 보기</small>
-                                </div>
-                            </li>
-                        </ul>
-                    </aside>
-                </div>
-            </main>
+                            </div>
+                            <ul className="history-list">
+                                <li>
+                                    <div>
+                                        <strong>돈우마미</strong>
+                                        <small>일식 덮밥 · 9,000원</small>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div>
+                                        <strong>홍두깨칼국수</strong>
+                                        <small>한식 칼국수 · 8,000원</small>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div>
+                                        <strong>홍두깨칼국수</strong>
+                                        <small>한식 돌솥정식 · 10,000원</small>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div className="food-icon">✨</div>
+                                    <div>
+                                        <strong>오늘의 AI 추천</strong>
+                                        <small>새로운 추천 메뉴 보기</small>
+                                    </div>
+                                </li>
+                            </ul>
+                        </aside>
+                    </div>
+                </main>
+                <footer>
+                    <b>LunchPick</b>
+                    <span>오늘의 점심을 더 쉽게. © 2026</span>
+                </footer>
+            </div>
         </MapContext.Provider>
 	);
 }

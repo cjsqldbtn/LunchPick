@@ -1,14 +1,16 @@
 import { useEffect, useContext, useState } from "react";
 import { MapContext } from "../pages/Home";
+import PlacePopup from "./PlacePopup";
 import axios from 'axios';
 
 const Map = () => {
 	const { map, setMap, panTo, placeList, setMarkerList, markerList } = useContext(MapContext);
+	const [selectedPlace, setSelectedPlace] = useState(null);
 	
 	const drawMarkers = (markerList, placeList) => {
 		// 기존 마커 제거
 		for(let i=0;i<markerList.length;i++){
-			var marker = markerList[i];
+			let marker = markerList[i];
 			marker.setMap(null);
 		}
 		
@@ -16,23 +18,31 @@ const Map = () => {
 		const markers = [];
 		
 		for(let i=0;i<placeList.length;i++){
-			var place = placeList[i];
-			// 마커가 표시될 위치입니다
-			var markerPosition  = new window.kakao.maps.LatLng(place.lat, place.lng); 
+			let place = placeList[i];
+			// 마커가 표시될 위치
+			let markerPosition  = new window.kakao.maps.LatLng(place.lat, place.lng); 
 	
-			// 마커를 생성합니다
-			var marker = new window.kakao.maps.Marker({
+			// 마커를 생성
+			let marker = new window.kakao.maps.Marker({
 			    position: markerPosition,
 				clickable: true,
 			});
 	
-			// 마커가 지도 위에 표시되도록 설정합니다
+			// 마커가 지도 위에 표시되도록
 			marker.setMap(map);
 	
-			// 마커에 클릭 이벤트를 등록한다 (우클릭 : rightclick)
-			window.kakao.maps.event.addListener(marker, 'click', function() {
-			    alert('마커를 클릭했습니다!' + place.placeId);
-			});
+            // 마커에 클릭 이벤트(우클릭 : rightclick)
+            window.kakao.maps.event.addListener(marker, 'click', async function() {
+				//alert(place.placeId);
+				await axios.get(`/place/${place.placeId}`)
+				.then(res => {
+					console.log(res.data);
+					setSelectedPlace(res.data);
+				})
+				.catch(err => {
+					console.error("장소 상세 정보 조회 실패:", err);
+				})
+            });
 			
 			// 마커 리스트에 추가
 			markers.push(marker);
@@ -57,23 +67,45 @@ const Map = () => {
 			// map을 저장
 			setMap(map);
         });
-		drawMarkers(markerList, placeList);
     }, []);
 	// 장소가 변경되거나 필터 변경이 발생했을 경우
     useEffect(() => {
+		if(!map) return;
+		
 		drawMarkers(markerList, placeList);
-    }, [placeList]);
+    }, [map, placeList]);
 	
     return (
-		<section className="map-card">
-            <div className="map-toolbar">
-                <div>
-                    <span className="live-dot"></span>
-                    <span>NEARBY PLACES</span>
+        <>
+            <section className="map-card">
+                <div className="map-toolbar">
+                    <div>
+                        <span className="live-dot"></span>
+                        <span>NEARBY PLACES</span>
+                    </div>
                 </div>
-            </div>
-            <div id="map" className="map" />
-		</section>
+                <div className="map-container">
+                    {/* 카카오맵 */}
+                    <div id="map" className="map"></div>
+                    {/* 지도 위 UI */}
+                    <div className="map-overlay">
+                        <div className="map-tooltip">
+                            <strong>주변 추천 장소</strong>
+                            <span>총 {placeList.length}곳 탐색됨</span>
+                        </div>
+                        <button className="map-go" type="button">
+                            GO <span>↗</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+            {selectedPlace && (
+                <PlacePopup
+                    place={selectedPlace}
+                    onClose={() => setSelectedPlace(null)}
+                />
+            )}
+        </>
     );
 }
 

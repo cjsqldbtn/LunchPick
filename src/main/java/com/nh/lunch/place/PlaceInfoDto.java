@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.nh.lunch.menu.Menu;
+import com.nh.lunch.menu.MenuDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,7 +19,7 @@ public class PlaceInfoDto {
 	private String img;
 	private String placeName;
 	private String category;
-	private List<String> menu;
+	private List<MenuDto> menuList;
 	private String phone;
 	private String url;
 	
@@ -26,9 +27,9 @@ public class PlaceInfoDto {
 		img = place.getImg();
 		placeName = place.getName();
 		category = place.getCategory();
-		menu = place.getMenu().stream()
-				.map(Menu::getName)
-				.collect(Collectors.toList());
+		menuList = place.getMenu().stream()
+				.map(MenuDto::new)
+				.toList();
 		phone = place.getPhone();
 		url = place.getUrl();
 	}
