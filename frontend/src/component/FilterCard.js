@@ -58,7 +58,7 @@ const FilterCard = () => {
                         </button>
                     </div>
                 </div>
-                <div class="filter-group">
+                <div className="filter-group">
                     <label>WEATHER</label>
                     <label className="switch">
                         <input type="checkbox" checked={weatherOn} onChange={(e) => setWeatherOn(e.target.checked)}/>

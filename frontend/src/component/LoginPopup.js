@@ -5,49 +5,47 @@ import kakaoLogo from '../img/kakao.png';
 import { AuthContext } from '../App';
 
 const LoginPopup = ({ isOpen, onClose }) => {
-	
-	const { login } = useContext(AuthContext);
-	const [ member, setMember ] = useState({ username: '', password: '' });
+    const { login } = useContext(AuthContext);
+    const [ member, setMember ] = useState({ username: '', password: '' });
     const { username, password } = member;
-	
-		
+
     if (!isOpen) return null;
-	
-	const naverLogin = () => {
-			alert("네이버 로그인!");
-	};
-	
-	const kakaoLogin = () => {
-		alert("카카오 로그인!");
-	};	
-	
-	const handleChange = (e) => {
+
+    // 네이버 로그인 버튼 클릭 (전체 페이지 이동)
+    const naverLogin = () => {
+		window.location.href = 'http://localhost:9090/LunchPick/member/naverLogin';
+    };
+
+    // 카카오 로그인 버튼 클릭 (전체 페이지 이동)
+    const kakaoLogin = () => {
+        window.location.href = 'http://localhost:9090/LunchPick/member/kakaoLogin';
+    };
+
+    const handleChange = (e) => {
         const { name, value } = e.target;
         setMember({ ...member, [name]: value });
     };
-	// 로그인 버튼 클릭. 	
-	const handleSubmit = (e) => {
-		e.preventDefault();
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
 
         axios.post('/member/login', member)
             .then((res) => {
                 if (res.status === 200) {
                     const jwts = res.headers.authorization;
-                    
                     if (jwts) {
                         localStorage.setItem('jwt', jwts.replace('Bearer ', ''));
                     }
-
                     alert('로그인 되었습니다.');
-                    onClose();           // 모달 팝업 닫기
-					login();
+                    onClose();
+                    login();
                 }
             })
             .catch((err) => {
                 console.error('로그인 실패! : ' + err);
                 alert('로그인에 실패했습니다. 아이디와 비밀번호를 확인해 주세요.');
             });
-	};
+    };
 
     return (
         <div className="modal-overlay" onClick={onClose}>
@@ -64,12 +62,12 @@ const LoginPopup = ({ isOpen, onClose }) => {
 
                 <form className="login-form" onSubmit={handleSubmit}>
                     <div className="form-group">
-                        <label htmlFor="loginId">이메일</label>
+                        <label htmlFor="email">이메일</label>
                         <input type="text" id="email" name="username" value={username} placeholder="이메일을 입력하세요" onChange={handleChange} required />
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="loginPw">비밀번호</label>
+                        <label htmlFor="password">비밀번호</label>
                         <input type="password" id="password" name="password" value={password} placeholder="비밀번호를 입력하세요" onChange={handleChange} required />
                     </div>
 
@@ -79,8 +77,8 @@ const LoginPopup = ({ isOpen, onClose }) => {
                 <div className="modal-social">
                     <p>소셜 계정으로 로그인</p>
                     <div className="social-btns">
-						<img src={naverLogo} className="social" onClick={naverLogin}/>
-	                   	<img src={kakaoLogo} className="social" onClick={kakaoLogin}/>
+                        <img src={naverLogo} className="social" onClick={naverLogin} alt="naver" />
+                        <img src={kakaoLogo} className="social" onClick={kakaoLogin} alt="kakao" />
                     </div>
                 </div>
             </div>
