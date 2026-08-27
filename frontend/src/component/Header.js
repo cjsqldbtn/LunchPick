@@ -1,7 +1,5 @@
 import React, { useState }from 'react';
 import LoginPopup from './LoginPopup';
-import naverLogo from '../img/NAVER_login_Dark_KR_green_icon_H48.png';
-import kakaoLogo from '../img/kakao.png';
 
 const Header = () => {
 	
@@ -10,19 +8,12 @@ const Header = () => {
 
 	  
 	  
-	const naverLogin = () => {
-		alert("네이버 로그인!");
-	};
 	
-	const kakaoLogin = () => {
-		alert("카카오 로그인!");
-	};	
-	
+	// 로그인 버튼.
 	const login = () => {
-		alert("로그인!");
 		setIsLoginOpen(true);
 	};
-	
+	// 로그인 닫힘 버튼.
 	const closeLogin = () => {
         setIsLoginOpen(false);
     };
@@ -49,8 +40,6 @@ const Header = () => {
                 </div>
 
                 <div className="header-actions">
-                    <img src={naverLogo} className="social" onClick={naverLogin}/>
-                    <img src={kakaoLogo} className="social" onClick={kakaoLogin}/>
                     <button className="header-btn" type="button" onClick={login}>로그인</button>
                     <button className="header-btn" type="button" onClick={signUp}>회원가입</button>
                     <button className="header-btn" type="button" onClick={logout}>로그아웃</button>

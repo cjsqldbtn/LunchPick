@@ -811,7 +811,6 @@ footer {
   footer { flex-direction: column; gap: 6px; }
 }
 
-
 /* ==================================================
    Login Modal Styles
    ================================================== */
@@ -951,6 +950,3 @@ footer {
   justify-content: center;
   gap: 12px;
 }
-
-
-

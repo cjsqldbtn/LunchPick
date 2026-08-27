@@ -8,51 +8,51 @@ const Home = () => {
 	return (
 		<div>
 			<Header/>
-			<div class="content-grid">
-		        <div class="left-column">
-					<section class="map-card">
-						<div class="map-toolbar">
+			<div className="content-grid">
+		        <div className="left-column">
+					<section className="map-card">
+						<div className="map-toolbar">
 			              <div>
-			                <span class="live-dot"></span>
+			                <span className="live-dot"></span>
 			                <span>NEARBY PLACES</span>
 			              </div>
 			            </div>
 						<Map/>
 					</section>
 				</div>
-				<aside class="recent-card">
-		          <div class="card-title-row">
+				<aside className="recent-card">
+		          <div className="card-title-row">
 		            <div>
-		              <p class="eyebrow">HISTORY</p>
+		              <p className="eyebrow">HISTORY</p>
 		              <h2>RECENT PICKS</h2>
 		            </div>
-		            <button class="more" type="button">•••</button>
+		            <button className="more" type="button">•••</button>
 		          </div>
 
-		          <ul class="history-list">
+		          <ul className="history-list">
 		            <li>
-		              <div class="food-icon">🍱</div>
+		              <div className="food-icon">🍱</div>
 		              <div>
 		                <strong>돈우마미</strong>
 		                <small>덮밥 · 9,000원</small>
 		              </div>
 		            </li>
 		            <li>
-		              <div class="food-icon">🍜</div>
+		              <div className="food-icon">🍜</div>
 		              <div>
 		                <strong>홍두깨</strong>
 		                <small>칼국수 · 8,000원</small>
 		              </div>
 		            </li>
 		            <li>
-		              <div class="food-icon">🍲</div>
+		              <div className="food-icon">🍲</div>
 		              <div>
 		                <strong>돌솥정식</strong>
 		                <small>한식 · 10,000원</small>
 		              </div>
 		            </li>
 		            <li>
-		              <div class="food-icon">✨</div>
+		              <div className="food-icon">✨</div>
 		              <div>
 		                <strong>오늘의 AI 추천</strong>
 		                <small>새로운 추천 메뉴 보기</small>
@@ -61,8 +61,6 @@ const Home = () => {
 		          </ul>
 		        </aside>
 			</div>
-			홈~ <br/>
-			<Link to="/about">소개</Link>
 		</div>
 	);
 }
