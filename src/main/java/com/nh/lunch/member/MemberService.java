@@ -4,15 +4,36 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
+@PropertySource("classpath:secret.properties")
 @Service
 public class MemberService {
 	@Autowired
 	private MemberRepository mRepo;
 	@Autowired
 	private PasswordEncoder pwEncoder;
+	
+	@Value("${kakao.client.id}")
+    private String KakaoClientId;
+	@Value("${kakao.client.secret}")
+	private String KakaoClientSecret;
+	@Value("${naver.client.id}")
+    private String NaverClientId;
+	@Value("${naver.client.secret}")
+	private String NaverClientSecret;
 	
 	/**
 	 * memberId로 멤버 정보 가져오기.
@@ -26,6 +47,20 @@ public class MemberService {
 			return null;
 		}
 		return new MemberDto(om.get());
+	}
+	
+	/**
+	 * email로 멤버 정보 가져오기.
+	 * @param email : 가져올 멤버의 email
+	 * @return : memberDto(memberId, email, pw, passwordKey, exDate, chatKey), 못가져오면 null
+	 */
+	public MemberDto getMemberByEmail(String email) {
+		Member m = mRepo.findByEmail(email);
+		if(m==null) {
+			// 해당 member가 존재하지 않는 경우.
+			return null;
+		}
+		return new MemberDto(m);
 	}
 	
 	/**
@@ -204,6 +239,121 @@ public class MemberService {
 			return true;
 		} 
 		return false;
+	}
+	
+	/**
+	 * 카카오로 email 조회
+	 * @param code
+	 * @return email
+	 */
+	public String getEmailByKakao(String code, String mapping) {
+		// 코드로 토큰 발급
+	    String authCode = code;
+	    
+	    // 헤더
+	    HttpHeaders headers = new HttpHeaders();
+	    headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+	    // body
+	    MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+	    body.add("grant_type", "authorization_code");
+	    body.add("client_id", KakaoClientId);
+	    body.add("redirect_uri", "http://52.199.216.149:9090/TravelPlanner/kakaologin/"+mapping);
+	    body.add("code", authCode);
+	    body.add("client_secret", KakaoClientSecret);
+	    
+	    // Http요청 객체
+	    HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(body, headers);
+	    // Kakao API 호출
+	    ResponseEntity<JsonNode> response =
+	        new RestTemplate().exchange(
+	            "https://kauth.kakao.com/oauth/token",
+	            HttpMethod.POST,
+	            httpEntity,
+	            JsonNode.class);
+	    
+	    JsonNode jsonNode = response.getBody();
+	    
+	    // 토큰으로 이메일 조회
+	    String token = jsonNode.get("access_token").asText();
+	    
+	    // 헤더
+	    headers = new HttpHeaders();
+	    headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+	    headers.add("Authorization", "bearer " + token);
+	    
+	    // Http요청 객체
+	    httpEntity = new HttpEntity<>(headers);
+	    
+	    // Kakao API 호출
+	    response = new RestTemplate().exchange(
+	            "https://kapi.kakao.com/v2/user/me",
+	            HttpMethod.GET,
+	            new HttpEntity<>(headers),
+	            JsonNode.class);
+	    
+	    //System.out.println(response.getBody());
+	    jsonNode = response.getBody();
+	    String email = jsonNode.get("kakao_account").get("email").asText();
+		return email;
+	}
+	
+	/**
+	 * 네이버로 email 조회
+	 * @param code
+	 * @return email
+	 */
+	public String getEmailByNaver(String code, String state) {
+		// 코드로 토큰 발급
+	    
+	    // 헤더
+	    HttpHeaders headers = new HttpHeaders();
+	    headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+	    // body
+	    MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+	    body.add("grant_type", "authorization_code");
+	    body.add("client_id", NaverClientId);
+	    body.add("client_secret", NaverClientSecret);
+	    body.add("code", code);
+	    body.add("state", state);
+	    
+	    
+	    body.add("redirect_uri", "http://52.199.216.149:9090/TravelPlanner/naverlogin/mainHome");
+	    
+	    
+	    // Http요청 객체
+	    HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(body, headers);
+	    // Naver API 호출
+	    ResponseEntity<JsonNode> response =
+	        new RestTemplate().exchange(
+	            "https://nid.naver.com/oauth2.0/token",
+	            HttpMethod.POST,
+	            httpEntity,
+	            JsonNode.class);
+	    
+	    JsonNode jsonNode = response.getBody();
+	    
+	    // 토큰으로 이메일 조회
+	    String token = jsonNode.get("access_token").asText();
+	    
+	    // 헤더
+	    headers = new HttpHeaders();
+	    headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+	    headers.add("Authorization", "Bearer " + token);
+	    
+	    // Http요청 객체
+	    httpEntity = new HttpEntity<>(headers);
+	    
+	    // Naver API 호출
+	    response = new RestTemplate().exchange(
+	            "https://openapi.naver.com/v1/nid/me",
+	            HttpMethod.GET,
+	            new HttpEntity<>(headers),
+	            JsonNode.class);
+	    
+	    //System.out.println(response.getBody());
+	    jsonNode = response.getBody();
+	    String email = jsonNode.get("response").get("email").asText();
+		return email;
 	}
 	
 }

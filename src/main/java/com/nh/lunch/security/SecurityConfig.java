@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -41,10 +42,8 @@ public class SecurityConfig {
 		.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 		.authorizeHttpRequests(
 				(authorizeHttpRequests) -> authorizeHttpRequests
-					.requestMatchers(permitAllUrls) // 문자열
-					.permitAll() // ok
-					.anyRequest() // 그 외에 것은 
-					.authenticated() //NO!
+					.anyRequest() // 어느접근이라도 
+					.permitAll()  // ㄱㅊ
 		)
 		.addFilterBefore(
 				new JwtAuthenticationFilter(jwtSvc,userDetailsSerivce),
@@ -57,7 +56,7 @@ public class SecurityConfig {
 	}
 	
 	@Bean
-	PasswordEncoder pwEncoder() {
+	PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 	

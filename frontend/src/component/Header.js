@@ -1,29 +1,32 @@
-import React, { useState }from 'react';
+import React, { useState, useContext }from 'react';
+import { useNavigate } from 'react-router-dom';
 import LoginPopup from './LoginPopup';
+import { AuthContext } from '../App';
 
 const Header = () => {
+	const navigate = useNavigate();
 	
-	
+	const { isLogin, logout } = useContext(AuthContext);
 	const [isLoginOpen, setIsLoginOpen] = useState(false);
-
-	  
 	  
 	
 	// 로그인 버튼.
-	const login = () => {
+	const loginBtn = () => {
 		setIsLoginOpen(true);
 	};
 	// 로그인 닫힘 버튼.
-	const closeLogin = () => {
+	const closeLoginBtn = () => {
         setIsLoginOpen(false);
     };
 	
-	const signUp = () => {
+	const signUpBtn = () => {
 		alert("회원가입!");
 	};
 	
-	const logout = () => {
-		alert("로그아웃!");
+	const logoutBtn = () => {
+		logout();
+		navigate('/logout');
+		alert('로그아웃 되었습니다.');
 	};
 	return (
 		<>
@@ -40,13 +43,18 @@ const Header = () => {
                 </div>
 
                 <div className="header-actions">
-                    <button className="header-btn" type="button" onClick={login}>로그인</button>
-                    <button className="header-btn" type="button" onClick={signUp}>회원가입</button>
-                    <button className="header-btn" type="button" onClick={logout}>로그아웃</button>
+				{isLogin ? (
+				        <button className="header-btn" type="button" onClick={logoutBtn}>로그아웃</button>
+				    ) : (
+				        <>
+				            <button className="header-btn" type="button" onClick={loginBtn}>로그인</button>
+				            <button className="header-btn" type="button" onClick={signUpBtn}>회원가입</button>
+				        </>
+				    )}
                 </div>
             </header>
 			
-			<LoginPopup isOpen={isLoginOpen} onClose={closeLogin} />
+			<LoginPopup isOpen={isLoginOpen} onClose={closeLoginBtn} />
 		</>
 	);
 }

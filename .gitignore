@@ -151,4 +151,6 @@ gradle-app.setting
 # Java heap dump
 *.hprof
 
+src/main/resources/secret.properties
+
 # End of https://www.toptal.com/developers/gitignore/api/gradle,java,windows,macos

@@ -1,14 +1,13 @@
-import React, {useContext, useState} from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useContext, useState } from 'react';
 import axios from 'axios';
 import naverLogo from '../img/NAVER_login_Dark_KR_green_icon_H48.png';
 import kakaoLogo from '../img/kakao.png';
 import { AuthContext } from '../App';
 
 const LoginPopup = ({ isOpen, onClose }) => {
-	const navigate = useNavigate();
 	
-    const [member, setMember] = useState({ username: '', password: '' });
+	const { login } = useContext(AuthContext);
+	const [ member, setMember ] = useState({ username: '', password: '' });
     const { username, password } = member;
 	
 		
@@ -41,6 +40,7 @@ const LoginPopup = ({ isOpen, onClose }) => {
 
                     alert('로그인 되었습니다.');
                     onClose();           // 모달 팝업 닫기
+					login();
                 }
             })
             .catch((err) => {
@@ -62,18 +62,18 @@ const LoginPopup = ({ isOpen, onClose }) => {
                     <p>서비스 이용을 위해 로그인해 주세요.</p>
                 </div>
 
-                <form className="login-form" onSubmit={(e) => e.preventDefault()}>
+                <form className="login-form" onSubmit={handleSubmit}>
                     <div className="form-group">
-                        <label htmlFor="loginId">아이디</label>
-                        <input type="text" id="loginId" placeholder="아이디를 입력하세요" onChange={handleChange} required />
+                        <label htmlFor="loginId">이메일</label>
+                        <input type="text" id="email" name="username" value={username} placeholder="이메일을 입력하세요" onChange={handleChange} required />
                     </div>
 
                     <div className="form-group">
                         <label htmlFor="loginPw">비밀번호</label>
-                        <input type="password" id="loginPw" placeholder="비밀번호를 입력하세요" onChange={handleChange} required />
+                        <input type="password" id="password" name="password" value={password} placeholder="비밀번호를 입력하세요" onChange={handleChange} required />
                     </div>
 
-                    <button className="submit-btn" onClick={handleSubmit} >로그인</button>
+                    <button className="submit-btn">로그인</button>
                 </form>
 
                 <div className="modal-social">
