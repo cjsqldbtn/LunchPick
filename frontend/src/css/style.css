@@ -773,3 +773,160 @@ footer {
 
   footer { flex-direction: column; gap: 6px; }
 }
+
+
+/* ==========================================
+   LoginPopup 전용 스타일 (클래스명 100% 일치)
+========================================== */
+
+/* 1. 화면 전체 어두운 배경 */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+/* 2. 모달 팝업 하얀색 상자 */
+.modal-content {
+  background: #ffffff;
+  padding: 36px 28px 28px;
+  border-radius: 20px;
+  width: 360px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  position: relative;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+/* 3. 닫기 (X) 버튼 */
+.modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: #888;
+  padding: 4px 8px;
+  line-height: 1;
+}
+
+.modal-close:hover {
+  color: #111;
+}
+
+/* 4. 헤더 및 'N' 브랜드 마크 */
+.modal-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.brand-mark {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 44px;
+  height: 44px;
+  background-color: #e0533c; /* N 로고 포인트 주황/빨강 */
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 20px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+}
+
+.modal-header h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #111111;
+  margin: 0 0 6px 0;
+}
+
+.modal-header p {
+  font-size: 13px;
+  color: #666666;
+  margin: 0;
+}
+
+/* 5. 입력 폼 & 라벨 */
+.login-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  margin-bottom: 14px;
+}
+
+.form-group label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #333333;
+  margin-bottom: 6px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #e1e1e1;
+  border-radius: 8px;
+  font-size: 14px;
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.form-group input:focus {
+  border-color: #111111;
+}
+
+/* 6. 로그인 버튼 */
+.submit-btn {
+  width: 100%;
+  padding: 13px;
+  background-color: #2b2e38; /* 메인 버튼 네이비/블랙 */
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 6px;
+  transition: background-color 0.2s;
+}
+
+.submit-btn:hover {opacity: 0.7;}
+
+.submit-btn:hover {
+  background-color: #1a1c23;
+}
+
+/* 7. 소셜 로그인 영역 */
+.modal-social {
+  margin-top: 24px;
+  text-align: center;
+}
+
+.modal-social p {
+  font-size: 12px;
+  color: #888888;
+  margin-bottom: 12px;
+}
+
+.social-btns {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
