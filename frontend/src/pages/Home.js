@@ -5,6 +5,7 @@ import Header from '../component/Header';
 import RecommendBanner from '../component/RecommendBanner';
 import FilterCard from '../component/FilterCard';
 import Map from '../component/Map'
+import ActionBar from '../component/ActionBar'
 import "../css/style.css";
 
 export const MapContext = createContext(null);
@@ -93,6 +94,7 @@ const Home = () => {
                         </aside>
                     </div>
                 </main>
+				<ActionBar/>
                 <footer>
                     <b>LunchPick</b>
                     <span>오늘의 점심을 더 쉽게. © 2026</span>

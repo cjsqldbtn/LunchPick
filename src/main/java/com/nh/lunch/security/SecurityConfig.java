@@ -25,15 +25,6 @@ public class SecurityConfig {
 	@Autowired
 	private MemberSecurityService userDetailsSerivce;
 	
-	private String[] permitAllUrls = {
-			"/member/login",
-			"/member/logout",
-			"/member/userinfo",
-			"/board/list/**",
-			"/css/**",
-			"/img/**",
-			"/js/**"
-	};
 	 // return 되는데 빈으로 등록 디스패터 전에 들어가기 전에 거르는 친구 filer, 들어와서 컨트롤럴를 들어오기 전에 거르는거 interceper
 	@Bean 									// HttpSecurity : Spring security 설정 역할
 	SecurityFilterChain	securityFilterChain(HttpSecurity http) throws Exception{ //Chain 다음꺼 실행하고, 다음꺼 실행하느 ㄴ즉,순서대로 하는 친구.()

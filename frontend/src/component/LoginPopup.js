@@ -6,8 +6,8 @@ import { AuthContext } from '../App';
 
 const LoginPopup = ({ isOpen, onClose }) => {
     const { login } = useContext(AuthContext);
-    const [ member, setMember ] = useState({ username: '', password: '' });
-    const { username, password } = member;
+    const [ member, setMember ] = useState({ email: '', password: '' });
+    const { email, password } = member;
 
     if (!isOpen) return null;
 
@@ -63,7 +63,7 @@ const LoginPopup = ({ isOpen, onClose }) => {
                 <form className="login-form" onSubmit={handleSubmit}>
                     <div className="form-group">
                         <label htmlFor="email">이메일</label>
-                        <input type="text" id="email" name="username" value={username} placeholder="이메일을 입력하세요" onChange={handleChange} required />
+                        <input type="text" id="email" name="email" value={email} placeholder="이메일을 입력하세요" onChange={handleChange} required />
                     </div>
 
                     <div className="form-group">

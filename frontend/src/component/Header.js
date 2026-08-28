@@ -42,7 +42,8 @@ const Header = () => {
                 </div>
 
                 <div className="header-actions">
-				{isLogin ? (
+				{
+					isLogin ? (
 				        <button className="header-btn" type="button" onClick={logoutBtn}>로그아웃</button>
 				    ) : (
 				        <>

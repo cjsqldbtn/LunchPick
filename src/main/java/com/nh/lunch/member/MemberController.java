@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nh.lunch.security.JwtAccountCredentials;
 import com.nh.lunch.security.JwtService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @PropertySource("classpath:secret.properties")
@@ -52,9 +53,13 @@ public class MemberController {
 	public ResponseEntity<?> getToken(@RequestBody JwtAccountCredentials credentials) {
         //System.out.println("암호화값: " + new org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder().encode("c"));
         try {
-	        UsernamePasswordAuthenticationToken creds = new UsernamePasswordAuthenticationToken(credentials.getUsername(), credentials.getPassword());
+	        UsernamePasswordAuthenticationToken creds = new UsernamePasswordAuthenticationToken(credentials.getEmail(), credentials.getPassword());
 	        Authentication auth = authManager.authenticate(creds);
-	        String jwts = jwtSvc.getToken(auth.getName());
+	        String email = auth.getName();
+	        MemberDto member = mSvc.getMemberByEmail(email);
+	        
+	        
+	        String jwts = jwtSvc.getToken(auth.getName(), member.getMemberId());
 	        System.out.println("(MemberController) jwts: " + jwts);
 
 	        return ResponseEntity.ok()
@@ -142,25 +147,19 @@ public class MemberController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("소셜 로그인 실패: " + e.getMessage());
         }
     }
+    
+    //채팅 키 만들기.
+    @PostMapping("/createChatKey")
+    public String createChatKey(HttpServletRequest request) {
+        Integer username = jwtSvc.getMemberId(request);
+        
+        if (username == null) {
+            return "FAIL: 유효하지 않은 토큰입니다.";
+        }
 
+        String chatKey = mSvc.updateChatKey(username);
+        
+        return chatKey; // 생성된 채팅키 문자열 반환 (예: "ROOM_12345")
+    }
 
-//	// 신규 회원 인증번호 맞는지 체크
-//	@GetMapping("/joinCode")
-//	public String checkAuthCode(RedirectAttributes rttr, HttpSession session, String inputKey) {
-//		// 지금 현재 세션에 저장된 key여야지만 접근 가능
-//		String keySession = (String) session.getAttribute("key");
-//		// System.out.println("발급된 키 "+keySession);
-//		// System.out.println("입력된 키 "+inputKey);
-//		if (!keySession.equals(inputKey)) {
-//			rttr.addFlashAttribute("msg", "인증번호가 일치하지 않습니다. 다시 시도해주세요.");
-//		} else {
-//			int memberId = mSvc.addMember((String) session.getAttribute("email"));
-//			// System.out.println(memberId);
-//			session.setAttribute("loginId", memberId);
-//			rttr.addFlashAttribute("msg", "회원 가입이 완료 되었습니다. 꼭 비밀번호를 변경해주세요.");
-//			return "SetPw";
-//		}
-//
-//		return "redirect:/";
-//	}
 }

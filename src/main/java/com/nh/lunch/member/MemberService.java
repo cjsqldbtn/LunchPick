@@ -377,7 +377,7 @@ public class MemberService {
         }
 
         // 일반 로그인과 똑같이 JWT 토큰을 만들어 리턴.
-        return jwtService.getToken(member.getEmail());
+        return jwtService.getToken(member.getEmail(), member.getMemberId());
     }
 	
 }
