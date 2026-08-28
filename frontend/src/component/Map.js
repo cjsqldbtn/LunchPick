@@ -1,12 +1,8 @@
-import { useEffect, useContext, useState, useRef } from "react";
+import { useEffect, useContext, useRef } from "react";
 import { MapContext } from "../pages/Home";
-import PlacePopup from "./PlacePopup";
-import axios from "axios";
 
 const Map = () => {
-	const { map, setMap, panTo, placeList, setMarkerList, markerList } = useContext(MapContext);
-	const [selectedPlace, setSelectedPlace] = useState(null);
-	const selectedMarkerRef = useRef(null);
+	const { map, setMap, placeList, setMarkerList, markerList, selectedMarker, setSelectedMarker, roulette, handleSelectedPlace } = useContext(MapContext);
 	const selectedMarkerImageRef = useRef(null);
 	
 	const drawMarkers = (markerList, placeList) => {
@@ -27,31 +23,21 @@ const Map = () => {
 			// 마커를 생성
 			let marker = new window.kakao.maps.Marker({
 			    position: markerPosition,
-				clickable: true,
+				clickable: true
 			});
+			// 마커에 place 묶기
+			marker.place = place;
 	
 			// 마커가 지도 위에 표시되도록
 			marker.setMap(map);
 	
             // 마커에 클릭 이벤트(우클릭 : rightclick)
-            window.kakao.maps.event.addListener(marker, 'click', async function() {
-				// 이전에 선택된 마커가 있다면 기본 이미지로 복구
-			    if (selectedMarkerRef.current) {
-			        selectedMarkerRef.current.setImage(null);
-			    }
-				
+            window.kakao.maps.event.addListener(marker, 'click', function() {
 				// 현재 마커 저장
-			    selectedMarkerRef.current = marker;
+			    setSelectedMarker(marker);
 				
-				//alert(place.placeId);
-				await axios.get(`/place/${place.placeId}`)
-				.then(res => {
-					console.log(res.data);
-					setSelectedPlace(res.data);
-				})
-				.catch(err => {
-					console.error("장소 상세 정보 조회 실패:", err);
-				})
+				// 장소 팝업
+				handleSelectedPlace(place);
             });
 			
 			// 마커 리스트에 추가
@@ -86,13 +72,21 @@ const Map = () => {
 		
 		drawMarkers(markerList, placeList);
     }, [map, placeList]);
+
 	// 선택된 마커가 변경될 경우(랜덤 뽑기)
-    useEffect(() => {
-		if(!map) return;
-		// 주의! 반드시 이전 마커를 원래 이미지로 만드는 과정을 변경 전에 넣을 것.
+	useEffect(() => {
+		if(!map || !selectedMarker) return;
+		
+		// 모든 마커를 기본 이미지로
+	    markerList.forEach(marker => {
+	        marker.setImage(null);
+			marker.setZIndex(1);
+	    });
+		
 		// 현재 마커를 선택된 마커 이미지로 변경
-	    selectedMarkerRef.current.setImage(selectedMarkerImageRef.current);
-    }, [selectedMarkerRef.current]);
+	    selectedMarker.setImage(selectedMarkerImageRef.current);
+		selectedMarker.setZIndex(50);
+	}, [selectedMarker, markerList]);
 	
     return (
         <>
@@ -112,18 +106,12 @@ const Map = () => {
                             <strong>주변 추천 장소</strong>
                             <span>총 {placeList.length}곳 탐색됨</span>
                         </div>
-                        <button className="map-go" type="button">
+                        <button className="map-go" type="button" onClick={() => roulette()}>
                             GO <span>↗</span>
                         </button>
                     </div>
                 </div>
             </section>
-            {selectedPlace && (
-                <PlacePopup
-                    place={selectedPlace}
-                    onClose={() => setSelectedPlace(null)}
-                />
-            )}
         </>
     );
 }

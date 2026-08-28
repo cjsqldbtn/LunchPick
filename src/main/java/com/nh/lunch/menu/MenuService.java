@@ -78,4 +78,19 @@ public class MenuService {
 	public int getMenuCnt() {
 		return meRepo.countTotalMenu();
 	}
+	
+	/**
+	 * cnt 증가
+	 * @param menuId
+	 */
+	public void addCnt(Integer menuId) {
+		Optional<Menu> om = meRepo.findById(menuId);
+		if(om.isEmpty()) return;
+		
+		// 메뉴 선택 수 증가
+		Menu m = om.get();
+		int cnt = m.getCount();
+		m.setCount(++cnt);
+		meRepo.save(m);
+	}
 }

@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.nh.lunch.menu.Menu;
 import com.nh.lunch.menu.MenuRepository;
@@ -12,6 +13,7 @@ import com.nh.lunch.place.Place;
 import com.nh.lunch.place.PlaceRepository;
 
 @SpringBootTest
+@ActiveProfiles("test")
 class DummyTests {
 	@Autowired
 	PlaceRepository pRepo;

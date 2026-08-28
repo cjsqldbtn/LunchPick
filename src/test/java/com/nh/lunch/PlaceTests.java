@@ -7,6 +7,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.nh.lunch.place.Place;
 import com.nh.lunch.place.PlaceInfoDto;
@@ -15,6 +16,7 @@ import com.nh.lunch.place.PlaceRepository;
 import com.nh.lunch.place.PlaceService;
 
 @SpringBootTest
+@ActiveProfiles("test")
 class PlaceTests {
 	@Autowired
 	PlaceRepository pRepo;
