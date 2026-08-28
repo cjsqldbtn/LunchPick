@@ -48,8 +48,7 @@ const PlacePopup = ({ place, onClose }) => {
                     {place.menuList.map((menu) => (
                         <div
                             key={menu.menuId}
-                            className={`menu-card ${selectedMenu?.menuId === menu.menuId ? "selected" : ""
-                                }`}
+                            className={`menu-card ${selectedMenu?.menuId === menu.menuId ? "selected" : ""}`}
                             onClick={() => setSelectedMenu(menu)}
                         >
                             <div className="menu-info">
@@ -57,11 +56,9 @@ const PlacePopup = ({ place, onClose }) => {
                                     <strong>{menu.name}</strong>
                                 </div>
                             </div>
-
                             <div className="menu-price">
                                 {menu.price.toLocaleString()}원
                             </div>
-
                             {selectedMenu?.menuId === menu.menuId && (
                                 <span className="menu-check">✓</span>
                             )}
