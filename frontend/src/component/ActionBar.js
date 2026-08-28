@@ -9,7 +9,7 @@ const ActionBar = () => {
 	const [chatKey, setChatKey] = useState('');
 	const [nickName, setNickName] = useState('');
 	
-	axios.post('/member/')
+	//axios.post('/member/')
 	
 	// 채팅방 만들기 
 	const createChat = () => {
@@ -97,10 +97,10 @@ const ActionBar = () => {
 	
     return (
         <>
-            <section class="action-toolbar">
-                <div class="action-group primary-actions">
-                    <button class="action-btn share-btn" type="button">
-                        <span class="btn-icon">💬</span>
+            <section className="action-toolbar">
+                <div className="action-group primary-actions">
+                    <button className="action-btn share-btn" type="button">
+                        <span className="btn-icon">💬</span>
                         <span>카카오톡 공유</span>
                     </button>
                 </div>
@@ -117,13 +117,13 @@ const ActionBar = () => {
 				    </div>
 				  </div>
 				)}
-                <div class="action-group secondary-actions">
-                    <button class="action-btn ai-btn" type="button">
-                        <span class="btn-icon">🤖</span>
+                <div className="action-group secondary-actions">
+                    <button className="action-btn ai-btn" type="button">
+                        <span className="btn-icon">🤖</span>
                         <span>AI 챗봇</span>
                     </button>
-                    <button class="action-btn report-btn" type="button" title="신고하기">
-                        <span class="btn-icon">🚨</span>
+                    <button className="action-btn report-btn" type="button" title="신고하기">
+                        <span className="btn-icon">🚨</span>
                         <span>신고</span>
                     </button>
                 </div>
