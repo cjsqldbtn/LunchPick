@@ -9,6 +9,8 @@ const ActionBar = () => {
 	const [chatKey, setChatKey] = useState('');
 	const [nickName, setNickName] = useState('');
 	
+	axios.post('/member/')
+	
 	// 채팅방 만들기 
 	const createChat = () => {
 		axios.post('/member/createChatKey', null, {	headers: { Authorization: `Bearer ${token}` }})
@@ -20,11 +22,33 @@ const ActionBar = () => {
 				if (navigator.clipboard) {
 	                navigator.clipboard.writeText(res.data)
 	                    .then(() => {
-	                        alert(`채팅키가 생성되어 클립보드에 복사되었습니다!\n[키: ${res.data}]`);
+							window.Toastify({
+					            text: `채팅키가 생성되어 클립보드에 복사되었습니다!\n[키: ${res.data}]`,
+					            duration: 3000,
+								newWindow: true,
+							  	close: true,	
+					            gravity: 'top', // top or bottom
+					            position: 'center', // left, center or right
+								stopOnFocus: true,
+					            style: {
+					                background: 'linear-gradient(to left, #F4A261, #ea580c)',
+					            }
+					        }).showToast();
 	                    })
 	                    .catch(err => {
 	                        console.error('클립보드 복사 실패:', err);
-	                        alert(`채팅키가 생성되었습니다: ${res.data}`);
+							window.Toastify({
+					            text: `채팅키가 생성되었습니다: ${res.data}`,
+					            duration: 3000,
+								newWindow: true,
+							  	close: true,
+					            gravity: 'top', // top or bottom
+					            position: 'center', // left, center or right
+								stopOnFocus: true,
+					            style: {
+					                background: 'linear-gradient(to left, #F4A261, #ea580c)',
+					            }
+					        }).showToast();
 	                    });
 	            } else {
 	                alert(`채팅키가 생성되었습니다: ${res.data}`);
@@ -46,8 +70,29 @@ const ActionBar = () => {
 	        alert("닉네임을 입력해 주세요.");
 	        return;
 	    }
-		
+		axios.post('/member/')
 		alert(`[${nickName}] 님, 채팅방(${chatKey})으로 입장합니다!`);
+	};
+	// 메시지를 받았을 떄.
+	const handleReceiveMessage = (sender, message) => {
+	    const isMe = (sender === nickName); // 보낸 사람과 지금 현재의 사람의 닉네임과 동일할 경우. true
+
+	    window.Toastify({
+	        text: `${sender}: ${message}`,
+	        duration: 4000, // 4초 후 자동 소멸
+	        close: true,
+	        gravity: "bottom", // 아래에서 위로 쌓이게 연출
+	        position: isMe ? "right" : "left", // 💡 내가 보낸 건 오른쪽, 상대방은 왼쪽!
+	        stopOnFocus: true,
+	        style: {
+	            background: isMe 
+	                ? 'linear-gradient(to right, #F4A261, #ea580c)' 
+	                : 'linear-gradient(to right, #4b5563, #1f2937)',
+	            borderRadius: '12px',
+	            color: '#fff',
+	            boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
+	        }
+	    }).showToast();
 	};
 	
     return (

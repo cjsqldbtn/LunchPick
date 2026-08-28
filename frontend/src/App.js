@@ -17,6 +17,7 @@ function App() {
 	const authContextValues = {
 		isLogin,
 		login,
+		memberId,
 		logout
 	};
 	

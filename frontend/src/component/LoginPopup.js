@@ -28,7 +28,7 @@ const LoginPopup = ({ isOpen, onClose }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
+		localStorage.removeItem('jwt');
         axios.post('/member/login', member)
             .then((res) => {
                 if (res.status === 200) {

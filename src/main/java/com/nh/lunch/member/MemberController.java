@@ -83,7 +83,7 @@ public class MemberController {
 		return ResponseEntity.ok(mapRet);
 	}
 
-	@GetMapping("kakaoLogin")
+	@GetMapping("/kakaoLogin")
 	public void redirectToKakao(HttpServletResponse response) {
         
         String redirectUrl = "http://localhost:3000/LunchPick/kakaologin";
