@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.nh.lunch.member.Member;
@@ -14,6 +15,7 @@ import com.nh.lunch.member.MemberRepository;
 import com.nh.lunch.member.MemberService;
 
 @SpringBootTest
+@ActiveProfiles("test")
 class MemberTests {
 	@Autowired
 	private MemberRepository mRepo;

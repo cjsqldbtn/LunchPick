@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.nh.lunch.menu.MenuDto;
@@ -13,6 +14,7 @@ import com.nh.lunch.menu.MenuRepository;
 import com.nh.lunch.menu.MenuService;
 
 @SpringBootTest
+@ActiveProfiles("test")
 class MenuTests {
 	@Autowired
 	MenuRepository meRepo;
@@ -73,4 +75,15 @@ class MenuTests {
 		System.out.println("총 합산 : " + result);
 	}
 	
+	@Test
+	@Transactional
+	void testAddCnt() {
+		// 1) Given
+		Integer menuId = 10;
+		
+		// 2) When
+		meSvc.addCnt(menuId);
+		
+		// 3) Then
+	}
 }

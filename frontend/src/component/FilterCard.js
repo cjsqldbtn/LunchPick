@@ -2,7 +2,7 @@ import { useEffect, useContext, useState } from "react";
 import { MapContext } from "../pages/Home";
 
 const FilterCard = () => {
-	const { panTo, getPlaceList } = useContext(MapContext);
+	const { moveMap, getPlaceList } = useContext(MapContext);
 	const [active, setActive] = useState("한성대");
 	const [weatherOn, setWeatherOn] = useState(false);
 	const [budget, setBudget] = useState(50000);
@@ -18,7 +18,7 @@ const FilterCard = () => {
 			lat = 37.5552;
 			lng = 126.9374;
 		}
-		panTo(lat, lng);
+		moveMap(lat, lng);
 	}
 	
 	useEffect(() => {

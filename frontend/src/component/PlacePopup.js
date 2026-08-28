@@ -1,12 +1,38 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import "../css/placePopup.css";
+import axios from 'axios';
+import { AuthContext } from '../App';
 
-const PlacePopup = ({ place, onClose }) => {
+const PlacePopup = ({ place, menu, needMenu, onClose }) => {
+	const { isLogin } = useContext(AuthContext);
 	const [selectedMenu, setSelectedMenu] = useState(null);
 	
 	const handleAddMenu = () => {
-		// 메뉴 최신 PICKS에 넣고 추천++
+		// 메뉴 최신 PICKS에 넣기, cnt++
 	};
+	
+    useEffect(() => {
+		let recommandMenu = null;
+		
+		// 초기값으로 menu가 들어오거나 룰렛으로 들어온 경우
+		if(menu) {
+			recommandMenu = menu;
+		} else if(needMenu) {
+			recommandMenu = place.menuList[Math.floor(Math.random()*place.menuList.length)];
+		}
+		if(!recommandMenu) return;
+		
+		setSelectedMenu(recommandMenu);
+		
+		// menuCnt++
+		axios.put(`/menu/${recommandMenu.menuId}`)
+		.then(res => {
+			console.log("cnt++");
+		})
+		.catch(err => {
+			console.error("menu cnt++ 실패:", err);
+		});
+    }, []);
 	
     if (!place) return null;
 
@@ -65,15 +91,17 @@ const PlacePopup = ({ place, onClose }) => {
                         </div>
                     ))}
                 </div>
-                <footer className="popup-actions">
-                    <button 
-						className={selectedMenu ? "btn-action-pri" : "btn-action-sec"}
-					    disabled={!selectedMenu}
-					    onClick={handleAddMenu}
-					>
-                        점심 후보에 넣기
-                    </button>
-                </footer>
+                {
+                    isLogin ? <footer className="popup-actions">
+                        <button
+                            className={selectedMenu ? "btn-action-pri" : "btn-action-sec"}
+                            disabled={!selectedMenu}
+                            onClick={handleAddMenu}
+                        >
+                            점심 후보에 넣기
+                        </button>
+                    </footer> : null
+                }
             </article>
         </div>
     );
