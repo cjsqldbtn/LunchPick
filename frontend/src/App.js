@@ -18,6 +18,7 @@ function App() {
 		isLogin,
 		login,
 		memberId,
+		setMemberId,
 		logout
 	};
 	

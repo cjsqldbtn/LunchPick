@@ -246,6 +246,24 @@ public class MemberService {
 	}
 	
 	/**
+	 * 현재 이 키가 존재하고, 만료가 안돾ㅆ는지.
+	 * @param key
+	 * @return 존재하고, 만료가 안됐으면 true, 반대면 false
+	 */
+	public boolean isExistChatKey(String key) {
+		Member m = mRepo.findByChatKey(key);
+		MemberDto memberDto = new MemberDto(m);
+		LocalDateTime dtoExDate = memberDto.getExDate();
+		String dtoChatKey = memberDto.getChatKey();
+		LocalDateTime now = LocalDateTime.now();
+		
+		if(key.equals(dtoChatKey) && dtoExDate.isAfter(now)) {
+			return true;
+		} 
+		return false;
+	}
+	
+	/**
 	 * 카카오 email 반환.
 	 * @param code
 	 * @return 해당 email

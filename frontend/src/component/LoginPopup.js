@@ -5,7 +5,7 @@ import kakaoLogo from '../img/kakao.png';
 import { AuthContext } from '../App';
 
 const LoginPopup = ({ isOpen, onClose }) => {
-    const { login } = useContext(AuthContext);
+    const { login, setMemberId } = useContext(AuthContext);
     const [ member, setMember ] = useState({ email: '', password: '' });
     const { email, password } = member;
 
@@ -33,10 +33,21 @@ const LoginPopup = ({ isOpen, onClose }) => {
             .then((res) => {
                 if (res.status === 200) {
                     const jwts = res.headers.authorization;
-                    if (jwts) {
-                        localStorage.setItem('jwt', jwts.replace('Bearer ', ''));
-                    }
-                    alert('로그인 되었습니다.');
+                    if (jwts) localStorage.setItem('jwt', jwts.replace('Bearer ', ''));
+                    window.Toastify({
+                        text: '로그인되었습니다.',
+                        duration: 3000,
+                        newWindow: true,
+                        close: true,
+                        gravity: 'top',
+                        position: 'center',
+                        stopOnFocus: true,
+                        style: {
+                            background: 'linear-gradient(to left, #F4A261, #ea580c)',
+                        }
+                    }).showToast();
+					console.log('로그인 성공!',res);
+					setMemberId(res.data);
                     onClose();
                     login();
                 }

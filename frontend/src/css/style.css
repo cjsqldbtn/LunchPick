@@ -1088,3 +1088,83 @@ footer {
   }
 }
 
+.chat-input-toolbar {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.chat-message-input {
+  flex: 1;
+  height: 44px;
+  padding: 0 16px;
+  border: 1px solid #e2e8f0;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  font-size: 14px;
+  color: #334155;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.chat-message-input:focus {
+  background-color: #ffffff;
+  border-color: #ff6b4a;
+  box-shadow: 0 0 0 3px rgba(255, 107, 74, 0.1);
+}
+
+/* 보내기 & AI 추천 버튼 공통 */
+.chat-send-btn,
+.chat-ai-recommend-btn {
+  height: 44px;
+  padding: 0 18px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+/* 보내기 버튼 */
+.chat-send-btn {
+  background-color: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  color: #475569;
+}
+
+.chat-send-btn:hover {
+  background-color: #e2e8f0;
+  color: #1e293b;
+}
+
+/* AI 추천 받기 버튼 */
+.chat-ai-recommend-btn {
+  background-color: #ff6b4a;
+  border: none;
+  color: #ffffff;
+}
+
+.chat-ai-recommend-btn:hover {
+  background-color: #e05536;
+  transform: translateY(-1px);
+}
+
+/* 모바일 대응 */
+@media (max-width: 768px) {
+  .chat-input-toolbar {
+    flex-wrap: wrap;
+  }
+  
+  .chat-message-input {
+    width: 100%;
+    flex: none;
+  }
+
+  .chat-send-btn,
+  .chat-ai-recommend-btn {
+    flex: 1;
+  }
+}

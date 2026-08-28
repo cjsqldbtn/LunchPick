@@ -65,6 +65,24 @@ public class JwtService { 	// JWT 토큰 발급 및 검증을 담당.
         }
         return null;
     }
+	public Integer getMemberIdFromToken(String token) {
+	    if (token == null || token.isBlank()) {
+	        return null;
+	    }
+	    
+	    // 만약 "Bearer " 접두사가 붙어서 들어온 경우 예외 처리
+	    if (token.startsWith("Bearer ")) {
+	        token = token.substring(7);
+	    }
+
+	    Claims claims = Jwts.parserBuilder()
+	                        .setSigningKey(key)
+	                        .build()
+	                        .parseClaimsJws(token)
+	                        .getBody();
+	                        
+	    return claims.get("memberId", Integer.class);
+	}
 
 }
 

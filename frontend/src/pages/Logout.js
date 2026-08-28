@@ -4,11 +4,12 @@ import { AuthContext } from '../App';
 
 const Logout = () => {
 	const navigate = useNavigate();
-	const { logout } = useContext(AuthContext); // AuthContext에 빨대 꽂기 
+	const { logout, setMemberId } = useContext(AuthContext); // AuthContext에 빨대 꽂기 
 	
 	useEffect(() => {
 		localStorage.removeItem('jwt');
 		logout();
+		setMemberId('');
 		navigate('/', {replace: true});
 	}, []);
 	
