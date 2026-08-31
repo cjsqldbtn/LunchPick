@@ -12,7 +12,6 @@ const ActionBar = () => {
 	
 	const [isJoined, setIsJoined] = useState(false); // 체팅에 입장 됐는지. 
 	const [messageInput, setMessageInput] = useState(''); // 입력창 텍스트
-    const [messages, setMessages] = useState([]);         // 수신된 대화 목록
 	
 	const socketRef = useRef(null);
 	
@@ -69,10 +68,32 @@ const ActionBar = () => {
 	// 입장 
 	const enterChat = () => {
 		if (!chatKey) {
-	        alert("채팅 키를 입력해 주세요.");
+            window.Toastify({
+                text: '채팅 키를 입력해 주세요.',
+                duration: 3000,
+                newWindow: true,
+                close: true,
+                gravity: 'top',
+                position: 'center',
+                stopOnFocus: true,
+                style: {
+                    background: 'linear-gradient(to left, #F4A261, #ea580c)',
+                }
+            }).showToast();
 	        return;
-	    } if (!nickName) {
-	        alert("닉네임을 입력해 주세요.");
+        } if (!nickName) {
+            window.Toastify({
+                text: '닉네임을 입력해 주세요.',
+                duration: 3000,
+                newWindow: true,
+                close: true,
+                gravity: 'top',
+                position: 'center',
+                stopOnFocus: true,
+                style: {
+                    background: 'linear-gradient(to left, #F4A261, #ea580c)',
+                }
+            }).showToast();
 	        return;
 	    }
 		
@@ -80,24 +101,26 @@ const ActionBar = () => {
 		const ws = new WebSocket(wsUrl);
 		ws.onopen = () => {
             console.log("WebSocket 연결 성공");
-            setIsJoined(true);
-			window.Toastify({
-	            text: '채팅방에 들어왔습니다.',
-	            duration: 3000,
-				newWindow: true,
-			  	close: true,
-	            gravity: 'top', 
-	            position: 'center', 
-				stopOnFocus: true,
-	            style: {
-	                background: 'linear-gradient(to left, #F4A261, #ea580c)',
-	            }
-	        }).showToast();
+			setIsJoined(true);
         };
+		
 		// 서버로부터 메세지가 도착했을 때
         ws.onmessage = (e) => {
             const { senderId, senderNick, message } = JSON.parse(e.data);
             console.log("서버로부터 도착한 메시지: ", e.data);
+            
+            window.Toastify({
+                text: '채팅방에 들어왔습니다.',
+                duration: 3000,
+                newWindow: true,
+                close: true,
+                gravity: 'top',
+                position: 'center',
+                stopOnFocus: true,
+                style: {
+                    background: 'linear-gradient(to left, #F4A261, #ea580c)',
+                }
+            }).showToast();
 			
             handleReceiveMessage(senderId,senderNick, message);
         };
@@ -112,12 +135,55 @@ const ActionBar = () => {
             console.log("WebSocket 연결 종료");
             setIsJoined(false);
 			if (e.reason === "IS_NOT_EXIST_CHAT_KEY") {
-	            alert("존재하지 않거나 유효하지 않은 채팅 키입니다.");
+                window.Toastify({
+                    text: '존재하지 않거나 유효하지 않은 채팅 키입니다.',
+                    duration: 3000,
+                    newWindow: true,
+                    close: true,
+                    gravity: 'top',
+                    position: 'center',
+                    stopOnFocus: true,
+                    style: {
+                        background: 'linear-gradient(to left, #F4A261, #ea580c)',
+                    }
+                }).showToast();
 	        } else if (e.reason === "EMPTY_ROOM_KEY") {
-	            alert("채팅 키가 비어있습니다.");
+				window.Toastify({
+                    text: '채팅 키가 비어있습니다.',
+                    duration: 3000,
+                    newWindow: true,
+                    close: true,
+                    gravity: 'top',
+                    position: 'center',
+                    stopOnFocus: true,
+                    style: {
+                        background: 'linear-gradient(to left, #F4A261, #ea580c)',
+                    }
+                }).showToast();
 	        }
         };
         socketRef.current = ws; // ref에 저장
+	};
+	
+	// 채팅방 나가기 함수.
+	const leaveChatRoom = () => {
+		if (socketRef.current) {
+			socketRef.current.close(); // 소켓 연결 완전 종료 (백엔드 @OnClose 호출됨)
+			socketRef.current = null;
+		}
+		setIsJoined(false);
+        window.Toastify({
+            text: '채팅방에서 퇴장하셨습니다.',
+            duration: 3000,
+            newWindow: true,
+            close: true,
+            gravity: 'top',
+            position: 'center',
+            stopOnFocus: true,
+            style: {
+                background: 'linear-gradient(to left, #F4A261, #ea580c)',
+            }
+        }).showToast();
 	};
 	
 	// 채팅 보내기 
@@ -200,7 +266,7 @@ const ActionBar = () => {
 				  </div>
 				)}
 				{(isJoined) && (
-					<button className="action-btn join-btn">채팅방 나가기</button>
+					<button className="action-btn join-btn" onClick={leaveChatRoom}>채팅방 나가기</button>
 				)}
                 <div className="action-group secondary-actions">
                     <button className="action-btn ai-btn" type="button">

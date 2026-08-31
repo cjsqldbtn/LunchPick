@@ -24,6 +24,9 @@ public class BroadSocket {
 	
 	public static Map<String, Set<Session>> roomClients = new HashMap<>();
     
+	public BroadSocket () {
+		System.out.println("(BroadSocket) : roomClients.size = " + roomClients.size());
+	}
 	// 파라미터로 넘어오는 해당 roomKey 얻는 함수. 
 	private String getRoomKey(Session session) {
         Map<String, List<String>> params = session.getRequestParameterMap();
@@ -36,14 +39,22 @@ public class BroadSocket {
     // 새로 접속했을 떄.
     @OnOpen
     public void onOpen(Session session) throws Exception {
-    	String roomKey = getRoomKey(session);
+    	String roomKey = getRoomKey(session); // 파라미터에서 입력된 roomKey 가져오기 
+    	
     	System.out.println("(onOpen) room key : " + roomKey);
     	// 키 값이 리턴이 안됐으면.
     	if (roomKey == null || roomKey.trim().isEmpty()) { 
-            System.out.println(" [입장 거부] 유효하지 않은 방 키 접근");
+            System.out.println(" [입장 거부] 비어있는 방 키 접근");
             session.close(new CloseReason(CloseCodes.CANNOT_ACCEPT, "EMPTY_ROOM_KEY"));
             return;
         }
+    	// 룸키가 DB에 포함되어 있지 않을 때. 
+    	if (!roomClients.containsKey(roomKey)) {
+            System.out.println(" [입장 거부] 존재하지 않는 방 키 접근: " + roomKey);
+            session.close(new CloseReason(CloseCodes.CANNOT_ACCEPT, "IS_NOT_EXIST_CHAT_KEY"));
+            return;
+        }
+        
     	// 그 현재 존재하는 방에 접속.
     	Set<Session> existingSet = roomClients.get(roomKey);
     	existingSet.add(session);

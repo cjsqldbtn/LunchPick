@@ -65,6 +65,7 @@ public class JwtService { 	// JWT 토큰 발급 및 검증을 담당.
         }
         return null;
     }
+	// 토큰을 가지고 memberId 얻기.
 	public Integer getMemberIdFromToken(String token) {
 	    if (token == null || token.isBlank()) {
 	        return null;
