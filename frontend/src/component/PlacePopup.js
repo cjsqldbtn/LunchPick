@@ -54,11 +54,6 @@ const PlacePopup = ({ place, menu, needMenu, onClose }) => {
                     }}>
                     <div className="hero-overlay"></div>
 
-                    <div className="hero-tags">
-                        <span className="badge-fire">🔥 인기 급상승</span>
-                        <span className="badge-ai">AI 추천 98%</span>
-                    </div>
-
                     <div className="hero-photo-credit">
                         PHOTO · KAKAO PLACE
                     </div>
@@ -71,6 +66,15 @@ const PlacePopup = ({ place, menu, needMenu, onClose }) => {
 							<span className="category-chip">{place.category}</span>
                         </div>
                     </header>
+					<div className="menu-section-header">
+					  <div>
+					    <span className="menu-section-label">MENU</span>
+					    <strong>오늘 뭐 먹지?</strong>
+					  </div>
+					  <span className="menu-section-count">
+					    {place.menuList.length}가지
+					  </span>
+					</div>
                     {place.menuList.map((menu) => (
                         <div
                             key={menu.menuId}

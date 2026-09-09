@@ -1,15 +1,14 @@
-import React, { useState, useContext, useRef } from 'react';
+import React, { useState, useContext, useRef, useEffect } from 'react';
 import { AuthContext } from '../App';
 import axios from 'axios';
 
 const ActionBar = () => {
 	const { isLogin, memberId } = useContext(AuthContext);
-	console.log("현재 memberId:", memberId);
+	//console.log("현재 memberId:", memberId);
 	const token = localStorage.getItem('jwt');
 	
 	const [chatKey, setChatKey] = useState('');
 	const [nickName, setNickName] = useState('');
-	
 	const [isJoined, setIsJoined] = useState(false); // 체팅에 입장 됐는지. 
 	const [messageInput, setMessageInput] = useState(''); // 입력창 텍스트
     const [messages, setMessages] = useState([]);         // 수신된 대화 목록
@@ -21,7 +20,7 @@ const ActionBar = () => {
 		axios.post('/member/createChatKey', null, {	headers: { Authorization: `Bearer ${token}` }})
 		.then(res => {
 			if(res.status === 200) {
-				console.log('(/createChatKey) res : ',res);
+				//console.log('(/createChatKey) res : ',res);
 				setChatKey(res.data);
 				
 				if (navigator.clipboard) {
@@ -76,8 +75,19 @@ const ActionBar = () => {
 	        return;
 	    }
 		
-		const wsUrl = `ws://localhost:9090/LunchPick/broadcasting?roomKey=${chatKey}`;
+		// 이미 연결되어 있으면 중복 연결 방지
+	    if (
+	        socketRef.current &&
+	        (socketRef.current.readyState === WebSocket.OPEN || socketRef.current.readyState === WebSocket.CONNECTING)
+	    ) {
+	        alert("이미 채팅방에 입장해 있습니다.");
+	        return;
+	    }
+		
+		const wsUrl = `ws://localhost:9090/LunchPick/broadcasting?roomKey=${chatKey}&memberId=${memberId}&nickName=${encodeURIComponent(nickName)}`;
 		const ws = new WebSocket(wsUrl);
+        socketRef.current = ws; // ref에 저장
+		
 		ws.onopen = () => {
             console.log("WebSocket 연결 성공");
             setIsJoined(true);
@@ -96,10 +106,19 @@ const ActionBar = () => {
         };
 		// 서버로부터 메세지가 도착했을 때
         ws.onmessage = (e) => {
-            const { senderId, senderNick, message } = JSON.parse(e.data);
-            console.log("서버로부터 도착한 메시지: ", e.data);
-			
-            handleReceiveMessage(senderId,senderNick, message);
+            const data = JSON.parse(e.data);
+            //console.log("서버로부터 도착한 메시지: ", e.data);
+			if (data.type === "LEAVE") {
+		        window.Toastify({
+		            text: data.message,
+		            duration: 3000,
+		            gravity: "bottom",
+		            position: "center",
+		        }).showToast();
+
+		        return;
+		    }
+            handleReceiveMessage(data.senderId,data.senderNick,data.message);
         };
 		
 		// 서버로 부터 에러가 났을 떄.
@@ -111,13 +130,14 @@ const ActionBar = () => {
         ws.onclose = (e) => {
             console.log("WebSocket 연결 종료");
             setIsJoined(false);
+			socketRef.current = null;
+
 			if (e.reason === "IS_NOT_EXIST_CHAT_KEY") {
 	            alert("존재하지 않거나 유효하지 않은 채팅 키입니다.");
 	        } else if (e.reason === "EMPTY_ROOM_KEY") {
 	            alert("채팅 키가 비어있습니다.");
 	        }
         };
-        socketRef.current = ws; // ref에 저장
 	};
 	
 	// 채팅 보내기 
@@ -126,9 +146,8 @@ const ActionBar = () => {
 		
 		if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
 			const messageData = {
-	            senderId: memberId,     
-	            senderNick: nickName,   
-	            message: messageInput  
+				type: "CHAT",
+				message: messageInput 
 	        };
 			
 			socketRef.current.send(JSON.stringify(messageData));
@@ -148,6 +167,15 @@ const ActionBar = () => {
 	    }
   	};
 	
+	// 채팅 나가기
+	const leaveChat = () => {
+	    if (socketRef.current) {
+	        socketRef.current.close();
+	        socketRef.current = null;
+	    }
+	    setIsJoined(false);
+	};
+	
 	// ai 추천 받기 
 	const recommendAI = () => {
 		alert('ai추천받기.');
@@ -157,7 +185,7 @@ const ActionBar = () => {
 	const handleReceiveMessage = (senderId, sender, message) => {
 	    const isMe = Boolean(senderId && memberId && Number(senderId) === Number(memberId));
 		
-		console.log(isMe);
+		//console.log(isMe);
 	    window.Toastify({
 	        text: `${sender}: ${message}`,
 	        duration: 30000, 
@@ -176,6 +204,13 @@ const ActionBar = () => {
 	    }).showToast();
 	};
 	
+	useEffect(() => {
+	    return () => {
+	        if (socketRef.current) {
+	            socketRef.current.close();
+	        }
+	    };
+	}, []);
 	
     return (
         <>
@@ -188,9 +223,9 @@ const ActionBar = () => {
                 </div>
 				{(isLogin && !isJoined) && (
 				  <div className="action-group chat-actions">
-				    <button className="action-btn" type="button">
+				    <button className="action-btn" type="button" onClick={createChat}>
 				      <span className="btn-icon">➕</span>
-				      <span onClick={createChat}>채팅 만들기</span>
+				      <span>채팅 만들기</span>
 				    </button>
 				    <div className="input-badge-wrap">
 				      <input type="text" className="action-input" placeholder="채팅 키 입력" value={chatKey} onChange={(e) => setChatKey(e.target.value)} />
@@ -200,7 +235,7 @@ const ActionBar = () => {
 				  </div>
 				)}
 				{(isJoined) && (
-					<button className="action-btn join-btn">채팅방 나가기</button>
+					<button className="action-btn join-btn" onClick={leaveChat}>채팅방 나가기</button>
 				)}
                 <div className="action-group secondary-actions">
                     <button className="action-btn ai-btn" type="button">

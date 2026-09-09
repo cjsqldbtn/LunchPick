@@ -1,6 +1,5 @@
 package com.nh.lunch.place;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,14 +7,12 @@ import lombok.Setter;
 @Setter
 public class PlaceMapDto {
 	private Long placeId;
-	private Integer menuId;
 	private Double lat;
 	private Double lng;
 	
-	public PlaceMapDto(Long placeId, Double lat, Double lng, Integer menuId) {
+	public PlaceMapDto(Long placeId, Double lat, Double lng) {
 		this.placeId = placeId;
 		this.lat = lat;
 		this.lng = lng;
-		this.menuId = menuId;
 	}
 }

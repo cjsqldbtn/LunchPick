@@ -1,4 +1,4 @@
-import React, { useState, createContext, useEffect, useRef } from 'react';
+import React, { useState, createContext, useEffect } from 'react';
 import axios from 'axios';
 import Header from '../component/Header';
 import RecommendBanner from '../component/RecommendBanner';
@@ -10,6 +10,7 @@ import RecentCard from "../component/RecentCard";
 import "../css/style.css";
 
 export const MapContext = createContext(null);
+export const WeatherContext = createContext(null);
 
 const Home = () => {
     const [map, setMap] = useState(null);
@@ -18,6 +19,58 @@ const Home = () => {
 	const [selectedMarker, setSelectedMarker] = useState(null);
 	const [selectedPlace, setSelectedPlace] = useState(null);
 	const [needMenu, setNeedMenu] = useState(false);
+	const [weatherIcon, setWeatherIcon] = useState(null);
+	const [temperature, setTemperature] = useState(null);
+	
+	// 세션 테스트
+	//axios.get("/test");
+		
+	// 날씨 아이콘
+	const weatherIconMap = {
+	    0: "☀️",
+	    1: "🌤️",
+	    2: "⛅",
+	    3: "☁️",
+	    45: "🌫️",
+	    48: "🌫️",
+
+	    51: "🌧️", 53: "🌧️", 55: "🌧️",
+	    56: "🌧️", 57: "🌧️",
+	    61: "🌧️", 63: "🌧️", 65: "🌧️",
+	    66: "🌧️", 67: "🌧️",
+	    80: "🌧️", 81: "🌧️", 82: "🌧️",
+
+	    71: "❄️", 73: "❄️", 75: "❄️",
+	    77: "❄️", 85: "❄️", 86: "❄️",
+	    
+	    95: "⛈️", 96: "⛈️", 99: "⛈️",
+	    
+	    100: " "
+	};
+	// 날씨 정보 가져오기
+	const getWeather = async () => {
+        await axios.get(
+            "https://api.open-meteo.com/v1/forecast",
+            {
+                params: {
+                    latitude: 37.5665,
+                    longitude: 126.9780,
+                    current: "temperature_2m,weather_code",
+                    timezone: "Asia/Seoul"
+                }
+            }
+        )
+		.then(res => {
+			//console.log(res.data);
+			//console.log(res.data.current.weather_code);
+			//console.log(res.data.current.temperature_2m);
+            setWeatherIcon(weatherIconMap[res.data.current.weather_code]);
+            setTemperature(res.data.current.temperature_2m);
+        })
+        .catch(err => {
+            console.error(err);
+        });
+	};
 	
     const moveMap = (lat, lng) => {
         if (!map) return;
@@ -38,7 +91,8 @@ const Home = () => {
     };
 	const handleSelectedPlace = async (place) => {
 		//alert(place.placeId);
-		await axios.get(`/place/${place.placeId}`)
+		// 쿠키를 서버에 같이 전송
+		await axios.get(`/place/${place.placeId}`, { withCredentials: true })
 		.then(res => {
 			//console.log(res.data);
 			setSelectedPlace(res.data);
@@ -65,19 +119,23 @@ const Home = () => {
 		}
 		setNeedMenu(true);
 		let listSize = markerList.length;
-		for(let i=0;i<100;i++){
+		for(let i=0;i<30;i++){
+			const delay = i * i * 3;
+			
 			setTimeout(() => {
 				const marker = markerList[Math.floor(Math.random() * listSize)];
 				
 				setSelectedMarker(marker);
 				// 마지막 룰렛
-	            if (i==99) {
+	            if (i==29) {
 	                // 지도 중심 이동
 	                map.panTo(marker.getPosition());
 					// 팝업
-	                handleSelectedPlace(marker.place);
+					setTimeout(() => {
+	                	handleSelectedPlace(marker.place);
+					}, 600);
 	            }
-			}, 100+50*i);
+			}, delay);
 		}
 	};
     const mapContextValues = {
@@ -97,25 +155,32 @@ const Home = () => {
 		needMenu,
 		setNeedMenu
     };
+	const weatherContextValues = {
+		weatherIcon,
+		temperature
+	};
 	
 	useEffect(() => {
+		getWeather();
 		getPlaceList("한성대",70000);
 	},[]);
 		
 	return (
         <MapContext.Provider value={mapContextValues}>
             <div className="app-shell">
-                <Header />
-                <main>
-                    <RecommendBanner />
-                    <FilterCard />
-                    <div className="content-grid">
-                        <div className="left-column">
-                            <Map />
-                        </div>
-                        <RecentCard />
-                    </div>
-                </main>
+				<WeatherContext.Provider value={weatherContextValues}>
+	                <Header />
+	                <main>
+	                    <RecommendBanner />
+	                    <FilterCard />
+	                    <div className="content-grid">
+	                        <div className="left-column">
+	                            <Map />
+	                        </div>
+	                        <RecentCard />
+	                    </div>
+	                </main>
+				</WeatherContext.Provider>
 				{selectedPlace && (
 	                <PlacePopup
 	                    place={selectedPlace}
