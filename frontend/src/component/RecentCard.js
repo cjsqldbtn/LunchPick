@@ -67,7 +67,7 @@ const RecentCard = () => {
                                 <div className="food-icon">❤️</div>
                                 <div>
                                     <strong>추천 기록 저장</strong>
-                                    <small>메뉴 저장이 가능합니다</small>
+                                    <small>메뉴 저장이 가능하고, 중복 추천을 방지합니다</small>
                                 </div>
                             </li>
                         </ul>

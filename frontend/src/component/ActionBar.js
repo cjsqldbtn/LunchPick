@@ -110,7 +110,7 @@ const ActionBar = () => {
         socketRef.current = ws; // ref에 저장
 		
 		ws.onopen = () => {
-            console.log("WebSocket 연결 성공");
+            //console.log("WebSocket 연결 성공");
 			setIsJoined(true);
         };
 		
@@ -138,7 +138,7 @@ const ActionBar = () => {
 
 		// 채팅방을 나갔을 떄. 
         ws.onclose = (e) => {
-            console.log("WebSocket 연결 종료");
+            //console.log("WebSocket 연결 종료");
             setIsJoined(false);
 			socketRef.current = null;
 

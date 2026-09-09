@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.stereotype.Component;
 
@@ -21,15 +22,12 @@ import jakarta.websocket.server.ServerEndpoint;
 @ServerEndpoint("/broadcasting")
 public class BroadSocket {
 	// 방번호로 채팅 나누기
-	public static Map<String, Set<Session>> roomClients = new HashMap<>();
-	
-	// 세션 별 사용자 정보 (memberId, nickName)
-	private static final Map<Session, ChatUser> users = new HashMap<>();
+	public static Map<String, Set<Session>> roomClients = new ConcurrentHashMap<>();
 	
 	private final ObjectMapper mapper = new ObjectMapper();
     
 	public BroadSocket () {
-		System.out.println("(BroadSocket) : roomClients.size = " + roomClients.size());
+		//System.out.println("(BroadSocket) : roomClients.size = " + roomClients.size());
 	}
 	// 파라미터로 넘어오는 해당 roomKey 얻는 함수. 
 	private String getRoomKey(Session session) {
@@ -60,17 +58,17 @@ public class BroadSocket {
         // 사용자 정보 가져오기
         String memberIdParam = getParameter(session, "memberId");
         String nickName = getParameter(session, "nickName");
+        session.getUserProperties().put("nickName", nickName);
+        
         Integer memberId = null;
         if (memberIdParam != null) {
             memberId = Integer.valueOf(memberIdParam);
+            session.getUserProperties().put("memberId", memberId);
         }
-
-        // 사용자 저장
-        users.put(session, new ChatUser(memberId, nickName));
         
         // 방에 추가
         roomClients.computeIfAbsent(roomKey, key -> new HashSet<>()).add(session);
-        System.out.println("[" + roomKey + "] 클라이언트 IN : 현재 " + roomClients.get(roomKey).size() + "명.");
+        //System.out.println("[" + roomKey + "] 클라이언트 IN : 현재 " + roomClients.get(roomKey).size() + "명.");
     }
 
     // 메시지를 받았을 때.
@@ -80,15 +78,12 @@ public class BroadSocket {
         Set<Session> roomMembers = roomClients.get(roomKey);
         if (roomMembers == null) { return; }
         Map<String, Object> received = mapper.readValue(message, Map.class);
-        
-        ChatUser user = users.get(session);
-
         Map<String, Object> chatMessage = new HashMap<>();
 
         chatMessage.put("type", "CHAT");
-        chatMessage.put("senderId", user != null ? user.getMemberId() : null);
-        chatMessage.put("senderNick", user != null ? user.getNickName(): "알 수 없음");
-        chatMessage.put("message",received.get("message"));
+        chatMessage.put("senderId", session.getUserProperties().get("memberId") != null ? session.getUserProperties().get("memberId") : null);
+        chatMessage.put("senderNick", session.getUserProperties().get("nickName") != null ? session.getUserProperties().get("nickName") : "알 수 없음");
+        chatMessage.put("message", received.get("message"));
         String jsonPayload = mapper.writeValueAsString(chatMessage);
         
         for (Session client : roomMembers) {
@@ -104,14 +99,8 @@ public class BroadSocket {
         String roomKey = getRoomKey(session);
         Set<Session> roomMembers = roomClients.get(roomKey);
 
-        ChatUser user = users.get(session);
         String nickName = "누군가";
-        if (user != null && user.getNickName() != null) { nickName = user.getNickName(); }
-
-        /*
-         * 사용자 정보 삭제
-         */
-        users.remove(session);
+        if (session.getUserProperties() != null && session.getUserProperties().get("nickName") != null) { nickName = (String) session.getUserProperties().get("nickName"); }
 
         if (roomMembers != null) {
 
@@ -121,15 +110,13 @@ public class BroadSocket {
             //방에 아무도 없으면 방 자체 삭제
             if (roomMembers.isEmpty()) {
                 roomClients.remove(roomKey);
-                System.out.println("[" + roomKey + "] 방의 모든 인원이 퇴장하여 방이 삭제되었습니다.");
+                //System.out.println("[" + roomKey + "] 방의 모든 인원이 퇴장하여 방이 삭제되었습니다.");
             } else {
-                System.out.println("[" + roomKey + "] " + nickName + " OUT : 현재 " + roomMembers.size() + "명.");
+                //System.out.println("[" + roomKey + "] " + nickName + " OUT : 현재 " + roomMembers.size() + "명.");
                 
                 //퇴장 메시지
                 Map<String, Object> leaveMessage = new HashMap<>();
                 leaveMessage.put("type", "LEAVE");
-                leaveMessage.put("senderId", user != null ? user.getMemberId() : null);
-                leaveMessage.put("senderNick", nickName);
                 leaveMessage.put("message", nickName + "님이 나갔습니다.");
 
 
@@ -148,6 +135,6 @@ public class BroadSocket {
     // 에러 났을 떄. 
     @OnError
     public void onError(Session session, Throwable throwable) {
-        System.err.println("에러 발생: " + throwable.getMessage());
+        //System.err.println("에러 발생: " + throwable.getMessage());
     }
 }
