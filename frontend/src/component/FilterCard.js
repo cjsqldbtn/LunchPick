@@ -1,8 +1,10 @@
 import { useEffect, useContext, useState } from "react";
 import { MapContext } from "../pages/Home";
+import { WeatherContext } from "../pages/Home";
 
 const FilterCard = () => {
 	const { moveMap, getPlaceList } = useContext(MapContext);
+	const { weatherIcon, temperature } = useContext(WeatherContext);
 	const [active, setActive] = useState("한성대");
 	const [weatherOn, setWeatherOn] = useState(false);
 	const [budget, setBudget] = useState(50000);
@@ -63,7 +65,7 @@ const FilterCard = () => {
                     <label className="switch">
                         <input type="checkbox" checked={weatherOn} onChange={(e) => setWeatherOn(e.target.checked)}/>
                         <span className="slider"></span>
-                        <span className="switch-text">오늘 날씨(27° ☁) 반영</span>
+                        <span className="switch-text">오늘 날씨({temperature}° {weatherIcon}) 반영</span>
                     </label>
                 </div>
                 <div className="filter-group price-group">

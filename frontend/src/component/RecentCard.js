@@ -50,24 +50,24 @@ const RecentCard = () => {
                         </div>
                         <ul className="history-list">
                             <li>
-                                <div className="food-icon">✌️</div>
-                                <div>
-                                    <strong>친구들과 채팅</strong>
-                                    <small>로그인한 친구들과 채팅</small>
-                                </div>
-                            </li>
-                            <li>
                                 <div className="food-icon">✨</div>
                                 <div>
                                     <strong>AI 추천</strong>
-                                    <small>채팅 내역을 기반으로 메뉴 추천</small>
+                                    <small>채팅 내역을 기반으로 메뉴 추천 받으세요</small>
+                                </div>
+                            </li>
+                            <li>
+                                <div className="food-icon">✌️</div>
+                                <div>
+                                    <strong>친구들과 채팅</strong>
+                                    <small>로그인한 친구들과 채팅을 통해 메뉴를 고르세요</small>
                                 </div>
                             </li>
                             <li>
                                 <div className="food-icon">❤️</div>
                                 <div>
                                     <strong>추천 기록 저장</strong>
-                                    <small>메뉴 저장 기능 제공</small>
+                                    <small>메뉴 저장이 가능합니다</small>
                                 </div>
                             </li>
                         </ul>
