@@ -1,8 +1,18 @@
-import { useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
+import axios from 'axios';
 import { AuthContext } from '../App';
+import { HistoryContext, MapContext } from "../pages/Home";
 
 const RecentCard = () => {
 	const { isLogin } = useContext(AuthContext);
+	const { historyList, getHistory, setHistoryMenu, deleteHistory } = useContext(HistoryContext);
+	const { handleSelectedPlace, markerList, setSelectedMarker } = useContext(MapContext);
+	
+	useEffect(() => {
+        if (isLogin) {
+            getHistory();
+        }
+    }, [isLogin]);
 	
     return (
         <aside className="recent-card">
@@ -15,31 +25,38 @@ const RecentCard = () => {
                             </div>
                         </div>
                         <ul className="history-list">
-                            <li>
-                                <div>
-                                    <strong>돈우마미</strong>
-                                    <small>일식 덮밥 · 9,000원</small>
-                                </div>
-                            </li>
-                            <li>
-                                <div>
-                                    <strong>홍두깨칼국수</strong>
-                                    <small>한식 칼국수 · 8,000원</small>
-                                </div>
-                            </li>
-                            <li>
-                                <div>
-                                    <strong>홍두깨칼국수</strong>
-                                    <small>한식 돌솥정식 · 10,000원</small>
-                                </div>
-                            </li>
-                            <li>
-                                <div className="food-icon">✨</div>
-                                <div>
-                                    <strong>AI 추천</strong>
-                                    <small>새로운 추천 메뉴 보기</small>
-                                </div>
-                            </li>
+						{
+                            historyList.map((history) => (
+                                <li key={history.finalDate} 
+									onClick={() => { 
+										setHistoryMenu(history.menu);
+										const marker = markerList.find(
+									        marker => marker.place.placeId === history.place.placeId
+									    );
+
+									    if (marker) {
+									        setSelectedMarker(marker);
+									        handleSelectedPlace(marker.place);
+									    }
+									}}>
+                                    <div>
+                                        <strong>{history.menuName}</strong>
+                                        <small>
+                                            {history.placeCategory} {history.placeName} · {history.price?.toLocaleString()}원
+                                        </small>
+                                    </div>
+									<button
+							            className="history-delete-btn"
+							            onClick={(e) => {
+							                e.stopPropagation();
+							                deleteHistory(history.finalDate);
+							            }}
+							        >
+							            ×
+							        </button>
+                                </li>
+                            ))
+                        }
                         </ul>
 				</>) : (<>
                         <div className="card-title-row">

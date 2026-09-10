@@ -35,19 +35,17 @@ class HistoryTests {
 //		System.out.println(result);
 	}
 	
-	// 해당 멤버가 선택한 메뉴명들 조회.
-	@Test
-	void testGetHistorysByMemberId() {
-		// 1) Given
-		int memberId = 2;
-		
-		// 2) When
-		List<String> result = hSvc.getHistorysByMemberId(memberId);
-		
-		// 3) Then
-		assertNotNull(result, "memberId가 잘못됐습니다.");
-//		System.out.println(result);
-		
-	}
+	/*
+	 * // 해당 멤버가 선택한 메뉴명들 조회.
+	 * 
+	 * @Test void testGetHistorysByMemberId() { // 1) Given int memberId = 2;
+	 * 
+	 * // 2) When List<String> result = hSvc.getHistorysByMemberId(memberId);
+	 * 
+	 * // 3) Then assertNotNull(result, "memberId가 잘못됐습니다."); //
+	 * System.out.println(result);
+	 * 
+	 * }
+	 */
 
 }

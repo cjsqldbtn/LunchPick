@@ -2,22 +2,21 @@ import { useEffect, useState, useContext } from "react";
 import "../css/placePopup.css";
 import axios from 'axios';
 import { AuthContext } from '../App';
+import { HistoryContext } from "../pages/Home";
 
 const PlacePopup = ({ place, menu, needMenu, onClose }) => {
 	const { isLogin } = useContext(AuthContext);
+	const { addHistory } = useContext(HistoryContext);
 	const [selectedMenu, setSelectedMenu] = useState(null);
 	
-	const handleAddMenu = () => {
-		// 메뉴 최신 PICKS에 넣기
-		/*axios.get(`/place/list?type=${type}&price=${price}`)
-        .then(res => {
-            //console.log(res.data);
-            setPlaceList(res.data);
-        })
-        .catch(err => {
-            console.error(err);
-        });*/
-	};
+	const token = localStorage.getItem('jwt');
+	
+    const handleAddMenu = () => {
+        if (!selectedMenu) return;
+
+        addHistory(selectedMenu.menuId);
+        onClose();
+    };
 	
     useEffect(() => {
 		let recommandMenu = null;

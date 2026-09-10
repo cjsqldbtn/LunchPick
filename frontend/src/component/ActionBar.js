@@ -120,10 +120,20 @@ const ActionBar = () => {
             //console.log("서버로부터 도착한 메시지: ", e.data);
 			if (data.type === "LEAVE") {
 		        window.Toastify({
-		            text: data.message,
+		            text: `👋 ${data.message}`,
 		            duration: 3000,
-		            gravity: "bottom",
+					close: true,
+		            gravity: "top",
 		            position: "center",
+					stopOnFocus: true,
+					style: {
+						background: "linear-gradient(to right, #fff7ed, #ffedd5)",
+			            color: "#c2410c",
+			            border: "1px solid #fed7aa",
+			            borderRadius: "12px",
+			            boxShadow: "0 4px 12px rgba(234, 88, 12, 0.15)",
+			            fontWeight: "500"
+			        }
 		        }).showToast();
 
 		        return;
@@ -165,7 +175,7 @@ const ActionBar = () => {
                     position: 'center',
                     stopOnFocus: true,
                     style: {
-                        background: 'linear-gradient(to left, #F4A261, #ea580c)',
+                        background: 'linear-gradient(to left, #F4A261, #ea580c)'
                     }
                 }).showToast();
 	        }
@@ -220,7 +230,7 @@ const ActionBar = () => {
 		//console.log(isMe);
 	    window.Toastify({
 	        text: `${sender}: ${message}`,
-	        duration: 30000, 
+	        duration: 10000, 
 	        close: true,
 	        gravity: "bottom", // 아래에서 위로 쌓이게 연출
 	        position: isMe ? "right" : "left", 
@@ -231,7 +241,8 @@ const ActionBar = () => {
 	                : 'linear-gradient(to right, #F4A261, #ea580c)',
 	            borderRadius: '12px',
 	            color: '#fff',
-	            boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
+	            boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+				marginBottom: '8px'
 	        }
 	    }).showToast();
 	};

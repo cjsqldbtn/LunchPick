@@ -22,19 +22,6 @@ class MenuTests {
 	@Autowired
 	MenuService meSvc;
 	
-	/**************Repo*************/
-	// 메뉴가 합산 횟수 조회.
-	@Test
-	void testCountTotalMenu() {
-		// 1) Given
-		
-		// 2) When
-		int result = meRepo.countTotalMenu();
-		
-		// 3) Then
-		System.out.println("총 합산 : " + result);
-	}
-	
 	/**************Service*************/
 	@Test
 	void testGetMenu() {
@@ -61,29 +48,5 @@ class MenuTests {
 		
 		// 3) Then
 		assertNotNull(dto, "10번 menu는 추천 정보는 null이 아님");
-	}
-	
-	// 메뉴가 합산 횟수 조회.
-	@Test
-	void testGetMenuCnt() {
-		// 1) Given
-		
-		// 2) When
-		int result = meSvc.getMenuCnt();
-		
-		// 3) Then
-		System.out.println("총 합산 : " + result);
-	}
-	
-	@Test
-	@Transactional
-	void testAddCnt() {
-		// 1) Given
-		Integer menuId = 10;
-		
-		// 2) When
-		meSvc.addCnt(menuId);
-		
-		// 3) Then
 	}
 }

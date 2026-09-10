@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 import com.nh.lunch.member.Member;
 import com.nh.lunch.member.MemberRepository;
 import com.nh.lunch.menu.Menu;
+import com.nh.lunch.menu.MenuDto;
 import com.nh.lunch.menu.MenuRepository;
+import com.nh.lunch.place.PlaceMapDto;
 
 import jakarta.transaction.Transactional;
 
@@ -53,12 +55,12 @@ public class HistoryService {
 	}
 	
 	/**
-	 * 해당 멤버가 선택한 메뉴명들 조회
+	 * 해당 멤버가 선택한 메뉴 조회
 	 * @param memberId
 	 * @return : 조회한 메뉴명 List, 해당 멤버가 없다면 null
 	 */
 	@Transactional
-	public List<String> getHistorysByMemberId(int memberId) {
+	public List<RecentPicksDto> getHistorysByMemberId(Integer memberId) {
 		Optional<Member> om = mRepo.findById(memberId);
 		if(om.isEmpty()) {
 			// 멤버가 있지 않으면.
@@ -66,15 +68,30 @@ public class HistoryService {
 		}
 		Member m = om.get();
 		
-		List<History> historys = m.getHistory();
-		List<String> menus = new ArrayList<>();
+		List<History> historys = hRepo.findTop10ByHistoryId(memberId);
+		List<RecentPicksDto> menus = new ArrayList<>();
 		for(History h : historys) {
-			menus.add(h.getMenu().getName());
+			RecentPicksDto dto = new RecentPicksDto();
+			dto.setFinalDate(h.getHistoryId().getFinalDate());
+			dto.setMenu(new MenuDto(h.getMenu()));
+			dto.setPlace(new PlaceMapDto(h.getMenu().getPlace().getPlaceId(), h.getMenu().getPlace().getLat(), h.getMenu().getPlace().getLng()));
+			dto.setPlaceName(h.getMenu().getPlace().getName());
+			dto.setPlaceCategory(h.getMenu().getPlace().getCategory());
+			dto.setMenuName(h.getMenu().getName());
+			dto.setPrice(h.getMenu().getPrice()+"");
+			menus.add(dto);
 		}
 		
 		return menus;
 	}
 	
+	void deleteHistoryById(Integer memberId, LocalDateTime finalDate) {
+		HistoryId id = new HistoryId();
+		id.setMemberId(memberId);
+		id.setFinalDate(finalDate);
+		
+		hRepo.deleteById(id);
+	}
 }
 
 

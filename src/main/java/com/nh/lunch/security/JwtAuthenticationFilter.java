@@ -35,11 +35,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 		
 		if(jwts != null) {
 			// 토큰을 확인하고 사용자를 얻음.
-			String username = jwtSvc.getAuthUser(request);
+			Integer memberId = jwtSvc.getMemberId(request);
 			
-			if (username != null) {
+			if (memberId != null) {
 				// 인증 객체 생성
-				Authentication authentication = new UsernamePasswordAuthenticationToken(username, null, Collections.emptyList());
+				Authentication authentication = new UsernamePasswordAuthenticationToken(memberId, null, Collections.emptyList());
 				// SecurityContextHolder에 담아둠.
 				SecurityContextHolder.getContext().setAuthentication(authentication);
 			}

@@ -11,6 +11,7 @@ import "../css/style.css";
 
 export const MapContext = createContext(null);
 export const WeatherContext = createContext(null);
+export const HistoryContext = createContext(null);
 
 const Home = () => {
     const [map, setMap] = useState(null);
@@ -21,10 +22,12 @@ const Home = () => {
 	const [needMenu, setNeedMenu] = useState(false);
 	const [weatherIcon, setWeatherIcon] = useState(null);
 	const [temperature, setTemperature] = useState(null);
+	const [historyList, setHistoryList] = useState([]);
+	const [historyMenu, setHistoryMenu] = useState(null);
 	
+	const token = localStorage.getItem('jwt');
 	// 세션 테스트
 	//axios.get("/test");
-	
 	
 	// ***************** 날씨 ***********************
 	// 날씨 아이콘
@@ -99,6 +102,7 @@ const Home = () => {
 		await axios.get(`/place/${place.placeId}`, { withCredentials: true })
 		.then(res => {
 			//console.log(res.data);
+			// List<placeInfoDto>
 			setSelectedPlace(res.data);
 		})
 		.catch(err => {
@@ -148,6 +152,38 @@ const Home = () => {
 		}
 	};
 	
+	// ************ 히스토리 ***************
+	const getHistory = () => {
+		axios.get(`/history/list`, { headers: { Authorization: `Bearer ${token}` }})
+		.then(res => {
+			console.log(res.data);
+			setHistoryList(res.data);
+		})
+		.catch(err => {
+	        console.error(err);
+	    });
+	};
+	const addHistory = (menuId) => {
+        axios.put(`/history/${menuId}`, null, { headers: { Authorization: `Bearer ${token}` }})
+        .then(() => {
+            getHistory();
+        })
+		.catch(err => {
+	        console.error(err);
+	    });
+    };
+	const deleteHistory = (finalDate) => {
+	    const token = localStorage.getItem('jwt');
+
+	    return axios.delete(`/history/delete/${encodeURIComponent(finalDate)}`, { headers: { Authorization: `Bearer ${token}` } })
+	    .then(() => {
+	        getHistory();
+	    })
+		.catch(err => {
+	        console.error(err);
+	    });
+	};
+	
 	// ContextValues
     const mapContextValues = {
         map,
@@ -170,6 +206,13 @@ const Home = () => {
 		weatherIcon,
 		temperature
 	};
+	const historyContextValues = {
+		historyList,
+		getHistory,
+		addHistory,
+		setHistoryMenu,
+		deleteHistory
+	};
 	
 	
 	// 최초 렌더링
@@ -181,29 +224,33 @@ const Home = () => {
 	return (
         <MapContext.Provider value={mapContextValues}>
             <div className="app-shell">
-				<WeatherContext.Provider value={weatherContextValues}>
-	                <Header />
-	                <main>
-	                    <RecommendBanner />
-	                    <FilterCard />
-	                    <div className="content-grid">
-	                        <div className="left-column">
-	                            <Map />
-	                        </div>
-	                        <RecentCard />
-	                    </div>
-	                </main>
-				</WeatherContext.Provider>
-				{selectedPlace && (
-	                <PlacePopup
-	                    place={selectedPlace}
-						needMenu={needMenu}
-	                    onClose={() => {
-							setSelectedPlace(null);
-							setNeedMenu(false);
-						}}
-	                />
-	            )}
+				<HistoryContext.Provider value={historyContextValues}>
+					<WeatherContext.Provider value={weatherContextValues}>
+		                <Header />
+		                <main>
+		                    <RecommendBanner />
+		                    <FilterCard />
+		                    <div className="content-grid">
+		                        <div className="left-column">
+		                            <Map />
+		                        </div>
+		                        <RecentCard />
+		                    </div>
+		                </main>
+					</WeatherContext.Provider>
+					{selectedPlace && (
+		                <PlacePopup
+		                    place={selectedPlace}
+							menu={historyMenu}
+							needMenu={needMenu}
+		                    onClose={() => {
+								setSelectedPlace(null);
+								setNeedMenu(false);
+								setHistoryMenu(null);
+							}}
+		                />
+		            )}
+				</HistoryContext.Provider>
 				<ActionBar/>
                 <footer>
                     <b>LunchPick</b>
