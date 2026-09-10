@@ -1,4 +1,4 @@
-package com.nh.lunch.member;
+package com.nh.lunch.history;
 
 import java.time.LocalDateTime;
 

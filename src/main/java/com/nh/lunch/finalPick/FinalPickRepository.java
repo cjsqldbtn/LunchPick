@@ -1,4 +1,4 @@
-package com.nh.lunch.place;
+package com.nh.lunch.finalPick;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

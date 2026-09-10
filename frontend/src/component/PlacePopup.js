@@ -8,7 +8,15 @@ const PlacePopup = ({ place, menu, needMenu, onClose }) => {
 	const [selectedMenu, setSelectedMenu] = useState(null);
 	
 	const handleAddMenu = () => {
-		// 메뉴 최신 PICKS에 넣기, cnt++
+		// 메뉴 최신 PICKS에 넣기
+		/*axios.get(`/place/list?type=${type}&price=${price}`)
+        .then(res => {
+            //console.log(res.data);
+            setPlaceList(res.data);
+        })
+        .catch(err => {
+            console.error(err);
+        });*/
 	};
 	
     useEffect(() => {
@@ -18,20 +26,14 @@ const PlacePopup = ({ place, menu, needMenu, onClose }) => {
 		if(menu) {
 			recommandMenu = menu;
 		} else if(needMenu) {
+			// 메뉴 룰렛 (시간 남으면 효과 넣어주기)
 			recommandMenu = place.menuList[Math.floor(Math.random()*place.menuList.length)];
 		}
+		
+		// 둘 다 아닌 경우 초기 메뉴를 선택하지 않음
 		if(!recommandMenu) return;
 		
 		setSelectedMenu(recommandMenu);
-		
-		// menuCnt++
-		axios.put(`/menu/${recommandMenu.menuId}`)
-		.then(res => {
-			console.log("cnt++");
-		})
-		.catch(err => {
-			console.error("menu cnt++ 실패:", err);
-		});
     }, []);
 	
     if (!place) return null;

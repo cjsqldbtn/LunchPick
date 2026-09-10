@@ -3,6 +3,8 @@ package com.nh.lunch.member;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.nh.lunch.history.History;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

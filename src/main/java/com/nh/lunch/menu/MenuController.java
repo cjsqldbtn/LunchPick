@@ -13,6 +13,5 @@ public class MenuController {
 	@PutMapping("/menu/{menuId}")
 	public void menuUpdate(@PathVariable("menuId") Integer menuId) {
 		//System.out.println(menuId + "요청 들어옴");
-		meSvc.addCnt(menuId);
 	}
 }

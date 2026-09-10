@@ -1,4 +1,4 @@
-package com.nh.lunch.member;
+package com.nh.lunch.history;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -8,6 +8,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.nh.lunch.member.Member;
+import com.nh.lunch.member.MemberRepository;
 import com.nh.lunch.menu.Menu;
 import com.nh.lunch.menu.MenuRepository;
 

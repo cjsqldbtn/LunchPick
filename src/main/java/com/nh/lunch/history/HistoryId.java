@@ -1,7 +1,7 @@
-package com.nh.lunch.place;
+package com.nh.lunch.history;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import groovy.transform.EqualsAndHashCode;
 import jakarta.persistence.Column;
@@ -15,10 +15,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Data
-public class FinalPickId implements Serializable {
-	@Column(name="user_session")
-	private String userSession;
+public class HistoryId implements Serializable {
+	@Column(name="member_id")
+	private Integer memberId;
 	
-	@Column(name="pick_date")
-	private LocalDate pickDate;
+	@Column(name="final_date")
+	private LocalDateTime finalDate;
 }

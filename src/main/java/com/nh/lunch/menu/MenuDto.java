@@ -12,13 +12,11 @@ public class MenuDto {
 	private Long placeId;
 	private String name;
 	private Integer price;
-	private Integer count;
 	
 	public MenuDto(Menu menu) {
 		menuId = menu.getMenuId();
 		placeId = menu.getPlace().getPlaceId();
 		name = menu.getName();
 		price = menu.getPrice();
-		count = menu.getCount();
 	}
 }

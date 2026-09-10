@@ -1,4 +1,4 @@
-package com.nh.lunch.place;
+package com.nh.lunch.finalPick;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -6,6 +6,9 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.nh.lunch.place.Place;
+import com.nh.lunch.place.PlaceRepository;
 
 import jakarta.transaction.Transactional;
 

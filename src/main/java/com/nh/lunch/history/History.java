@@ -1,5 +1,6 @@
-package com.nh.lunch.member;
+package com.nh.lunch.history;
 
+import com.nh.lunch.member.Member;
 import com.nh.lunch.menu.Menu;
 
 import jakarta.persistence.EmbeddedId;

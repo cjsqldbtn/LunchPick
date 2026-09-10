@@ -6,9 +6,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.nh.lunch.member.History;
-import com.nh.lunch.member.HistoryId;
-import com.nh.lunch.member.HistoryRepository;
+import com.nh.lunch.history.History;
+import com.nh.lunch.history.HistoryId;
+import com.nh.lunch.history.HistoryRepository;
 import com.nh.lunch.member.Member;
 import com.nh.lunch.member.MemberRepository;
 import com.nh.lunch.place.PlaceRepository;
@@ -54,11 +54,7 @@ public class MenuService {
 		Optional<Member> omb = mRepo.findById(memberId);
 		if(om.isEmpty()||omb.isEmpty()) return null;
 		
-		// 메뉴 선택 수 증가
 		Menu m = om.get();
-		int cnt = m.getCount();
-		m.setCount(cnt++);
-		meRepo.save(m);
 		
 		// 히스토리 남기기
 		HistoryId hId = new HistoryId(memberId, LocalDateTime.now());
@@ -77,20 +73,5 @@ public class MenuService {
 	 */
 	public int getMenuCnt() {
 		return meRepo.countTotalMenu();
-	}
-	
-	/**
-	 * cnt 증가
-	 * @param menuId
-	 */
-	public void addCnt(Integer menuId) {
-		Optional<Menu> om = meRepo.findById(menuId);
-		if(om.isEmpty()) return;
-		
-		// 메뉴 선택 수 증가
-		Menu m = om.get();
-		int cnt = m.getCount();
-		m.setCount(++cnt);
-		meRepo.save(m);
 	}
 }

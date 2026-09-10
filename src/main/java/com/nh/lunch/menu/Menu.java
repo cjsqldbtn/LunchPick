@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.hibernate.annotations.ColumnDefault;
 
-import com.nh.lunch.member.History;
+import com.nh.lunch.history.History;
 import com.nh.lunch.place.Place;
 
 import jakarta.persistence.Column;
@@ -35,12 +35,6 @@ public class Menu {
 	@Column(nullable = false)
 	@NotNull
 	private Integer price;
-	
-	@Column(nullable = false)
-	@NotNull
-	@ColumnDefault("0")
-	private Integer count;
-	
 	
 	@OneToMany(mappedBy="menu")
 	private List<History> history;

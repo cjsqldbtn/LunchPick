@@ -24,7 +24,9 @@ const Home = () => {
 	
 	// 세션 테스트
 	//axios.get("/test");
-		
+	
+	
+	// ***************** 날씨 ***********************
 	// 날씨 아이콘
 	const weatherIconMap = {
 	    0: "☀️",
@@ -43,9 +45,7 @@ const Home = () => {
 	    71: "❄️", 73: "❄️", 75: "❄️",
 	    77: "❄️", 85: "❄️", 86: "❄️",
 	    
-	    95: "⛈️", 96: "⛈️", 99: "⛈️",
-	    
-	    100: " "
+	    95: "⛈️", 96: "⛈️", 99: "⛈️"
 	};
 	// 날씨 정보 가져오기
 	const getWeather = async () => {
@@ -72,13 +72,16 @@ const Home = () => {
         });
 	};
 	
-    const moveMap = (lat, lng) => {
+	// ******************* 맵 ********************
+    // 부드럽게 맵 이동
+	const moveMap = (lat, lng) => {
         if (!map) return;
 
         const position = new window.kakao.maps.LatLng(lat, lng);
 
         map.panTo(position);
     };
+	// 위치, 가격으로 필터링 된 장소 가져오기
     const getPlaceList = (type, price) => {
         axios.get(`/place/list?type=${type}&price=${price}`)
         .then(res => {
@@ -89,6 +92,7 @@ const Home = () => {
             console.error(err);
         });
     };
+	// 장소 팝업 띄우기(세부 정보 가져오기)
 	const handleSelectedPlace = async (place) => {
 		//alert(place.placeId);
 		// 쿠키를 서버에 같이 전송
@@ -101,6 +105,7 @@ const Home = () => {
 			console.error("장소 상세 정보 조회 실패:", err);
 		});
 	};
+	// 룰렛
 	const roulette = () => {
 		if(!markerList || markerList.length<1) {
 			window.Toastify({
@@ -117,7 +122,11 @@ const Home = () => {
 	        }).showToast();
 			return;
 		}
+		
+		// 룰렛으로 메뉴를 추천 받는 경우, 메뉴까지 골라줘야함을 PlacePopup에 보냄
 		setNeedMenu(true);
+		
+		// 장소 룰렛
 		let listSize = markerList.length;
 		for(let i=0;i<30;i++){
 			const delay = i * i * 3;
@@ -138,6 +147,8 @@ const Home = () => {
 			}, delay);
 		}
 	};
+	
+	// ContextValues
     const mapContextValues = {
         map,
         setMap,
@@ -160,6 +171,8 @@ const Home = () => {
 		temperature
 	};
 	
+	
+	// 최초 렌더링
 	useEffect(() => {
 		getWeather();
 		getPlaceList("한성대",70000);

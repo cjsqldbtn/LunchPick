@@ -71,7 +71,7 @@ const RecentCard = () => {
                                 </div>
                             </li>
                         </ul>
-				</>)
+					</>)
 			}
         </aside>
     );
