@@ -1,8 +1,5 @@
 package com.nh.lunch.finalPick;
 
-import com.nh.lunch.history.HistoryId;
-import com.nh.lunch.member.Member;
-import com.nh.lunch.menu.Menu;
 import com.nh.lunch.place.Place;
 
 import jakarta.persistence.EmbeddedId;

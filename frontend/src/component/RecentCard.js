@@ -24,7 +24,7 @@ const RecentCard = () => {
                                 <h2>RECENT PICKS</h2>
                             </div>
                         </div>
-                        <ul className="history-list">
+                        <ul className="history-list login-history">
 						{
                             historyList.map((history) => (
                                 <li key={history.finalDate} 
@@ -65,7 +65,7 @@ const RecentCard = () => {
                                 <h2>PROVIDED FUNCTIONS</h2>
                             </div>
                         </div>
-                        <ul className="history-list">
+                        <ul className="history-list guest-history">
                             <li>
                                 <div className="food-icon">✨</div>
                                 <div>

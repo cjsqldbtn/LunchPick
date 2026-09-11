@@ -1,5 +1,6 @@
 package com.nh.lunch.history;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,4 +20,11 @@ public interface HistoryRepository extends JpaRepository<History, HistoryId> {
 		    nativeQuery = true
 		)
 	List<History> findTop10ByHistoryId(@Param("memberId") Integer memberId);
+	@Query("""
+			SELECT h.menu.place.placeId
+			FROM History h
+			WHERE h.historyId.memberId = :memberId
+				AND h.historyId.finalDate >= :from
+		""")
+    List<Integer> findRecentPlaceIds(@Param("memberId") Integer memberId, @Param("from") LocalDateTime from);
 }

@@ -490,10 +490,20 @@ button { cursor: pointer; }
 .history-list li {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 11px;
   padding: 11px 8px;
   border-radius: 12px;
+}
+
+/* 로그인 상태 */
+.login-history li {
+    justify-content: space-between;
+	gap: 11px;
+}
+
+/* 비로그인 상태 */
+.guest-history li {
+    justify-content: flex-start;
+    gap: 18px;
 }
 
 .history-list li:hover { background: #faf9ff; }
