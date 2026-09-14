@@ -12,6 +12,8 @@ import "../css/style.css";
 export const MapContext = createContext(null);
 export const WeatherContext = createContext(null);
 export const HistoryContext = createContext(null);
+export const FilterContext = createContext(null);
+export const ChatContext = createContext(null);
 
 const Home = () => {
     const [map, setMap] = useState(null);
@@ -20,10 +22,18 @@ const Home = () => {
 	const [selectedMarker, setSelectedMarker] = useState(null);
 	const [selectedPlace, setSelectedPlace] = useState(null);
 	const [needMenu, setNeedMenu] = useState(false);
+	
 	const [weatherIcon, setWeatherIcon] = useState(null);
 	const [temperature, setTemperature] = useState(null);
+	
 	const [historyList, setHistoryList] = useState([]);
 	const [historyMenu, setHistoryMenu] = useState(null);
+	
+	const [active, setActive] = useState("한성대");
+	const [weatherOn, setWeatherOn] = useState(false);
+	const [budget, setBudget] = useState(50000);
+	
+	const [isJoined, setIsJoined] = useState(false); // 채팅에 입장 됐는지. 
 	
 	const token = localStorage.getItem('jwt');
 	// 세션 테스트
@@ -108,6 +118,44 @@ const Home = () => {
 		.catch(err => {
 			console.error("장소 상세 정보 조회 실패:", err);
 		});
+	};
+	// 여러가지 이유로 마커와 팝업이 연계가 잘 안되는 경우 마커 생성까지 보장하는 함수
+	const showPlaceOnMap = (place) => {
+
+	    const marker = markerList.find(
+	        marker => marker.place.placeId === place.placeId
+	    );
+
+	    // 이미 지도에 마커가 있는 경우
+	    if (marker) {
+	        setSelectedMarker(marker);
+	        map.panTo(marker.getPosition());
+	        handleSelectedPlace(marker.place);
+	        return;
+	    }
+
+	    // 필터 때문에 현재 지도에 없는 장소
+	    const markerPosition = new window.kakao.maps.LatLng(place.lat, place.lng);
+
+	    const newMarker = new window.kakao.maps.Marker({
+	        position: markerPosition,
+	        clickable: true
+	    });
+
+	    newMarker.place = place;
+	    newMarker.setMap(map);
+
+	    window.kakao.maps.event.addListener(newMarker, "click", function () {
+	            setSelectedMarker(newMarker);
+	            handleSelectedPlace(place);
+	        }
+	    );
+
+	    setMarkerList(prev => [ ...prev, newMarker ]);
+
+	    map.panTo(newMarker.getPosition());
+	    setSelectedMarker(newMarker);
+	    handleSelectedPlace(place);
 	};
 	// 룰렛
 	const roulette = async () => {
@@ -227,7 +275,8 @@ const Home = () => {
 		selectedPlace, 
 		setSelectedPlace,
 		needMenu,
-		setNeedMenu
+		setNeedMenu,
+		showPlaceOnMap
     };
 	const weatherContextValues = {
 		weatherIcon,
@@ -240,6 +289,18 @@ const Home = () => {
 		setHistoryMenu,
 		deleteHistory
 	};
+	const filterContextValues = {
+		active,
+        setActive,
+        weatherOn,
+        setWeatherOn,
+        budget,
+        setBudget
+	};
+	const chatContextValues = {
+		isJoined,
+		setIsJoined
+	};
 	
 	
 	// 최초 렌더링
@@ -249,42 +310,46 @@ const Home = () => {
 	},[]);
 		
 	return (
-        <MapContext.Provider value={mapContextValues}>
-            <div className="app-shell">
-				<HistoryContext.Provider value={historyContextValues}>
-					<WeatherContext.Provider value={weatherContextValues}>
-		                <Header />
-		                <main>
-		                    <RecommendBanner />
-		                    <FilterCard />
-		                    <div className="content-grid">
-		                        <div className="left-column">
-		                            <Map />
-		                        </div>
-		                        <RecentCard />
-		                    </div>
-		                </main>
-					</WeatherContext.Provider>
-					{selectedPlace && (
-		                <PlacePopup
-		                    place={selectedPlace}
-							menu={historyMenu}
-							needMenu={needMenu}
-		                    onClose={() => {
-								setSelectedPlace(null);
-								setNeedMenu(false);
-								setHistoryMenu(null);
-							}}
-		                />
-		            )}
-				</HistoryContext.Provider>
-				<ActionBar/>
-                <footer>
-                    <b>LunchPick</b>
-                    <span>오늘의 점심을 더 쉽게. © 2026</span>
-                </footer>
-            </div>
-        </MapContext.Provider>
+		<FilterContext.Provider value={filterContextValues}>
+	        <MapContext.Provider value={mapContextValues}>
+				<ChatContext.Provider value={chatContextValues}>
+		            <div className="app-shell">
+						<WeatherContext.Provider value={weatherContextValues}>
+							<HistoryContext.Provider value={historyContextValues}>
+				                <Header />
+				                <main>
+				                    <RecommendBanner />
+				                    <FilterCard />
+				                    <div className="content-grid">
+				                        <div className="left-column">
+				                            <Map />
+				                        </div>
+				                        <RecentCard />
+				                    </div>
+				                </main>
+								{selectedPlace && (
+					                <PlacePopup
+					                    place={selectedPlace}
+										menu={historyMenu}
+										needMenu={needMenu}
+					                    onClose={() => {
+											setSelectedPlace(null);
+											setNeedMenu(false);
+											setHistoryMenu(null);
+										}}
+					                />
+					            )}
+								<ActionBar/>
+							</HistoryContext.Provider>
+						</WeatherContext.Provider>
+		                <footer>
+		                    <b>LunchPick</b>
+		                    <span>오늘의 점심을 더 쉽게. © 2026</span>
+		                </footer>
+		            </div>
+				</ChatContext.Provider>
+	        </MapContext.Provider>
+		</FilterContext.Provider>
 	);
 }
 

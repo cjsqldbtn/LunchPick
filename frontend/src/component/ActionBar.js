@@ -1,16 +1,22 @@
 import React, { useState, useContext, useRef, useEffect } from 'react';
 import { AuthContext } from '../App';
+import { ChatContext, WeatherContext, FilterContext, MapContext, HistoryContext } from "../pages/Home";
 import axios from 'axios';
 
 const ActionBar = () => {
 	const { isLogin, memberId } = useContext(AuthContext);
 	//console.log("현재 memberId:", memberId);
 	const token = localStorage.getItem('jwt');
+	const { isJoined, setIsJoined } = useContext(ChatContext);
+	const { weatherIcon, temperature } = useContext(WeatherContext);
+	const { active, setActive, weatherOn, setWeatherOn, budget, setBudget } = useContext(FilterContext);
+	const { showPlaceOnMap } = useContext(MapContext);
+	const { setHistoryMenu } = useContext(HistoryContext);
 	
 	const [chatKey, setChatKey] = useState('');
 	const [nickName, setNickName] = useState('');
-	const [isJoined, setIsJoined] = useState(false); // 체팅에 입장 됐는지. 
 	const [messageInput, setMessageInput] = useState(''); // 입력창 텍스트
+	const [aiLoading, setAiLoading] = useState(false);
 	
 	const socketRef = useRef(null);
 	
@@ -60,7 +66,7 @@ const ActionBar = () => {
 		})
 		.catch(err => {
 			console.error('채팅키 만들기 실패! : ', err);
-            alert('채팅키 만들기 실패! 다시 시도해보세여!');
+            alert('채팅키 만들기 실패! 다시 시도해보세요!');
 		});
 	};
 	
@@ -118,6 +124,8 @@ const ActionBar = () => {
         ws.onmessage = (e) => {
             const data = JSON.parse(e.data);
             //console.log("서버로부터 도착한 메시지: ", e.data);
+			
+			// 퇴장 처리
 			if (data.type === "LEAVE") {
 		        window.Toastify({
 		            text: `👋 ${data.message}`,
@@ -138,6 +146,26 @@ const ActionBar = () => {
 
 		        return;
 		    }
+			
+			// ai 추천
+			if (data.type === "AI_RECOMMEND") {
+
+			    const place = {
+			        placeId: data.placeId,
+			        name: data.placeName,
+			        lat: data.lat,
+			        lng: data.lng
+			    };
+
+			    setHistoryMenu({
+			        menuId: data.menuId,
+			        name: data.name
+			    });
+
+			    showPlaceOnMap(place);
+
+			    return;
+			}
             handleReceiveMessage(data.senderId,data.senderNick,data.message);
         };
 		
@@ -219,8 +247,23 @@ const ActionBar = () => {
 	};
 	
 	// ai 추천 받기 
-	const recommendAI = () => {
-		alert('ai추천받기.');
+	const recommendAI = async () => {
+		    try {
+		        setAiLoading(true);
+
+		        await axios.post("/ai/recommend", {
+		            roomKey: chatKey,
+		            type: active,
+		            budget,
+		            weatherOn,
+		            temperature: weatherOn ? temperature : null,
+		            weatherIcon: weatherOn ? weatherIcon : null
+		        });
+		    } catch (error) {
+		        console.error("AI 추천 실패:", error);
+		    } finally {
+		        setAiLoading(false);
+		    }
 	}
 	
 	// 메시지를 받았을 떄.
@@ -302,7 +345,9 @@ const ActionBar = () => {
 						onKeyDown={handleKeyDown}
 	                />
 	                <button type="button" className="chat-send-btn" onClick={sendMessage}>보내기</button>
-	                <button type="button" className="chat-ai-recommend-btn" onClick={recommendAI}>AI 추천 받기</button>
+					<button type="button" className="chat-ai-recommend-btn" onClick={recommendAI} disabled={aiLoading}>
+					    {aiLoading ? "추천 중..." : "AI 추천 받기"}
+					</button>
 	            </div>
 			)}
         </>

@@ -1,13 +1,11 @@
 import { useEffect, useContext, useState } from "react";
-import { MapContext } from "../pages/Home";
-import { WeatherContext } from "../pages/Home";
+import { MapContext, WeatherContext, FilterContext, ChatContext } from "../pages/Home";
 
 const FilterCard = () => {
 	const { moveMap, getPlaceList } = useContext(MapContext);
 	const { weatherIcon, temperature } = useContext(WeatherContext);
-	const [active, setActive] = useState("한성대");
-	const [weatherOn, setWeatherOn] = useState(false);
-	const [budget, setBudget] = useState(50000);
+	const { active, setActive, weatherOn, setWeatherOn, budget, setBudget } = useContext(FilterContext);
+	const { isJoined } = useContext(ChatContext);
 	
 	const handleWhere = (location) => {
 		setActive(location);
@@ -63,9 +61,19 @@ const FilterCard = () => {
                 <div className="filter-group">
                     <label>WEATHER</label>
                     <label className="switch">
-                        <input type="checkbox" checked={weatherOn} onChange={(e) => setWeatherOn(e.target.checked)}/>
-                        <span className="slider"></span>
-                        <span className="switch-text">오늘 날씨({temperature}° {weatherIcon}) 반영</span>
+					<input
+					        type="checkbox"
+					        checked={weatherOn}
+					        disabled={!isJoined}
+					        onChange={(e) => setWeatherOn(e.target.checked)}
+					    />
+					    <span className="slider"></span>
+					    <span className="switch-text">
+					        {isJoined
+					            ? `오늘 날씨(${temperature}° ${weatherIcon}) 반영`
+					            : "채팅방 입장 후 날씨 반영 가능"
+					        }
+					    </span>
                     </label>
                 </div>
                 <div className="filter-group price-group">

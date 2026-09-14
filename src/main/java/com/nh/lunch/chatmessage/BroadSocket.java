@@ -1,7 +1,8 @@
 package com.nh.lunch.chatmessage;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -10,6 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nh.lunch.api.AiMenuDto;
 
 import jakarta.websocket.OnClose;
 import jakarta.websocket.OnError;
@@ -23,12 +25,12 @@ import jakarta.websocket.server.ServerEndpoint;
 public class BroadSocket {
 	// 방번호로 채팅 나누기
 	public static Map<String, Set<Session>> roomClients = new ConcurrentHashMap<>();
-	
-	private final ObjectMapper mapper = new ObjectMapper();
+	// 방번호 별 채팅 내역
+	public static Map<String, List<String>> roomMessages = new ConcurrentHashMap<>();
+	// 방번호 별 ai 추천중 여부 확인
+	public static Set<String> aiLock = ConcurrentHashMap.newKeySet();
+	private final static ObjectMapper mapper = new ObjectMapper();
     
-	public BroadSocket () {
-		//System.out.println("(BroadSocket) : roomClients.size = " + roomClients.size());
-	}
 	// 파라미터로 넘어오는 해당 roomKey 얻는 함수. 
 	private String getRoomKey(Session session) {
         Map<String, List<String>> params = session.getRequestParameterMap();
@@ -44,6 +46,32 @@ public class BroadSocket {
 	        return session.getRequestParameterMap().get(name).get(0);
 	    }
 	    return null;
+	}
+	
+	// ai 추천 전파
+	public static void broadcastAiRecommend(String roomKey, AiMenuDto recommendation) throws Exception {
+	    Set<Session> roomMembers = roomClients.get(roomKey);
+
+	    if (roomMembers == null || roomMembers.isEmpty()) {
+	        return;
+	    }
+
+	    Map<String, Object> message = new HashMap<>();
+	    message.put("type", "AI_RECOMMEND");
+	    message.put("menuId", recommendation.getMenuId());
+	    message.put("name", recommendation.getName());
+	    message.put("placeId", recommendation.getPlaceId());
+	    message.put("placeName", recommendation.getPlaceName());
+	    message.put("lat", recommendation.getLat());
+	    message.put("lng", recommendation.getLng());
+
+	    String jsonPayload = mapper.writeValueAsString(message);
+
+	    for (Session client : roomMembers) {
+	        if (client.isOpen()) {
+	            client.getBasicRemote().sendText(jsonPayload);
+	        }
+	    }
 	}
 	
     // 새로 접속했을 떄.
@@ -67,7 +95,8 @@ public class BroadSocket {
         }
         
         // 방에 추가
-        roomClients.computeIfAbsent(roomKey, key -> new HashSet<>()).add(session);
+        roomClients.computeIfAbsent(roomKey, key -> ConcurrentHashMap.newKeySet()).add(session);
+        roomMessages.computeIfAbsent(roomKey, key -> Collections.synchronizedList(new ArrayList<>()));
         //System.out.println("[" + roomKey + "] 클라이언트 IN : 현재 " + roomClients.get(roomKey).size() + "명.");
     }
 
@@ -83,9 +112,12 @@ public class BroadSocket {
         chatMessage.put("type", "CHAT");
         chatMessage.put("senderId", session.getUserProperties().get("memberId") != null ? session.getUserProperties().get("memberId") : null);
         chatMessage.put("senderNick", session.getUserProperties().get("nickName") != null ? session.getUserProperties().get("nickName") : "알 수 없음");
-        chatMessage.put("message", received.get("message"));
-        String jsonPayload = mapper.writeValueAsString(chatMessage);
         
+        String msg = (String) received.get("message");
+        chatMessage.put("message", msg);
+        roomMessages.get(roomKey).add(msg);
+        
+        String jsonPayload = mapper.writeValueAsString(chatMessage);
         for (Session client : roomMembers) {
             if (client.isOpen()) {
                 client.getBasicRemote().sendText(jsonPayload);
@@ -110,6 +142,7 @@ public class BroadSocket {
             //방에 아무도 없으면 방 자체 삭제
             if (roomMembers.isEmpty()) {
                 roomClients.remove(roomKey);
+                roomMessages.remove(roomKey);
                 //System.out.println("[" + roomKey + "] 방의 모든 인원이 퇴장하여 방이 삭제되었습니다.");
             } else {
                 //System.out.println("[" + roomKey + "] " + nickName + " OUT : 현재 " + roomMembers.size() + "명.");
