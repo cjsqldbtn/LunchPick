@@ -131,8 +131,6 @@ const Home = () => {
 		setNeedMenu(true);
 		
 		try {
-	        const token = localStorage.getItem('jwt');
-
 	        // 현재 지도에 있는 장소들의 placeId
 	        const placeIds = markerList.map(marker => marker.place.placeId);
 
@@ -140,11 +138,7 @@ const Home = () => {
 	        const response = await axios.post(
 	            '/roulette',
 	            placeIds,
-	            {
-	                headers: token
-	                    ? { Authorization: `Bearer ${token}` }
-	                    : {}
-	            }
+	            { headers: token ? { Authorization: `Bearer ${token}` } : {} }
 	        );
 
 	        const selectedPlaceId = response.data;
@@ -165,7 +159,8 @@ const Home = () => {
 				const delay = i * i * 3;
 				
 				setTimeout(() => {
-					const marker = markerList[Math.floor(Math.random() * listSize)];
+					const marker = (i === 29) ? selectedMarker 
+						: markerList[Math.floor(Math.random() * listSize)];
 					
 					setSelectedMarker(marker);
 					// 마지막 룰렛
