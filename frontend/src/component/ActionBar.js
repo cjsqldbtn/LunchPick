@@ -1,6 +1,7 @@
 import React, { useState, useContext, useRef, useEffect } from 'react';
 import { AuthContext } from '../App';
 import { ChatContext, WeatherContext, FilterContext, MapContext, HistoryContext } from "../pages/Home";
+import ReportPopup from './ReportPopup';
 import axios from 'axios';
 
 const ActionBar = () => {
@@ -17,6 +18,8 @@ const ActionBar = () => {
 	const [nickName, setNickName] = useState('');
 	const [messageInput, setMessageInput] = useState(''); // 입력창 텍스트
 	const [aiLoading, setAiLoading] = useState(false);
+	
+	const [reportOpen, setReportOpen] = useState(false);
 	
 	const socketRef = useRef(null);
 	
@@ -324,7 +327,7 @@ const ActionBar = () => {
 					<button className="action-btn join-btn" onClick={leaveChat}>채팅방 나가기</button>
 				)}
                 <div className="action-group secondary-actions">
-                    <button className="action-btn report-btn" type="button" title="신고하기">
+                    <button className="action-btn report-btn" type="button" title="신고하기" onClick={() => setReportOpen(true)}>
                         <span className="btn-icon">🚨</span>
                         <span>신고</span>
                     </button>
@@ -345,6 +348,9 @@ const ActionBar = () => {
 					    {aiLoading ? "추천 중..." : "AI 추천 받기"}
 					</button>
 	            </div>
+			)}
+			{reportOpen && (
+			    <ReportPopup onClose={() => setReportOpen(false)}/>
 			)}
         </>
     );

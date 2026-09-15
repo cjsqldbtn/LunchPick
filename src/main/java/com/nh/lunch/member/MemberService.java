@@ -10,6 +10,8 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -29,7 +31,11 @@ public class MemberService {
 	private PasswordEncoder pwEncoder;
 	@Autowired
     private JwtService jwtService;
-	
+	@Autowired
+    private JavaMailSender mailSender;
+
+    @Value("${spring.mail.username}")
+    private String senderEmail;
 	@Value("${kakao.client.id}")
     private String KakaoClientId;
 	@Value("${kakao.client.secret}")
@@ -402,6 +408,30 @@ public class MemberService {
         return jwtService.getToken(member.getEmail(), member.getMemberId());
     }
 	
+	/**
+     * 비밀번호 변경 메일 전송
+     */
+    public void sendPasswordResetMail(String email, int memberId, String passwordKey) {
+
+        String resetUrl = "http://localhost:3000/password/reset" + "?memberId=" + memberId + "&key=" + passwordKey;
+
+        SimpleMailMessage message = new SimpleMailMessage();
+
+        message.setFrom(senderEmail);
+        message.setTo(email);
+
+        message.setSubject("[점심 뭐] 비밀번호 재설정 안내");
+        message.setText(
+                "비밀번호 재설정을 요청하셨습니다.\n\n"
+                + "아래 링크를 클릭하여 새로운 비밀번호를 설정해주세요.\n\n"
+                + resetUrl
+                + "\n\n"
+                + "해당 링크는 10분 동안 유효합니다.\n"
+                + "본인이 요청하지 않았다면 이 메일을 무시해주세요."
+        );
+
+        mailSender.send(message);
+    }
 }
 
 

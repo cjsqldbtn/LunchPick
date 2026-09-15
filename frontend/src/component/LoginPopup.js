@@ -4,7 +4,7 @@ import naverLogo from '../img/NAVER_login_Dark_KR_green_icon_H48.png';
 import kakaoLogo from '../img/kakao.png';
 import { AuthContext } from '../App';
 
-const LoginPopup = ({ isOpen, onClose, onJoin }) => {
+const LoginPopup = ({ isOpen, onClose, onJoin, onFindPassword }) => {
     const { login, setMemberId } = useContext(AuthContext);
     const [ member, setMember ] = useState({ email: '', password: '' });
     const { email, password } = member;
@@ -108,6 +108,14 @@ const LoginPopup = ({ isOpen, onClose, onJoin }) => {
                             autoComplete="current-password"
                             required
                         />
+						<div className="forgot-password">
+					        <button
+					            type="button"
+					            onClick={onFindPassword}
+					        >
+					            비밀번호를 잊으셨나요?
+					        </button>
+					    </div>
                     </div>
                     <button className="login-submit" type="submit">
                         로그인

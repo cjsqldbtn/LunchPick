@@ -15,7 +15,7 @@ public class ErrorReportService {
 	 * @param img : 삽입할 이미지.
 	 * @param content : 삽입할 내용.
 	 */
-	public void insertErrorReport(String img,String content) {
+	public void insertErrorReport(String img, String content) {
 		ErrorReport er = new ErrorReport();
 		er.setImg(img);
 		er.setFinalDate(LocalDateTime.now());

@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -175,5 +176,31 @@ public class MemberController {
         
         return chatKey; // 생성된 채팅키 문자열 반환 (예: "ROOM_12345")
     }
+    
+    // 비밀번호 재설정
+    @PostMapping("/password/reset")
+    public ResponseEntity<String> sendPasswordResetMail(@RequestBody Map<String, String> data) {
+        String email = data.get("email");
+        MemberDto m = mSvc.getMemberByEmail(email);
 
+        // 회원 이메일이 아닌 경우
+        if (m==null) {
+            return ResponseEntity
+                    .badRequest()
+                    .body("가입되지 않은 이메일입니다.");
+        }
+
+        // 인증키 생성
+        String passwordKey = mSvc.updatePwKey(m.getMemberId());
+        if (passwordKey == null) {
+            return ResponseEntity
+                    .badRequest()
+                    .body("메일 전송에 실패했습니다.");
+        }
+
+        // 메일 전송
+        mSvc.sendPasswordResetMail(m.getEmail(), m.getMemberId(),passwordKey);
+
+        return ResponseEntity.ok("비밀번호 재설정 메일을 전송했습니다.");
+    }
 }

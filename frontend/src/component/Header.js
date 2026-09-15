@@ -2,6 +2,7 @@ import React, { useState, useContext }from 'react';
 import { useNavigate } from 'react-router-dom';
 import LoginPopup from './LoginPopup';
 import JoinPopup from './JoinPopup';
+import PasswordFindPopup from './PasswordFindPopup';
 import { AuthContext } from '../App';
 import { WeatherContext } from "../pages/Home";
 
@@ -12,6 +13,7 @@ const Header = () => {
 	const { isLogin, logout } = useContext(AuthContext);
 	const [isLoginOpen, setIsLoginOpen] = useState(false);
 	const [isJoinOpen, setIsJoinOpen] = useState(false);
+	const [isPasswordFindOpen, setIsPasswordFindOpen] = useState(false);
 	
 	// 오늘 날짜
 	const today = new Date();
@@ -53,11 +55,16 @@ const Header = () => {
 	    setIsLoginOpen(false);
 	    setIsJoinOpen(true);
 	};
+	const goToFindPassword = () => {
+	    setIsLoginOpen(false);
+	    setIsPasswordFindOpen(true);
+	};
 	
 	const logoutBtn = () => {
 		navigate('/logout');
 		alert('로그아웃 되었습니다.');
 	};
+	
 	return (
 		<>
             <header className="header">
@@ -82,8 +89,9 @@ const Header = () => {
 				    )}
                 </div>
             </header>
-			<LoginPopup isOpen={isLoginOpen} onClose={closeLoginBtn} onJoin={goToJoin}/>
+			<LoginPopup isOpen={isLoginOpen} onClose={closeLoginBtn} onJoin={goToJoin} onFindPassword={goToFindPassword}/>
 			<JoinPopup isOpen={isJoinOpen} onClose={closeSignUpBtn} onLogin={goToLogin}/>
+			<PasswordFindPopup isOpen={isPasswordFindOpen} onClose={() => setIsPasswordFindOpen(false)}/>
 		</>
 	);
 }
