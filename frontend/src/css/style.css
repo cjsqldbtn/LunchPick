@@ -556,76 +556,6 @@ button { cursor: pointer; }
   font-weight: 600;
 }
 
-/* World cup */
-.worldcup-card {
-  margin-top: 18px;
-  padding: 24px 28px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 25px;
-  background:
-    radial-gradient(circle at 90% 0%, #eeeaff 0 10%, transparent 30%),
-    white;
-}
-
-.mini-badge {
-  display: inline-block;
-  margin-bottom: 7px;
-  padding: 5px 8px;
-  border-radius: 6px;
-  color: var(--primary);
-  background: var(--primary-soft);
-  font-size: 9px;
-  font-weight: 800;
-  letter-spacing: .1em;
-}
-
-.worldcup-copy h2 {
-  margin: 0;
-  font-size: 19px;
-}
-
-.worldcup-copy h2 span { color: var(--primary); }
-
-.worldcup-copy p {
-  margin: 7px 0 0;
-  color: var(--muted);
-  font-size: 12px;
-}
-
-.round-buttons {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-}
-
-.round {
-  border: 1px solid var(--line);
-  border-radius: 9px;
-  padding: 9px 12px;
-  color: #7d7a8a;
-  background: white;
-  font-size: 11px;
-  font-weight: 700;
-}
-
-.round.active {
-  border-color: var(--primary);
-  color: white;
-  background: var(--primary);
-}
-
-.worldcup-start {
-  border: 0;
-  border-radius: 9px;
-  padding: 10px 14px;
-  color: white;
-  background: #29273b;
-  font-size: 11px;
-  font-weight: 700;
-}
-
 /* Chat */
 .chat-card {
   margin-top: 18px;
@@ -818,158 +748,399 @@ footer {
 
 
 /* ==========================================
-   LoginPopup 전용 스타일 (클래스명 100% 일치)
+   LOGIN POPUP
 ========================================== */
 
-/* 1. 화면 전체 어두운 배경 */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.55);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
+.login-modal-overlay {
+    position: fixed;
+    inset: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+    background: rgba(15, 15, 15, 0.55);
+    backdrop-filter: blur(3px);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+    box-sizing: border-box;
+
+    z-index: 9999;
 }
 
-/* 2. 모달 팝업 하얀색 상자 */
-.modal-content {
-  background: #ffffff;
-  padding: 36px 28px 28px;
-  border-radius: 20px;
-  width: 360px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-  position: relative;
-  box-sizing: border-box;
-  text-align: center;
+
+/* ==============================
+   POPUP
+============================== */
+
+.login-modal {
+    position: relative;
+
+    width: min(440px, calc(100vw - 32px));
+    max-height: calc(100vh - 40px);
+
+    background: var(--food-card-bg);
+    border-radius: 28px;
+
+    overflow-y: auto;
+
+    box-shadow: var(--shadow-popup);
+
+    animation: loginPopupIn 0.25s ease;
 }
 
-/* 3. 닫기 (X) 버튼 */
-.modal-close {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  background: none;
-  border: none;
-  font-size: 22px;
-  cursor: pointer;
-  color: #888;
-  padding: 4px 8px;
-  line-height: 1;
+
+@keyframes loginPopupIn {
+
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
 }
 
-.modal-close:hover {
-  color: #111;
+
+/* ==============================
+   CLOSE
+============================== */
+
+.login-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 20;
+
+    width: 36px;
+    height: 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+    border: none;
+
+    /* PlacePopup의 X 버튼과 동일 */
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+
+    color: white;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s,
+        transform 0.2s;
 }
 
-/* 4. 헤더 및 'N' 브랜드 마크 */
-.modal-header {
-  text-align: center;
-  margin-bottom: 24px;
+.login-close:hover {
+    background: rgba(0, 0, 0, 0.8);
 }
 
-.brand-mark {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  width: 44px;
-  height: 44px;
-  background-color: #e0533c; /* N 로고 포인트 주황/빨강 */
-  color: #ffffff;
-  font-weight: bold;
-  font-size: 20px;
-  border-radius: 12px;
-  margin-bottom: 12px;
+.login-close:active {
+    transform: scale(0.95);
 }
 
-.modal-header h2 {
-  font-size: 20px;
-  font-weight: 700;
-  color: #111111;
-  margin: 0 0 6px 0;
+
+/* ==============================
+   HEADER
+============================== */
+
+.login-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    padding: 38px 30px 24px;
+
+    text-align: center;
 }
 
-.modal-header p {
-  font-size: 13px;
-  color: #666666;
-  margin: 0;
+
+.login-brand {
+    width: 52px;
+    height: 52px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 15px;
+
+    border-radius: 16px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--food-primary),
+            var(--food-primary-hover)
+        );
+
+    font-size: 23px;
+
+    box-shadow:
+        0 8px 18px rgba(249, 115, 22, 0.22);
 }
 
-/* 5. 입력 폼 & 라벨 */
-.login-form {
-  display: flex;
-  flex-direction: column;
+
+.login-eyebrow {
+    margin-bottom: 7px;
+    color: var(--food-primary);
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 0.14em;
 }
 
-.form-group {
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-  margin-bottom: 14px;
+
+.login-header h2 {
+    margin: 0;
+    color: var(--food-dark);
+    font-size: 22px;
+    font-weight: 850;
+    letter-spacing: -0.04em;
 }
 
-.form-group label {
-  font-size: 13px;
-  font-weight: 600;
-  color: #333333;
-  margin-bottom: 6px;
+.login-header p {
+    margin: 8px 0 0;
+    color: var(--text-muted);
+    font-size: 12px;
+    line-height: 1.6;
 }
 
-.form-group input {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #e1e1e1;
-  border-radius: 8px;
-  font-size: 14px;
-  box-sizing: border-box;
-  outline: none;
-  transition: border-color 0.2s;
+
+/* ==============================
+   FORM
+============================== */
+
+.login-form-new {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 0 28px 28px;
 }
 
-.form-group input:focus {
-  border-color: #111111;
+
+.login-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    text-align: left;
 }
 
-/* 6. 로그인 버튼 */
-.submit-btn {
-  width: 100%;
-  padding: 13px;
-  background-color: #2b2e38; /* 메인 버튼 네이비/블랙 */
-  color: #ffffff;
-  border: none;
-  border-radius: 8px;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  margin-top: 6px;
-  transition: background-color 0.2s;
+.login-form-group label {
+    color: var(--text-muted);
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 0.1em;
 }
 
-.submit-btn:hover {opacity: 0.7;}
-
-.submit-btn:hover {
-  background-color: #1a1c23;
+.login-form-group input {
+    width: 100%;
+    padding: 14px 15px;
+    box-sizing: border-box;
+    background: #fafaf9;
+    border: 1px solid var(--border-line);
+    border-radius: 13px;
+    outline: none;
+    color: var(--food-dark);
+    font-size: 13px;
+    transition:
+        border-color 0.18s ease,
+        background 0.18s ease,
+        box-shadow 0.18s ease;
 }
 
-/* 7. 소셜 로그인 영역 */
-.modal-social {
-  margin-top: 24px;
-  text-align: center;
+
+.login-form-group input::placeholder {
+    color: #a8a29e;
 }
 
-.modal-social p {
-  font-size: 12px;
-  color: #888888;
-  margin-bottom: 12px;
+.login-form-group input:focus {
+    background: white;
+    border-color: var(--food-primary);
+    box-shadow:
+        0 0 0 3px rgba(249, 115, 22, 0.10);
 }
 
-.social-btns {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
+
+/* ==============================
+   LOGIN BUTTON
+============================== */
+
+.login-submit {
+    width: 100%;
+
+    margin-top: 5px;
+    padding: 15px 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    border: none;
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--food-primary),
+            var(--food-primary-hover)
+        );
+
+    color: white;
+
+    font-size: 14px;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 8px 20px rgba(249, 115, 22, 0.25);
+
+    transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+.login-submit:hover {
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 10px 24px rgba(249, 115, 22, 0.32);
+}
+
+.login-submit:active {
+    transform: scale(0.99);
+}
+
+/* ==============================
+   FOOTER
+============================== */
+
+.login-footer {
+    padding: 17px 24px 20px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    gap: 6px;
+
+    background: #fafaf9;
+
+    border-top: 1px solid var(--border-line);
+
+    font-size: 11px;
+}
+
+.login-footer span {
+    color: var(--text-muted);
+}
+
+.login-footer button {
+    padding: 0;
+
+    background: none;
+    border: none;
+    color: var(--food-primary);
+    font-size: 11px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.login-footer button:hover {
+    text-decoration: underline;
+}
+
+/* ==============================
+   SOCIAL LOGIN
+============================== */
+
+.login-social {
+    padding: 0 28px 28px;
+}
+
+
+/* 구분선 + 텍스트 */
+
+.login-social-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+
+.login-social-title span {
+    flex: 1;
+    height: 1px;
+    background: var(--border-line);
+}
+
+
+.login-social-title p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 10px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+
+/* 소셜 버튼 영역 */
+
+.login-social-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+.login-social-btn {
+    width: 46px;
+    height: 46px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    border: 1px solid var(--border-line);
+    border-radius: 14px;
+    cursor: pointer;
+    overflow: hidden;
+    transition:
+        transform 0.18s ease,
+        border-color 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+.login-social-btn:hover {
+    transform: translateY(-2px);
+    border-color: #d6d3d1;
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.08);
+}
+
+.login-social-btn:active {
+    transform: scale(0.97);
+}
+
+.login-social-btn img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 
 /* ==========================================
@@ -1082,18 +1253,6 @@ footer {
 .join-btn:hover {
   background-color: #e05536;
   color: #ffffff;
-}
-
-/* AI 챗봇 강조 버튼 */
-.ai-btn {
-  background-color: #fff4f0;
-  border-color: #ffd8cc;
-  color: #ff6b4a;
-}
-
-.ai-btn:hover {
-  background-color: #ffe8e0;
-  color: #e05536;
 }
 
 /* 신고 버튼 (은은한 경고 스타일) */
@@ -1209,4 +1368,291 @@ footer {
   .chat-ai-recommend-btn {
     flex: 1;
   }
+}
+
+/* 맵 로딩 */
+
+.map-loading-overlay {
+    position: absolute;
+    inset: 0;
+
+    z-index: 100;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(255, 255, 255, 0.58);
+    backdrop-filter: blur(3px);
+}
+
+.map-loading-card {
+    width: 250px;
+
+    padding: 26px 25px 23px;
+
+    box-sizing: border-box;
+
+    background: var(--food-card-bg);
+    border: 1px solid var(--border-line);
+    border-radius: 20px;
+
+    text-align: center;
+
+    box-shadow: var(--shadow-popup);
+
+    animation: loadingCardIn 0.2s ease;
+}
+
+@keyframes loadingCardIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* 음식 아이콘 */
+
+.food-loader {
+    width: 48px;
+    height: 48px;
+
+    margin: 0 auto 13px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: var(--food-bg-sub);
+    border-radius: 15px;
+
+    font-size: 23px;
+}
+
+.food-loader span {
+    animation: foodBounce 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes foodBounce {
+    from {
+        transform: translateY(2px);
+    }
+
+    to {
+        transform: translateY(-3px);
+    }
+}
+
+
+/* 텍스트 */
+
+.map-loading-card strong {
+    display: block;
+
+    color: var(--food-dark);
+
+    font-size: 14px;
+    font-weight: 850;
+
+    letter-spacing: -0.03em;
+}
+
+.map-loading-card p {
+    margin: 6px 0 17px;
+
+    color: var(--text-muted);
+
+    font-size: 11px;
+}
+
+
+/* ==========================================
+   MAP / WEATHER LOADING
+========================================== */
+
+/* 페이지 전체 로딩 오버레이 */
+.map-loading-overlay {
+    position: fixed;
+    inset: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* 로그인/팝업처럼 페이지 전체를 살짝 어둡게 */
+    background: rgba(0, 0, 0, 0.32);
+    backdrop-filter: blur(2px);
+
+    z-index: 9000;
+
+    animation: loadingOverlayIn 0.2s ease;
+}
+
+@keyframes loadingOverlayIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+
+/* ==========================================
+   LOADING CARD
+========================================== */
+
+.map-loading-card {
+    width: min(300px, calc(100vw - 48px));
+
+    padding: 30px 28px 26px;
+
+    box-sizing: border-box;
+
+    background: var(--food-card-bg);
+    border: 1px solid var(--border-line);
+    border-radius: 28px;
+
+    text-align: center;
+
+    box-shadow: var(--shadow-popup);
+
+    animation: loadingCardIn 0.25s ease;
+}
+
+@keyframes loadingCardIn {
+    from {
+        opacity: 0;
+        transform: translateY(18px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+
+/* ==========================================
+   FOOD ICON
+========================================== */
+
+.food-loader {
+    width: 52px;
+    height: 52px;
+
+    margin: 0 auto 16px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 16px;
+
+    background: var(--food-bg-sub);
+
+    font-size: 25px;
+}
+
+.food-loader span {
+    display: block;
+
+    animation: foodLoading 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes foodLoading {
+    from {
+        transform: translateY(2px) rotate(-3deg);
+    }
+
+    to {
+        transform: translateY(-4px) rotate(3deg);
+    }
+}
+
+
+/* ==========================================
+   TEXT
+========================================== */
+
+.map-loading-card strong {
+    display: block;
+
+    margin: 0;
+
+    color: var(--food-dark);
+
+    font-size: 16px;
+    font-weight: 850;
+
+    letter-spacing: -0.04em;
+}
+
+.map-loading-card p {
+    margin: 7px 0 20px;
+
+    color: var(--text-muted);
+
+    font-size: 11px;
+    font-weight: 500;
+
+    line-height: 1.5;
+}
+
+/* ==========================================
+   LOADING BAR
+========================================== */
+
+.loading-bar {
+    position: relative;
+
+    width: 100%;
+    height: 6px;
+
+    overflow: hidden;
+
+    background: #f1f1ef;
+    border-radius: 100px;
+}
+
+.loading-bar-inner {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 38%;
+    height: 100%;
+
+    border-radius: 100px;
+
+    background: linear-gradient(
+        90deg,
+        var(--food-primary),
+        var(--food-primary-hover)
+    );
+
+    animation: lunchLoadingBar 1.1s ease-in-out infinite;
+}
+@keyframes lunchLoadingBar {
+    0% {
+        left: -40%;
+    }
+    50% {
+        width: 55%;
+    }
+    100% {
+        left: 105%;
+        width: 38%;
+    }
 }

@@ -1,11 +1,10 @@
-import { useEffect, useContext, useState } from "react";
-import { MapContext, WeatherContext, FilterContext, ChatContext } from "../pages/Home";
+import { useEffect, useContext } from "react";
+import { MapContext, WeatherContext, FilterContext } from "../pages/Home";
 
 const FilterCard = () => {
 	const { moveMap, getPlaceList } = useContext(MapContext);
 	const { weatherIcon, temperature } = useContext(WeatherContext);
 	const { active, setActive, weatherOn, setWeatherOn, budget, setBudget } = useContext(FilterContext);
-	const { isJoined } = useContext(ChatContext);
 	
 	const handleWhere = (location) => {
 		setActive(location);
@@ -22,8 +21,8 @@ const FilterCard = () => {
 	}
 	
 	useEffect(() => {
-		getPlaceList(active, budget);
-    }, [active, budget]);
+		getPlaceList(active, budget, weatherOn, temperature, weatherIcon);
+    }, [active, budget, weatherOn]);
 	
 	useEffect(() => {
 		// 장소 데이터 넘기고 서버에서 날씨 AI 다녀오기
@@ -61,19 +60,18 @@ const FilterCard = () => {
                 <div className="filter-group">
                     <label>WEATHER</label>
                     <label className="switch">
-					<input
-					        type="checkbox"
-					        checked={weatherOn}
-					        disabled={!isJoined}
-					        onChange={(e) => setWeatherOn(e.target.checked)}
-					    />
-					    <span className="slider"></span>
-					    <span className="switch-text">
-					        {isJoined
-					            ? `오늘 날씨(${temperature}° ${weatherIcon}) 반영`
-					            : "채팅방 입장 후 날씨 반영 가능"
-					        }
-					    </span>
+						<input
+						    type="checkbox"
+						    checked={weatherOn}
+						    onChange={(e) => setWeatherOn(e.target.checked)}
+						/>
+						<span className="slider"></span>
+						<span className="switch-text">
+						    {weatherOn
+						        ? `오늘 날씨(${temperature}° ${weatherIcon}) 반영 중`
+						        : `오늘 날씨(${temperature}° ${weatherIcon}) 반영`
+						    }
+						</span>
                     </label>
                 </div>
                 <div className="filter-group price-group">

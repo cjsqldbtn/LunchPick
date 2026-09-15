@@ -104,7 +104,11 @@ public class MemberService {
 	 * @return 멤버 삽입이되면 true, 이미 존재하는 멤버면 false
 	 */
 	public boolean insertMember(String email, String pw) {
-		
+		if (pw == null || pw.length() < 4) {
+	        throw new IllegalArgumentException(
+	            "비밀번호는 최소 8자리 이상이어야 합니다."
+	        );
+	    }
 		if(isExistMemberByEmail(email)) { 
 			// 이미 존재하는 멤버면 false 리턴
 			return false;

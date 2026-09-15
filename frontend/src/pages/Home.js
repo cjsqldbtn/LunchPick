@@ -6,6 +6,7 @@ import FilterCard from '../component/FilterCard';
 import Map from '../component/Map'
 import ActionBar from '../component/ActionBar'
 import PlacePopup from "../component/PlacePopup";
+import MapLoading from "../component/MapLoading";
 import RecentCard from "../component/RecentCard";
 import "../css/style.css";
 
@@ -21,10 +22,11 @@ const Home = () => {
 	const [markerList, setMarkerList] = useState([]);
 	const [selectedMarker, setSelectedMarker] = useState(null);
 	const [selectedPlace, setSelectedPlace] = useState(null);
+	const [placeLoading, setPlaceLoading] = useState(false);
 	const [needMenu, setNeedMenu] = useState(false);
 	
-	const [weatherIcon, setWeatherIcon] = useState(null);
-	const [temperature, setTemperature] = useState(null);
+	const [weatherIcon, setWeatherIcon] = useState("");
+	const [temperature, setTemperature] = useState("");
 	
 	const [historyList, setHistoryList] = useState([]);
 	const [historyMenu, setHistoryMenu] = useState(null);
@@ -95,15 +97,39 @@ const Home = () => {
         map.panTo(position);
     };
 	// 위치, 가격으로 필터링 된 장소 가져오기
-    const getPlaceList = (type, price) => {
-        axios.get(`/place/list?type=${type}&price=${price}`)
+    const getPlaceList = async (type, price, weatherOn, temperature, weatherIcon) => {
+		let loadingTimer;
+
+	    // 날씨 필터일 때만,
+	    // 400ms 이상 걸리면 로딩 UI 표시
+	    if (weatherOn) {
+	        loadingTimer = setTimeout(() => {
+	            setPlaceLoading(true);
+	        }, 400);
+	    }
+		
+		await axios.get("/place/list", {
+		        params: {
+		            type,
+		            price,
+		            weatherOn,
+		            ...(weatherOn && {
+		                temperature,
+		                weatherIcon
+		            })
+		        }
+			})
         .then(res => {
             //console.log(res.data);
             setPlaceList(res.data);
         })
         .catch(err => {
             console.error(err);
-        });
+        })
+		.finally(() => {
+			clearTimeout(loadingTimer);
+			setPlaceLoading(false);
+		});
     };
 	// 장소 팝업 띄우기(세부 정보 가져오기)
 	const handleSelectedPlace = async (place) => {
@@ -276,7 +302,7 @@ const Home = () => {
 		setSelectedPlace,
 		needMenu,
 		setNeedMenu,
-		showPlaceOnMap
+		showPlaceOnMap,
     };
 	const weatherContextValues = {
 		weatherIcon,
@@ -302,11 +328,10 @@ const Home = () => {
 		setIsJoined
 	};
 	
-	
 	// 최초 렌더링
 	useEffect(() => {
 		getWeather();
-		getPlaceList("한성대",70000);
+		getPlaceList("한성대",70000, false, null, null);
 	},[]);
 		
 	return (
@@ -339,6 +364,9 @@ const Home = () => {
 										}}
 					                />
 					            )}
+								{placeLoading && (
+							        <MapLoading />
+							    )}
 								<ActionBar/>
 							</HistoryContext.Provider>
 						</WeatherContext.Provider>

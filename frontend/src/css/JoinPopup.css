@@ -1,0 +1,369 @@
+/* ==============================
+   JOIN POPUP
+============================== */
+
+.join-modal-overlay {
+    position: fixed;
+    inset: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+    background: rgba(15, 15, 15, 0.55);
+    backdrop-filter: blur(3px);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+    box-sizing: border-box;
+
+    z-index: 9999;
+}
+
+
+/* Popup */
+
+.join-modal {
+    position: relative;
+
+    width: min(440px, calc(100vw - 32px));
+    max-height: calc(100vh - 40px);
+
+    background: var(--food-card-bg);
+    border-radius: 28px;
+
+    overflow-y: auto;
+
+    box-shadow: var(--shadow-popup);
+
+    animation: joinPopupIn 0.25s ease;
+}
+
+
+@keyframes joinPopupIn {
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* ==============================
+   CLOSE
+============================== */
+
+.join-close {
+    position: absolute;
+
+    top: 16px;
+    right: 16px;
+
+    z-index: 10;
+
+    width: 36px;
+    height: 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    border-radius: 50%;
+
+    background: #f5f5f4;
+
+    color: #57534e;
+
+    font-size: 20px;
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s,
+        transform 0.2s;
+}
+
+.join-close:hover {
+    background: #e7e5e4;
+    transform: rotate(5deg);
+}
+
+
+/* ==============================
+   HEADER
+============================== */
+
+.join-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    padding: 38px 30px 24px;
+
+    text-align: center;
+}
+
+
+.join-brand {
+    width: 52px;
+    height: 52px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 15px;
+
+    border-radius: 16px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--food-primary),
+            var(--food-primary-hover)
+        );
+
+    font-size: 23px;
+
+    box-shadow:
+        0 8px 18px rgba(249, 115, 22, 0.22);
+}
+
+
+.join-eyebrow {
+    margin-bottom: 7px;
+
+    color: var(--food-primary);
+
+    font-size: 9px;
+    font-weight: 900;
+
+    letter-spacing: 0.14em;
+}
+
+
+.join-header h2 {
+    margin: 0;
+
+    color: var(--food-dark);
+
+    font-size: 22px;
+    font-weight: 850;
+
+    letter-spacing: -0.04em;
+}
+
+
+.join-header p {
+    margin: 8px 0 0;
+
+    color: var(--text-muted);
+
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+
+/* ==============================
+   FORM
+============================== */
+
+.join-form {
+    display: flex;
+    flex-direction: column;
+
+    gap: 15px;
+
+    padding: 0 28px 28px;
+}
+
+
+.join-form-group {
+    display: flex;
+    flex-direction: column;
+
+    gap: 7px;
+
+    text-align: left;
+}
+
+
+.join-form-group label {
+    color: var(--text-muted);
+
+    font-size: 9px;
+    font-weight: 900;
+
+    letter-spacing: 0.1em;
+}
+
+
+.join-form-group input {
+    width: 100%;
+
+    padding: 14px 15px;
+
+    box-sizing: border-box;
+
+    background: #fafaf9;
+
+    border: 1px solid var(--border-line);
+    border-radius: 13px;
+
+    outline: none;
+
+    color: var(--food-dark);
+
+    font-size: 13px;
+
+    transition:
+        border-color 0.18s ease,
+        background 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+
+.join-form-group input::placeholder {
+    color: #a8a29e;
+}
+
+
+.join-form-group input:focus {
+    background: white;
+
+    border-color: var(--food-primary);
+
+    box-shadow:
+        0 0 0 3px rgba(249, 115, 22, 0.10);
+}
+
+
+/* Password validation */
+
+.password-match,
+.password-error {
+    padding-left: 3px;
+
+    font-size: 10px;
+    font-weight: 700;
+}
+
+
+.password-match {
+    color: #16a34a;
+}
+
+
+.password-error {
+    color: #ef4444;
+}
+
+
+/* ==============================
+   SUBMIT
+============================== */
+
+.join-submit {
+    width: 100%;
+
+    margin-top: 5px;
+    padding: 15px 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    border: none;
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--food-primary),
+            var(--food-primary-hover)
+        );
+
+    color: white;
+
+    font-size: 14px;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 8px 20px rgba(249, 115, 22, 0.25);
+
+    transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease,
+        opacity 0.18s ease;
+}
+
+
+.join-submit:hover {
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 10px 24px rgba(249, 115, 22, 0.32);
+}
+
+
+.join-submit:active {
+    transform: scale(0.99);
+}
+
+
+/* ==============================
+   FOOTER
+============================== */
+
+.join-footer {
+    padding: 17px 24px 20px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    gap: 6px;
+
+    background: #fafaf9;
+
+    border-top: 1px solid var(--border-line);
+
+    font-size: 11px;
+}
+
+
+.join-footer span {
+    color: var(--text-muted);
+}
+
+
+.join-footer button {
+    padding: 0;
+
+    background: none;
+    border: none;
+
+    color: var(--food-primary);
+
+    font-size: 11px;
+    font-weight: 800;
+
+    cursor: pointer;
+}
+
+
+.join-footer button:hover {
+    text-decoration: underline;
+}

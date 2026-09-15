@@ -53,6 +53,22 @@ public class MemberController {
 	@Value("${naver.client.secret}")
 	private String NaverClientSecret;
 	
+	// 회원가입 버튼 클릭
+	@PostMapping("/join")
+	public ResponseEntity<String> join(@RequestBody Map<String, String> member) {
+		String email = member.get("email");
+	    String password = member.get("password");
+	    boolean result = mSvc.insertMember(email, password);
+	    if (!result) {
+	        return ResponseEntity
+	                .status(HttpStatus.CONFLICT)
+	                .body("이미 존재하는 이메일입니다.");
+	    }
+
+	    return ResponseEntity
+	            .ok("회원가입이 완료되었습니다.");
+    }
+	
 	// 로그인 버튼 클릭.
 	@PostMapping("/login")
 	public ResponseEntity<?> getToken(@RequestBody JwtAccountCredentials credentials) {

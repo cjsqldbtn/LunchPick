@@ -14,6 +14,8 @@ import java.util.concurrent.ThreadLocalRandom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.nh.lunch.api.ApiService;
+import com.nh.lunch.api.WeatherRecommendCache;
 import com.nh.lunch.finalPick.FinalPick;
 import com.nh.lunch.finalPick.FinalPickId;
 import com.nh.lunch.finalPick.FinalPickRepository;
@@ -32,15 +34,28 @@ public class PlaceService {
 	HistoryRepository hRepo;
 	@Autowired
 	FinalPickRepository fRepo;
+	@Autowired
+	ApiService aSvc;
 	
 	/**
-	 * 장소 맵 정보 조회
+	 * * 장소 맵 정보 조회
 	 * @param price 가격
 	 * @param type 장소
-	 * @return PlaceMapDto
+	 * @param weatherOn 날씨 on / off
+	 * @param temperature
+	 * @param weather
+	 * @return
+	 * @throws Exception
 	 */
-	public List<PlaceMapDto> getPlacelist(int price, String type) {
-		return pRepo.getFromPriceAndType(price, type);
+	public List<PlaceMapDto> getPlacelist(int price, String type, boolean weatherOn, Double temperature, String weather) throws Exception {
+		// 날씨 필터 OFF
+        if (!weatherOn) {
+            return pRepo.getFromPriceAndType(price, type);
+        }
+		
+        // 날씨 필터 ON
+        WeatherRecommendCache cache = aSvc.getOrCreateCache(temperature, weather);
+        return pRepo.getFromWeatherAndPriceAndType(price, type, cache.getCacheId());
 	}
 	
 	/**

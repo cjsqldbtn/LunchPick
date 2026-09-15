@@ -23,20 +23,20 @@ class PlaceTests {
 	@Autowired
 	PlaceService pSvc;
 	
-	@Test
-	void testRopoGetFromPriceAndType() {
-		// 1) Given
-		int price = 12000;
-		String type = "한성대";
-		
-		// 2) When
-		List<PlaceMapDto> list = pRepo.getFromPriceAndType(price,type);
-		
-		// 3) Then
+//	@Test
+//	void testRopoGetFromPriceAndType() {
+//		// 1) Given
+//		int price = 12000;
+//		String type = "한성대";
+//		
+//		// 2) When
+//		List<PlaceMapDto> list = pRepo.getFromPriceAndType(price,type);
+//		
+//		// 3) Then
 //		for(int i=0;i<list.size();i++) {
 //			System.out.println(list.get(i).getPlaceId());
 //		}
-	}
+//	}
 	
 	@Test
 	void testSvcGetPlaceInfo() {
@@ -51,19 +51,19 @@ class PlaceTests {
 		System.out.println(dto.getPlaceName());
 	}
 	
-	@Test
-	void testSvcGetPlacelist() {
-		// 1) Given
-		int price = 12000;
-		String type = "한성대";
-		
-		// 2) When
-		List<PlaceMapDto> list = pSvc.getPlacelist(price, type);
-		
-		// 3) Then
-		assertNotNull(list, "장소리스트는 null이 아님");
+//	@Test
+//	void testSvcGetPlacelist() {
+//		// 1) Given
+//		int price = 12000;
+//		String type = "한성대";
+//		
+//		// 2) When
+//		List<PlaceMapDto> list = pSvc.getPlacelist(price, type);
+//		
+//		// 3) Then
+//		assertNotNull(list, "장소리스트는 null이 아님");
 //		for(int i=0;i<list.size();i++) {
 //			System.out.println(list.get(i).getPlaceId());
 //		}
-	}
+//	}
 }

@@ -4,7 +4,7 @@ import naverLogo from '../img/NAVER_login_Dark_KR_green_icon_H48.png';
 import kakaoLogo from '../img/kakao.png';
 import { AuthContext } from '../App';
 
-const LoginPopup = ({ isOpen, onClose }) => {
+const LoginPopup = ({ isOpen, onClose, onJoin }) => {
     const { login, setMemberId } = useContext(AuthContext);
     const [ member, setMember ] = useState({ email: '', password: '' });
     const { email, password } = member;
@@ -59,39 +59,82 @@ const LoginPopup = ({ isOpen, onClose }) => {
     };
 
     return (
-        <div className="modal-overlay" onClick={onClose}>
-            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-                <button className="modal-close" type="button" onClick={onClose}>
-                    &times;
+        <div className="login-modal-overlay" onClick={onClose}>
+			<div className="login-modal" onClick={(e) => e.stopPropagation()}>
+                <button className="btn-close" type="button" onClick={onClose}>
+                    ✕
                 </button>
-
-                <div className="modal-header">
-                    <span className="brand-mark">N</span>
-                    <h2>NOON MENU 로그인</h2>
-                    <p>서비스 이용을 위해 로그인해 주세요.</p>
+                <div className="login-header">
+                    <div className="login-brand">
+                        🍴
+                    </div>
+                    <span className="login-eyebrow">
+                        WELCOME BACK
+                    </span>
+                    <h2>
+                        오늘 점심도 같이 골라볼까요?
+                    </h2>
+                    <p>
+                        로그인하고 친구들과 메뉴를 골라보세요.
+                    </p>
                 </div>
-
-                <form className="login-form" onSubmit={handleSubmit}>
-                    <div className="form-group">
-                        <label htmlFor="email">이메일</label>
-                        <input type="text" id="email" name="email" value={email} placeholder="이메일을 입력하세요" onChange={handleChange} required />
+                <form className="login-form-new" onSubmit={handleSubmit}>
+                    <div className="login-form-group">
+                        <label htmlFor="email">
+                            EMAIL
+                        </label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            value={email}
+                            placeholder="example@email.com"
+                            onChange={handleChange}
+                            autoComplete="email"
+                            required
+                        />
                     </div>
-
-                    <div className="form-group">
-                        <label htmlFor="password">비밀번호</label>
-                        <input type="password" id="password" name="password" value={password} placeholder="비밀번호를 입력하세요" onChange={handleChange} required />
+                    <div className="login-form-group">
+                        <label htmlFor="password">
+                            PASSWORD
+                        </label>
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            value={password}
+                            placeholder="비밀번호를 입력해주세요"
+                            onChange={handleChange}
+                            autoComplete="current-password"
+                            required
+                        />
                     </div>
-
-                    <button className="submit-btn">로그인</button>
+                    <button className="login-submit" type="submit">
+                        로그인
+                        <span>→</span>
+                    </button>
                 </form>
-
-                <div className="modal-social">
-                    <p>소셜 계정으로 로그인</p>
-                    <div className="social-btns">
-                        <img src={naverLogo} className="social" onClick={naverLogin} alt="naver" />
-                        <img src={kakaoLogo} className="social" onClick={kakaoLogin} alt="kakao" />
+                <div className="login-social">
+                    <div className="login-social-title">
+                        <span></span>
+                        <p>소셜 계정으로 로그인 및 회원가입</p>
+                        <span></span>
+                    </div>
+                    <div className="login-social-buttons">
+                        <button type="button" className="login-social-btn" onClick={naverLogin}title="네이버 로그인">
+                            <img src={naverLogo} alt="네이버 로그인"/>
+                        </button>
+                        <button type="button" className="login-social-btn" onClick={kakaoLogin} title="카카오 로그인">
+                            <img src={kakaoLogo} alt="카카오 로그인"/>
+                        </button>
                     </div>
                 </div>
+				<div className="login-footer">
+				    <span>아직 회원이 아니신가요?</span>
+				    <button type="button" onClick={onJoin}>
+				        회원가입
+				    </button>
+				</div>
             </div>
         </div>
     );

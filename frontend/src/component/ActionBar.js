@@ -324,10 +324,6 @@ const ActionBar = () => {
 					<button className="action-btn join-btn" onClick={leaveChat}>채팅방 나가기</button>
 				)}
                 <div className="action-group secondary-actions">
-                    <button className="action-btn ai-btn" type="button">
-                        <span className="btn-icon">🤖</span>
-                        <span>AI 챗봇</span>
-                    </button>
                     <button className="action-btn report-btn" type="button" title="신고하기">
                         <span className="btn-icon">🚨</span>
                         <span>신고</span>

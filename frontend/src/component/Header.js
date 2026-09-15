@@ -1,6 +1,7 @@
 import React, { useState, useContext }from 'react';
 import { useNavigate } from 'react-router-dom';
 import LoginPopup from './LoginPopup';
+import JoinPopup from './JoinPopup';
 import { AuthContext } from '../App';
 import { WeatherContext } from "../pages/Home";
 
@@ -10,6 +11,7 @@ const Header = () => {
 	
 	const { isLogin, logout } = useContext(AuthContext);
 	const [isLoginOpen, setIsLoginOpen] = useState(false);
+	const [isJoinOpen, setIsJoinOpen] = useState(false);
 	
 	// 오늘 날짜
 	const today = new Date();
@@ -31,9 +33,25 @@ const Header = () => {
 	const closeLoginBtn = () => {
         setIsLoginOpen(false);
     };
-	
+	// 회원가입 버튼
 	const signUpBtn = () => {
-		alert("회원가입!");
+		setIsJoinOpen(true);
+	};
+	// 회원가입 닫힘 버튼.
+	const closeSignUpBtn = () => {
+        setIsJoinOpen(false);
+    };
+	
+	// 전환
+	// 회원가입 → 로그인
+	const goToLogin = () => {
+	    setIsJoinOpen(false);
+	    setIsLoginOpen(true);
+	};
+	// 로그인 → 회원가입
+	const goToJoin = () => {
+	    setIsLoginOpen(false);
+	    setIsJoinOpen(true);
 	};
 	
 	const logoutBtn = () => {
@@ -44,16 +62,14 @@ const Header = () => {
 		<>
             <header className="header">
                 <a className="brand" href="/">
-                    <span className="brand-mark">LP</span>
+                    <span className="brand-mark">🍴</span>
                     점심 뭐
                 </a>
-
                 <div className="header-date">
                     <span>{todayText}</span>
                     <span className="dot">•</span>
                     <span className="weather">{temperature}° {weatherIcon}</span>
                 </div>
-
                 <div className="header-actions">
 				{
 					isLogin ? (
@@ -66,8 +82,8 @@ const Header = () => {
 				    )}
                 </div>
             </header>
-			
-			<LoginPopup isOpen={isLoginOpen} onClose={closeLoginBtn} />
+			<LoginPopup isOpen={isLoginOpen} onClose={closeLoginBtn} onJoin={goToJoin}/>
+			<JoinPopup isOpen={isJoinOpen} onClose={closeSignUpBtn} onLogin={goToLogin}/>
 		</>
 	);
 }

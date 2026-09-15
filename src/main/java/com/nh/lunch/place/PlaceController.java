@@ -29,9 +29,15 @@ public class PlaceController {
 //	}
 	
 	@GetMapping("/place/list")
-	public List<PlaceMapDto> placeList(@RequestParam(value="type", required = false) String type, @RequestParam(value="price", required = false) Integer price) {
+	public List<PlaceMapDto> placeList(
+			@RequestParam(value="type", required = false) String type, 
+			@RequestParam(value="price", required = false) Integer price,
+			@RequestParam(value = "weatherOn", defaultValue = "false") boolean weatherOn,
+	        @RequestParam(value = "temperature", required = false) Double temperature,
+	        @RequestParam(value = "weatherIcon", required = false) String weatherIcon
+	) throws Exception {
 		if(type==null) type="한성대";
-		return pSvc.getPlacelist(price, type);
+		return pSvc.getPlacelist(price, type, weatherOn, temperature, weatherIcon);
 	}
 	
 	@GetMapping("/place/{placeId}")
