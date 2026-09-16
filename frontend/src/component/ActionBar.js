@@ -127,7 +127,6 @@ const ActionBar = () => {
         ws.onmessage = (e) => {
             const data = JSON.parse(e.data);
             //console.log("서버로부터 도착한 메시지: ", e.data);
-			
 			// 퇴장 처리
 			if (data.type === "LEAVE") {
 		        window.Toastify({
@@ -152,21 +151,17 @@ const ActionBar = () => {
 			
 			// ai 추천
 			if (data.type === "AI_RECOMMEND") {
-
 			    const place = {
 			        placeId: data.placeId,
 			        name: data.placeName,
 			        lat: data.lat,
 			        lng: data.lng
 			    };
-
 			    setHistoryMenu({
 			        menuId: data.menuId,
 			        name: data.name
 			    });
-
 			    showPlaceOnMap(place);
-
 			    return;
 			}
             handleReceiveMessage(data.senderId,data.senderNick,data.message);

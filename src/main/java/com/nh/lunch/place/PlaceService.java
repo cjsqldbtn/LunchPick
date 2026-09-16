@@ -89,11 +89,9 @@ public class PlaceService {
             recentPlaceIds.addAll(hRepo.findRecentPlaceIds(memberId,from));
         }
 
-
         // 오늘 같은 세션에서 이미 룰렛으로 나온 장소 제외
         LocalDate today = LocalDate.now();
         Set<Long> todayPickedPlaceIds = new HashSet<>(fRepo.findTodayPickedPlaceIds(userSession, today));
-
 
         // 제외 대상 제거
         List<Long> availablePlaceIds = placeIds.stream()
@@ -103,7 +101,6 @@ public class PlaceService {
         
         // 무한 루프 방지 추천할 수 없음 에러
         if (availablePlaceIds.isEmpty()) { throw new IllegalStateException("선택 가능한 장소가 없습니다."); }
-
 
         // 사용자 선택 결과 반영(30일 선택 결과들로 가중치 부여)
         LocalDate countFrom = today.minusDays(30);
@@ -116,10 +113,8 @@ public class PlaceService {
             pickCounts.put(dto.getPlaceId(), dto.getPickCount());
         }
 
-
         // 가중치 랜덤 선택
         Long selectedPlaceId = weightedRandom(availablePlaceIds, pickCounts);
-
 
         // 최종 결과
         Optional<Place> op = pRepo.findById(selectedPlaceId);
