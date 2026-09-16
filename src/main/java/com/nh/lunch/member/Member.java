@@ -41,7 +41,6 @@ public class Member {
 	
 	private LocalDateTime exDate;
 	
-	
 	@OneToMany(mappedBy="member")
 	private List<History> history;
 }

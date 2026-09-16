@@ -177,7 +177,7 @@ public class MemberController {
         return chatKey; // 생성된 채팅키 문자열 반환 (예: "ROOM_12345")
     }
     
-    // 비밀번호 재설정
+    // 비밀번호 재설정 메일 보내기
     @PostMapping("/password/reset")
     public ResponseEntity<String> sendPasswordResetMail(@RequestBody Map<String, String> data) {
         String email = data.get("email");
@@ -202,5 +202,23 @@ public class MemberController {
         mSvc.sendPasswordResetMail(m.getEmail(), m.getMemberId(),passwordKey);
 
         return ResponseEntity.ok("비밀번호 재설정 메일을 전송했습니다.");
+    }
+    
+    // 실제 비밀번호 재설정
+    @PostMapping("/password/change")
+    public ResponseEntity<String> changePassword(@RequestBody Map<String, String> data) {
+        int memberId = Integer.parseInt(data.get("memberId"));
+        String key = data.get("key");
+        String password = data.get("password");
+
+        boolean result = mSvc.updatePw(memberId, key, password);
+
+        if (!result) {
+            return ResponseEntity
+                    .badRequest()
+                    .body("유효하지 않거나 만료된 링크입니다.");
+        }
+
+        return ResponseEntity.ok("비밀번호가 변경되었습니다.");
     }
 }

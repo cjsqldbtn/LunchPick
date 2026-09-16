@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import Logout from './pages/Logout';
 import KakaoCallback from './pages/KakaoCallback';
 import NaverCallback from './pages/NaverCallback';
+import PasswordReset from './pages/PasswordReset';
 
 export const AuthContext = createContext(null);
 
@@ -29,6 +30,7 @@ function App() {
 				<Route path="/logout" element={<Logout/>}/>
 				<Route path="/LunchPick/naverlogin" element={<NaverCallback />} />
 				<Route path="/LunchPick/kakaologin" element={<KakaoCallback/>} />
+				<Route path="/password/reset" element={<PasswordReset />}/>
 		    </Routes>
 		</AuthContext.Provider>
     );

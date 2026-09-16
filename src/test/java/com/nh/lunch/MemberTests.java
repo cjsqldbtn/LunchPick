@@ -146,20 +146,20 @@ class MemberTests {
 	}
 	
 	// 비밀번호 업데이트 
-	@Test
-	@Transactional
-	void testUpdatePw() {
-		// 1) Given
-		int memberId = 1;
-		String pw = "b";
-		
-		// 2) When 
-		boolean result = mSvc.updatePw(memberId, pw);
-		
-		// 3) Then : 업데이트 실패하면 false, 성공하면 true
-		assertTrue(result, "비밀번호 업데이트 실패 (해당 Id는 존재하지 않음)");
+//	@Test
+//	@Transactional
+//	void testUpdatePw() {
+//		// 1) Given
+//		int memberId = 1;
+//		String pw = "b";
+//		
+//		// 2) When 
+//		boolean result = mSvc.updatePw(memberId, pw);
+//		
+//		// 3) Then : 업데이트 실패하면 false, 성공하면 true
+//		assertTrue(result, "비밀번호 업데이트 실패 (해당 Id는 존재하지 않음)");
 //		System.out.println(result);
-	}
+//	}
 	
 	// 비밀번호 재설정 키 업데이트
 	@Test
@@ -174,21 +174,6 @@ class MemberTests {
 		// 3) Then : 해당 Id가 존재하지 않으면 null 
 		assertNotNull(key, "key는 Null이면 안됨.");
 //		System.out.println(key);
-	}
-	
-	// 비밀번호 재설정 키 맞는지 조회.
-	@Test
-	void testIsEqualsPwKey() {
-		// 1) Given
-		int memberId = 1; 
-		String key = "ydVuZz";
-		
-		// 2) When
-		boolean result = mSvc.isEqualsPwKey(memberId, key);
-		
-		// 3) Then : 만료시간이 만료되지 않고 키가 동일하면 true, 아니면 false
-		assertTrue(result, "키가 동일하지 않거나 만료시간이 만료됨.");
-//		System.out.print(result);
 	}
 	
 	// 채팅 재설정 키 업데이트

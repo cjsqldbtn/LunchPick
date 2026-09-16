@@ -130,21 +130,40 @@ public class MemberService {
 	
 	/**
 	 * 비밀번호 업데이트
-	 * @param memberId : 업데이트 당할 memberId
-	 * @param pw : 바꿀 비밀번호
-	 * @return : 해당 member가 존재하지 않을 경우 false, 존재하면 true;
 	 */
-	public boolean updatePw(int memberId, String pw) {
+	public boolean updatePw(int memberId, String key, String password) {
 		Optional<Member> om = mRepo.findById(memberId);
 		if(om.isEmpty()) { 
 			// memberId가 없을 경우.
 			return false;
 		}
-		// memberId가 있을 경우. 해당 pw 업데이트.
+		
 		Member m = om.get();
-		m.setPw(pw);
-		mRepo.save(m);
-		return true;
+		
+		// 키 확인
+	    if (m.getPasswordKey() == null ||
+	        !m.getPasswordKey().equals(key)) {
+	        return false;
+	    }
+	    
+	    // 만료시간 확인
+	    if (m.getExDate() == null ||
+            m.getExDate().isBefore(LocalDateTime.now())) {
+            return false;
+        }
+	    
+	    // 비밀번호 최소 8자
+	    if (password == null || password.length() < 8) {
+	        return false;
+	    }
+	    
+	    // 새 비밀번호 암호화
+	    m.setPw(pwEncoder.encode(password));
+	    // 재사용 못하도록 키 제거
+	    m.setPasswordKey(null);
+	    m.setExDate(null);
+	    mRepo.save(m);
+	    return true;
 	} 
 	
 	/**
@@ -177,31 +196,6 @@ public class MemberService {
 	}
 	
 	/**
-	 * 비밀번호 재설정 키 맞는지 확인.
-	 * @param memberId : 확인할 사람의 id (member_id)
-	 * @param key : input 비교할 key 
-	 * @return : 만료일과 만료되지 않고 키가 동일하면 true, 아니면 false
-	 */
-	public boolean isEqualsPwKey(int memberId, String key) {
-		Optional<Member> om = mRepo.findById(memberId);
-		if(om.isEmpty()) { 
-			// memberId가 없을 경우.
-			return false;
-		}
-		
-		MemberDto memberDto = new MemberDto(om.get());
-		LocalDateTime dtoExDate = memberDto.getExDate();
-		String dtoPwKey = memberDto.getPasswordKey();
-		LocalDateTime now = LocalDateTime.now();
-		
-		if(key.equals(dtoPwKey) && dtoExDate.isAfter(now)) {
-			// 현재 DB의 값과 input의 값이 같고, 현재 시간보다 만료가 안되면 
-			return true;
-		} 
-		return false;
-	}
-	
-	/**
 	 * 채팅 키 값 생성.
 	 * @param memberId : 생성한 사람의 memberId
 	 * @return 재설정 키 , 해당 멤버가 없으면 null
@@ -219,13 +213,10 @@ public class MemberService {
 			int temp = (int)(Math.random()*75) + 48;
 			if(temp<58||(temp>64&&temp<91)||(temp>96)) sb.append((char)temp);
 		}
-		// 만료시간 (현재시간 + 10분)
-		LocalDateTime exDate = LocalDateTime.now().plusMinutes(10);
 		
 		// memberId가 있을 경우. 해당 pw 업데이트.
 		Member m = om.get();
 		m.setChatKey(sb.toString());
-		m.setExDate(exDate);
 		mRepo.save(m);
 		return sb.toString();
 	}
@@ -234,7 +225,7 @@ public class MemberService {
 	 * 채팅 키 값 맞는지 확인.
 	 * @param memberId : 확인할 사람의 id (member_id)
 	 * @param key : input 비교할 key 
-	 * @return : 만료일과 만료되지 않고 키가 동일하면 true, 아니면 false
+	 * @return : 키가 동일하면 true, 아니면 false
 	 */
 	public boolean isEqualsChatKey(int memberId, String key) {
 		Optional<Member> om = mRepo.findById(memberId);
@@ -244,11 +235,9 @@ public class MemberService {
 		}
 		
 		MemberDto memberDto = new MemberDto(om.get());
-		LocalDateTime dtoExDate = memberDto.getExDate();
 		String dtoChatKey = memberDto.getChatKey();
-		LocalDateTime now = LocalDateTime.now();
 		
-		if(key.equals(dtoChatKey) && dtoExDate.isAfter(now)) {
+		if(key.equals(dtoChatKey)) {
 			// 현재 DB의 값과 input의 값이 같고, 현재 시간보다 만료가 안되면 
 			return true;
 		} 
@@ -256,21 +245,16 @@ public class MemberService {
 	}
 	
 	/**
-	 * 현재 이 키가 존재하고, 만료가 안돾ㅆ는지.
+	 * 현재 이 채팅키가 존재하고, 만료가 안됐는지.
 	 * @param key
 	 * @return 존재하고, 만료가 안됐으면 true, 반대면 false
 	 */
 	public boolean isExistChatKey(String key) {
 		Member m = mRepo.findByChatKey(key);
 		MemberDto memberDto = new MemberDto(m);
-		LocalDateTime dtoExDate = memberDto.getExDate();
 		String dtoChatKey = memberDto.getChatKey();
-		LocalDateTime now = LocalDateTime.now();
 		
-		if(key.equals(dtoChatKey) && dtoExDate.isAfter(now)) {
-			return true;
-		} 
-		return false;
+		return key.equals(dtoChatKey);
 	}
 	
 	/**

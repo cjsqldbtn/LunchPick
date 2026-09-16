@@ -304,10 +304,10 @@ const ActionBar = () => {
     return (
         <>
             <section className="action-toolbar">
-                <div className="action-group primary-actions">
-                    <button className="action-btn share-btn" type="button">
-                        <span className="btn-icon">💬</span>
-                        <span>카카오톡 공유</span>
+                <div className="action-group secondary-actions">
+                    <button className="action-btn report-btn" type="button" title="신고하기" onClick={() => setReportOpen(true)}>
+                        <span className="btn-icon">🚨</span>
+                        <span>신고</span>
                     </button>
                 </div>
 				{(isLogin && !isJoined) && (
@@ -326,12 +326,6 @@ const ActionBar = () => {
 				{(isJoined) && (
 					<button className="action-btn join-btn" onClick={leaveChat}>채팅방 나가기</button>
 				)}
-                <div className="action-group secondary-actions">
-                    <button className="action-btn report-btn" type="button" title="신고하기" onClick={() => setReportOpen(true)}>
-                        <span className="btn-icon">🚨</span>
-                        <span>신고</span>
-                    </button>
-                </div>
             </section>
 			{isJoined &&(
 	            <div className="chat-input-toolbar">
