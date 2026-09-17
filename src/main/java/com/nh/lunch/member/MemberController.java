@@ -111,7 +111,7 @@ public class MemberController {
     } 
 	
 	// 리액트에서 code를 보내오면 JWT 토큰 리턴
-    @PostMapping("/kakaologin")
+    @PostMapping("/kakaoLogin")
     public ResponseEntity<?> kakaoLogin(@RequestParam("code") String code) {
 		
         try {
@@ -144,7 +144,7 @@ public class MemberController {
 		}
     } 
 
-    @PostMapping("/naverlogin")
+    @PostMapping("/naverLogin")
     public ResponseEntity<?> naverLogin(@RequestParam("code") String code, @RequestParam(value = "state", required = false) String state) {
     	
     	try {
