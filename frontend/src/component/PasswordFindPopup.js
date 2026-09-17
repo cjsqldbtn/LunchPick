@@ -13,11 +13,22 @@ const PasswordFindPopup = ({ isOpen, onClose, onLogin }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!email.trim()) {
-            alert('이메일을 입력해주세요.');
+			window.Toastify({
+                text: '이메일을 입력해주세요.',
+                duration: 3000,
+                newWindow: true,
+                close: true,
+                gravity: 'top',
+                position: 'center',
+                stopOnFocus: true,
+                style: {
+                    background: 'linear-gradient(to left, #F4A261, #ea580c)',
+                }
+            }).showToast();
             return;
         }
         setLoading(true);
-        axios.post('/member/password/reset', {
+        axios.post('/LunchPick/member/password/reset', {
             email: email
         })
         .then(res => {
@@ -25,10 +36,19 @@ const PasswordFindPopup = ({ isOpen, onClose, onLogin }) => {
         })
         .catch(err => {
             console.error('비밀번호 재설정 메일 전송 실패 : ', err);
-            alert(
-                err.response?.data ||
-                '메일 전송에 실패했습니다.'
-            );
+			let alert = err.response?.data || '메일 전송에 실패했습니다.';
+			window.Toastify({
+                text: alert,
+                duration: 3000,
+                newWindow: true,
+                close: true,
+                gravity: 'top',
+                position: 'center',
+                stopOnFocus: true,
+                style: {
+                    background: 'linear-gradient(to left, #F4A261, #ea580c)',
+                }
+            }).showToast();
         })
         .finally(() => {
             setLoading(false);

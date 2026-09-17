@@ -34,7 +34,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.websocket.Session;
 
-@PropertySource("classpath:secret.properties")
 @RequestMapping("/member")
 @RestController
 public class MemberController {
@@ -53,6 +52,8 @@ public class MemberController {
     private String NaverClientId;
 	@Value("${naver.client.secret}")
 	private String NaverClientSecret;
+	@Value("${app.frontend-url}")
+	private String frontendUrl;
 	
 	// 회원가입 버튼 클릭
 	@PostMapping("/join")
@@ -99,11 +100,11 @@ public class MemberController {
 	@GetMapping("/kakaoLogin")
 	public void redirectToKakao(HttpServletResponse response) {
         
-        String redirectUrl = "http://localhost:3000/LunchPick/kakaologin";
-        String naverUrl = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=" + KakaoClientId + "&redirect_uri=" + redirectUrl;
+        String redirectUrl = frontendUrl + "/LunchPick/kakaologin";
+        String kakaoUrl = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=" + KakaoClientId + "&redirect_uri=" + redirectUrl;
         	
         try {
-			response.sendRedirect(naverUrl);
+			response.sendRedirect(kakaoUrl);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -132,7 +133,7 @@ public class MemberController {
     @GetMapping("/naverLogin")
     public void redirectToNaver(HttpServletResponse response) {
         
-        String redirectUrl = "http://localhost:3000/LunchPick/naverlogin";
+        String redirectUrl = frontendUrl + "/LunchPick/naverlogin";
         String state = UUID.randomUUID().toString();
         String naverUrl = "https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=" + NaverClientId + "&redirect_uri=" + redirectUrl + "&state=" + state;
         	

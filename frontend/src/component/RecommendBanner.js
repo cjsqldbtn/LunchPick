@@ -1,4 +1,4 @@
-import { useEffect, useContext } from "react";
+import { useContext } from "react";
 import { MapContext } from "../pages/Home";
 
 const RecommendBanner = () => {

@@ -3,11 +3,11 @@ package com.nh.lunch.history;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-import groovy.transform.EqualsAndHashCode;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Embeddable

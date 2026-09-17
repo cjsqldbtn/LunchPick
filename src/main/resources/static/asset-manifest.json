@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/LunchPick/static/css/main.e5dbe7e2.css",
+    "main.js": "/LunchPick/static/js/main.54fcd7a7.js",
+    "static/media/kakao.png": "/LunchPick/static/media/kakao.a4d62c3d9e64db4f043e.png",
+    "index.html": "/LunchPick/index.html",
+    "main.e5dbe7e2.css.map": "/LunchPick/static/css/main.e5dbe7e2.css.map",
+    "main.54fcd7a7.js.map": "/LunchPick/static/js/main.54fcd7a7.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e5dbe7e2.css",
+    "static/js/main.54fcd7a7.js"
+  ]
+}

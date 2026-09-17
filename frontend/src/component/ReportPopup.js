@@ -17,14 +17,36 @@ const ReportPopup = ({ onClose }) => {
 
 		// 이미지인지 확인
 	    if (!selectedImage.type.startsWith("image/")) {
-	        alert("이미지 파일만 첨부할 수 있습니다.");
+			window.Toastify({
+                text: '이미지 파일만 첨부할 수 있습니다.',
+                duration: 3000,
+                newWindow: true,
+                close: true,
+                gravity: 'top',
+                position: 'center',
+                stopOnFocus: true,
+                style: {
+                    background: 'linear-gradient(to left, #F4A261, #ea580c)',
+                }
+            }).showToast();
 	        e.target.value = "";
 	        return;
 	    }
 
 	    // 10MB 제한
 	    if (selectedImage.size > 10 * 1024 * 1024) {
-	        alert("이미지는 10MB 이하만 첨부할 수 있습니다.");
+			window.Toastify({
+                text: '이미지는 10MB 이하만 첨부할 수 있습니다.',
+                duration: 3000,
+                newWindow: true,
+                close: true,
+                gravity: 'top',
+                position: 'center',
+                stopOnFocus: true,
+                style: {
+                    background: 'linear-gradient(to left, #F4A261, #ea580c)',
+                }
+            }).showToast();
 	        e.target.value = "";
 	        return;
 	    }
@@ -37,7 +59,18 @@ const ReportPopup = ({ onClose }) => {
 
         // 공백만 입력한 것도 내용 없음으로 처리
         if (!content.trim() && !image) {
-            alert("신고 내용 또는 이미지를 첨부해주세요.");
+			window.Toastify({
+                text: '신고 내용 또는 이미지를 첨부해주세요.',
+                duration: 3000,
+                newWindow: true,
+                close: true,
+                gravity: 'top',
+                position: 'center',
+                stopOnFocus: true,
+                style: {
+                    background: 'linear-gradient(to left, #F4A261, #ea580c)',
+                }
+            }).showToast();
             return;
         }
 
@@ -50,7 +83,7 @@ const ReportPopup = ({ onClose }) => {
 
 		setLoading(true);
 
-		await axios.post("/report", formData)
+		await axios.post("/LunchPick/report", formData)
 	    .then(res => {
 	        window.Toastify({
 	            text: "신고가 접수되었습니다.",
@@ -66,7 +99,18 @@ const ReportPopup = ({ onClose }) => {
 	    })
 	    .catch(err => {
 	        console.error("신고 등록 실패:", err);
-	        alert("신고 접수에 실패했습니다.");
+			window.Toastify({
+                text: '신고 접수에 실패했습니다.',
+                duration: 3000,
+                newWindow: true,
+                close: true,
+                gravity: 'top',
+                position: 'center',
+                stopOnFocus: true,
+                style: {
+                    background: 'linear-gradient(to left, #F4A261, #ea580c)',
+                }
+            }).showToast();
 	    })
 	    .finally(() => {
 	        setLoading(false);

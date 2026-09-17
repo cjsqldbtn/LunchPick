@@ -10,7 +10,7 @@ const KakaoCallback = () => {
 
     useEffect(() => {
         const code = searchParams.get('code');
-       	axios.post('/member/kakaoLogin', null, { params: { code } })
+       	axios.post('/LunchPick/member/kakaoLogin', null, { params: { code } })
             .then(res => {
                 if (res.status === 200) {
                     const jwts = res.headers.authorization;

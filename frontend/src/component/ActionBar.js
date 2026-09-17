@@ -25,7 +25,7 @@ const ActionBar = () => {
 	
 	// 채팅방 만들기 
 	const createChat = () => {
-		axios.post('/member/createChatKey', null, {	headers: { Authorization: `Bearer ${token}` }})
+		axios.post('/LunchPick/member/createChatKey', null, {	headers: { Authorization: `Bearer ${token}` }})
 		.then(res => {
 			if(res.status === 200) {
 				//console.log('(/createChatKey) res : ',res);
@@ -63,13 +63,24 @@ const ActionBar = () => {
 					        }).showToast();
 	                    });
 	            } else {
-	                alert(`채팅키가 생성되었습니다: ${res.data}`);
+	                //alert(`채팅키가 생성되었습니다: ${res.data}`);
 	            }
 			}
 		})
 		.catch(err => {
 			console.error('채팅키 만들기 실패! : ', err);
-            alert('채팅키 만들기 실패! 다시 시도해보세요!');
+			window.Toastify({
+	            text: "채팅키 만들기 실패! 다시 시도해보세요!",
+	            duration: 3000,
+				newWindow: true,
+			  	close: true,
+	            gravity: 'top', 
+	            position: 'center', 
+				stopOnFocus: true,
+	            style: {
+	                background: 'linear-gradient(to left, #F4A261, #ea580c)',
+	            }
+	        }).showToast();
 		});
 	};
 	
@@ -110,11 +121,22 @@ const ActionBar = () => {
 	        socketRef.current &&
 	        (socketRef.current.readyState === WebSocket.OPEN || socketRef.current.readyState === WebSocket.CONNECTING)
 	    ) {
-	        alert("이미 채팅방에 입장해 있습니다.");
+			window.Toastify({
+                text: '이미 채팅방에 입장해 있습니다.',
+                duration: 3000,
+                newWindow: true,
+                close: true,
+                gravity: 'top',
+                position: 'center',
+                stopOnFocus: true,
+                style: {
+                    background: 'linear-gradient(to left, #F4A261, #ea580c)',
+                }
+            }).showToast();
 	        return;
 	    }
 		
-		const wsUrl = `ws://localhost:9090/LunchPick/broadcasting?roomKey=${chatKey}&memberId=${memberId}&nickName=${encodeURIComponent(nickName)}`;
+		const wsUrl = `ws://${window.location.host}/LunchPick/broadcasting?roomKey=${chatKey}&memberId=${memberId}&nickName=${encodeURIComponent(nickName)}`;
 		const ws = new WebSocket(wsUrl);
         socketRef.current = ws; // ref에 저장
 		
@@ -169,7 +191,7 @@ const ActionBar = () => {
 		
 		// 서버로 부터 에러가 났을 떄.
         ws.onerror = (err) => {
-            console.error("WebSocket 에러:", err); alert("채팅 서버 연결 실패!");
+            console.error("WebSocket 에러:", err);
         };
 
 		// 채팅방을 나갔을 떄. 
@@ -222,7 +244,19 @@ const ActionBar = () => {
 			//handleReceiveMessage(memberId ,nickName, messageInput);
 			setMessageInput('');
 		} else {
-			alert("채팅방 연결이 끊어져 있습니다. 입장을 다시 시도해주세요.");
+			window.Toastify({
+                text: '채팅방 연결이 끊어져 있습니다. 입장을 다시 시도해주세요.',
+                duration: 3000,
+                newWindow: true,
+                close: true,
+                gravity: 'top',
+                position: 'center',
+                stopOnFocus: true,
+                style: {
+                    background: 'linear-gradient(to left, #F4A261, #ea580c)'
+                }
+            }).showToast();
+			//alert("채팅방 연결이 끊어져 있습니다. 입장을 다시 시도해주세요.");
 		}
 	};
 	const handleKeyDown = (e) => {
@@ -249,7 +283,7 @@ const ActionBar = () => {
 		    try {
 		        setAiLoading(true);
 
-		        await axios.post("/ai/recommend", {
+		        await axios.post("/LunchPick/ai/recommend", {
 		            roomKey: chatKey,
 		            type: active,
 		            budget,

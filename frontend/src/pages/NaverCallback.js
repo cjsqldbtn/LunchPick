@@ -11,7 +11,7 @@ const NaverCallback = () => {
     useEffect(() => {
         const code = searchParams.get('code');
         const state = searchParams.get('state');
-       	axios.post('/member/naverLogin', null, { params: { code, state } })
+       	axios.post('/LunchPick/member/naverLogin', null, { params: { code, state } })
             .then(res => {
 				if(res.status==200){
 					const jwts = res.headers.authorization;

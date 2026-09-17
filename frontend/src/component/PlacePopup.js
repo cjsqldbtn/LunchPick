@@ -1,6 +1,5 @@
 import { useEffect, useState, useContext } from "react";
 import "../css/placePopup.css";
-import axios from 'axios';
 import { AuthContext } from '../App';
 import { HistoryContext } from "../pages/Home";
 

@@ -18,7 +18,7 @@ import lombok.Setter;
 public class ErrorReport {
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seqGen1")
-	@SequenceGenerator(name="seqGen1", sequenceName = "member_seq", allocationSize=1)
+	@SequenceGenerator(name="seqGen1", sequenceName = "ERROR_REPORT_SEQ", allocationSize=1)
 	private Integer errorId;
 	
 	@Column(columnDefinition="VARCHAR2(2000 BYTE)")

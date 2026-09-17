@@ -1353,21 +1353,97 @@ footer {
   transform: translateY(-1px);
 }
 
-/* 모바일 대응 */
-@media (max-width: 768px) {
-  .chat-input-toolbar {
-    flex-wrap: wrap;
-  }
-  
-  .chat-message-input {
-    width: 100%;
-    flex: none;
+/* ==========================================
+   모바일 액션 툴바
+========================================== */
+@media (max-width: 600px) {
+
+  .action-toolbar {
+    margin-top: 12px;
+    padding: 12px 14px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+
+    gap: 10px;
   }
 
-  .chat-send-btn,
-  .chat-ai-recommend-btn {
-    flex: 1;
+  /* 신고 버튼 영역 */
+  .secondary-actions {
+    width: 100%;
+    justify-content: flex-end;
   }
+
+  /* 신고 버튼은 작게 오른쪽에 */
+  .report-btn {
+    height: 32px;
+    padding: 0 9px;
+    font-size: 11px;
+  }
+
+
+  /* =========================
+     채팅 영역
+  ========================= */
+
+  .chat-actions {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+
+    gap: 8px;
+  }
+
+  /* 채팅 만들기 */
+  .chat-actions > .action-btn {
+    width: 100%;
+    height: 38px;
+  }
+
+
+  /* =========================
+     채팅 키 / 닉네임 / 입장
+  ========================= */
+
+  .input-badge-wrap {
+    width: 100%;
+    box-sizing: border-box;
+
+    display: flex;
+    flex-wrap: nowrap;
+
+    gap: 5px;
+    padding: 4px;
+  }
+
+  /* 채팅 키 입력창 */
+  .action-input {
+    width: 0;
+    min-width: 0;
+    flex: 1;
+
+    height: 34px;
+    padding: 0 8px;
+    font-size: 12px;
+  }
+
+  /* 닉네임은 조금 작게 */
+  .action-input.nick-input {
+    width: 70px;
+    flex: 0 0 70px;
+  }
+
+  /* 입장 버튼 */
+  .input-badge-wrap .join-btn {
+    height: 34px;
+    padding: 0 12px;
+
+    flex: 0 0 auto;
+  }
+  
 }
 
 /* 맵 로딩 */

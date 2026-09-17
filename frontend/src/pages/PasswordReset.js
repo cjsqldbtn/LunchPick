@@ -18,19 +18,52 @@ const PasswordReset = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!memberId || !key) {
-            alert('잘못된 비밀번호 변경 링크입니다.');
+			window.Toastify({
+                text: '잘못된 비밀번호 변경 링크입니다.',
+                duration: 3000,
+                newWindow: true,
+                close: true,
+                gravity: 'top',
+                position: 'center',
+                stopOnFocus: true,
+                style: {
+                    background: 'linear-gradient(to left, #F4A261, #ea580c)',
+                }
+            }).showToast();
             return;
         }
         if (password.length < 8) {
-            alert('비밀번호는 8자 이상 입력해주세요.');
+			window.Toastify({
+                text: '비밀번호는 8자 이상 입력해주세요.',
+                duration: 3000,
+                newWindow: true,
+                close: true,
+                gravity: 'top',
+                position: 'center',
+                stopOnFocus: true,
+                style: {
+                    background: 'linear-gradient(to left, #F4A261, #ea580c)',
+                }
+            }).showToast();
             return;
         }
         if (password !== passwordCheck) {
-            alert('비밀번호가 일치하지 않습니다.');
+			window.Toastify({
+                text: '비밀번호가 일치하지 않습니다.',
+                duration: 3000,
+                newWindow: true,
+                close: true,
+                gravity: 'top',
+                position: 'center',
+                stopOnFocus: true,
+                style: {
+                    background: 'linear-gradient(to left, #F4A261, #ea580c)',
+                }
+            }).showToast();
             return;
         }
         setLoading(true);
-        axios.post('/member/password/change', {
+        axios.post('/LunchPick/member/password/change', {
             memberId: memberId,
             key: key,
             password: password
@@ -40,10 +73,19 @@ const PasswordReset = () => {
         })
         .catch(err => {
             console.error('비밀번호 변경 실패 : ', err);
-            alert(
-                err.response?.data ||
-                '유효하지 않거나 만료된 링크입니다.'
-            );
+			let alert = err.response?.data || '유효하지 않거나 만료된 링크입니다.';
+			window.Toastify({
+                text: alert,
+                duration: 3000,
+                newWindow: true,
+                close: true,
+                gravity: 'top',
+                position: 'center',
+                stopOnFocus: true,
+                style: {
+                    background: 'linear-gradient(to left, #F4A261, #ea580c)',
+                }
+            }).showToast();
         })
         .finally(() => {
             setLoading(false);

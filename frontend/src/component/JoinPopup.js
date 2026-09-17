@@ -12,19 +12,52 @@ const JoinPopup = ({ isOpen, onClose, onLogin }) => {
     const join = async (e) => {
         e.preventDefault();
         if (!email.trim()) {
-            alert("이메일을 입력해주세요.");
+			window.Toastify({
+                text: '이메일을 입력해주세요.',
+                duration: 3000,
+                newWindow: true,
+                close: true,
+                gravity: 'top',
+                position: 'center',
+                stopOnFocus: true,
+                style: {
+                    background: 'linear-gradient(to left, #F4A261, #ea580c)',
+                }
+            }).showToast();
             return;
         }
 		if (password.length < 8) {
-	        alert("비밀번호는 최소 8자리 이상이어야 합니다.");
+			window.Toastify({
+                text: '비밀번호는 최소 8자리 이상이어야 합니다.',
+                duration: 3000,
+                newWindow: true,
+                close: true,
+                gravity: 'top',
+                position: 'center',
+                stopOnFocus: true,
+                style: {
+                    background: 'linear-gradient(to left, #F4A261, #ea580c)',
+                }
+            }).showToast();
 	        return;
 	    }
         if (password !== passwordCheck) {
-            alert("비밀번호가 일치하지 않습니다.");
+			window.Toastify({
+                text: '비밀번호가 일치하지 않습니다.',
+                duration: 3000,
+                newWindow: true,
+                close: true,
+                gravity: 'top',
+                position: 'center',
+                stopOnFocus: true,
+                style: {
+                    background: 'linear-gradient(to left, #F4A261, #ea580c)',
+                }
+            }).showToast();
             return;
         }
         try {
-            await axios.post("/member/join", {
+            await axios.post("/LunchPick/member/join", {
                 email,
                 password
             });
@@ -44,12 +77,33 @@ const JoinPopup = ({ isOpen, onClose, onLogin }) => {
             onLogin();
         } catch (err) {
 			if (err.response?.status === 409) {
-	            alert("이미 가입된 이메일입니다.");
+				window.Toastify({
+	                text: '이미 가입된 이메일입니다.',
+	                duration: 3000,
+	                newWindow: true,
+	                close: true,
+	                gravity: 'top',
+	                position: 'center',
+	                stopOnFocus: true,
+	                style: {
+	                    background: 'linear-gradient(to left, #F4A261, #ea580c)',
+	                }
+	            }).showToast();
 	            return;
 	        }
-
 	        console.error("회원가입 실패:", err);
-	        alert("회원가입에 실패했습니다.");
+			window.Toastify({
+                text: '회원가입에 실패했습니다.',
+                duration: 3000,
+                newWindow: true,
+                close: true,
+                gravity: 'top',
+                position: 'center',
+                stopOnFocus: true,
+                style: {
+                    background: 'linear-gradient(to left, #F4A261, #ea580c)',
+                }
+            }).showToast();
         }
     };
 

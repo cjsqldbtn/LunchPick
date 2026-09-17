@@ -108,7 +108,7 @@ const Home = () => {
 	        }, 400);
 	    }
 		
-		await axios.get("/place/list", {
+		await axios.get("/LunchPick/place/list", {
 		        params: {
 		            type,
 		            price,
@@ -135,7 +135,7 @@ const Home = () => {
 	const handleSelectedPlace = async (place) => {
 		//alert(place.placeId);
 		// 쿠키를 서버에 같이 전송
-		await axios.get(`/place/${place.placeId}`, { withCredentials: true })
+		await axios.get(`/LunchPick/place/${place.placeId}`, { withCredentials: true })
 		.then(res => {
 			//console.log(res.data);
 			// List<placeInfoDto>
@@ -210,7 +210,7 @@ const Home = () => {
 
 	        // 서버가 실제 당첨 장소를 결정
 	        const response = await axios.post(
-	            '/roulette',
+	            '/LunchPick/roulette',
 	            placeIds,
 	            { headers: token ? { Authorization: `Bearer ${token}` } : {} }
 	        );
@@ -255,7 +255,7 @@ const Home = () => {
 	
 	// ************ 히스토리 ***************
 	const getHistory = () => {
-		axios.get(`/history/list`, { headers: { Authorization: `Bearer ${token}` }})
+		axios.get(`/LunchPick/history/list`, { headers: { Authorization: `Bearer ${token}` }})
 		.then(res => {
 			console.log(res.data);
 			setHistoryList(res.data);
@@ -265,7 +265,7 @@ const Home = () => {
 	    });
 	};
 	const addHistory = (menuId) => {
-        axios.put(`/history/${menuId}`, null, { headers: { Authorization: `Bearer ${token}` }})
+        axios.put(`/LunchPick/history/${menuId}`, null, { headers: { Authorization: `Bearer ${token}` }})
         .then(() => {
             getHistory();
         })
@@ -276,7 +276,7 @@ const Home = () => {
 	const deleteHistory = (finalDate) => {
 	    const token = localStorage.getItem('jwt');
 
-	    return axios.delete(`/history/delete/${encodeURIComponent(finalDate)}`, { headers: { Authorization: `Bearer ${token}` } })
+	    return axios.delete(`/LunchPick/history/delete/${encodeURIComponent(finalDate)}`, { headers: { Authorization: `Bearer ${token}` } })
 	    .then(() => {
 	        getHistory();
 	    })

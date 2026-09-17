@@ -62,7 +62,18 @@ const Header = () => {
 	
 	const logoutBtn = () => {
 		navigate('/logout');
-		alert('로그아웃 되었습니다.');
+		window.Toastify({
+            text: "로그아웃 되었습니다.",
+            duration: 3000,
+			newWindow: true,
+		  	close: true,
+            gravity: 'top', 
+            position: 'center', 
+			stopOnFocus: true,
+            style: {
+                background: 'linear-gradient(to left, #F4A261, #ea580c)',
+            }
+        }).showToast();
 	};
 	
 	return (

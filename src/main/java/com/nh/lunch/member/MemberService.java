@@ -22,7 +22,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nh.lunch.security.JwtService;
 
-@PropertySource("classpath:secret.properties")
 @Service
 public class MemberService {
 	@Autowired
@@ -44,6 +43,8 @@ public class MemberService {
     private String NaverClientId;
 	@Value("${naver.client.secret}")
 	private String NaverClientSecret;
+	@Value("${app.frontend-url}")
+	private String frontendUrl;
 	
 	/**
 	 * memberId로 멤버 정보 가져오기.
@@ -272,7 +273,7 @@ public class MemberService {
 	        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
 	        body.add("grant_type", "authorization_code");
 	        body.add("client_id", KakaoClientId);
-	        body.add("redirect_uri", "http://localhost:3000/LunchPick/kakaologin");
+	        body.add("redirect_uri", frontendUrl + "/LunchPick/kakaologin");
 	        body.add("code", authCode);
 	        body.add("client_secret", KakaoClientSecret);
 	        
@@ -328,7 +329,7 @@ public class MemberService {
 	        body.add("client_secret", NaverClientSecret);
 	        body.add("code", code);
 	        body.add("state", state);
-	        body.add("redirect_uri", "http://localhost:3000/LunchPick/naverlogin");
+	        body.add("redirect_uri", frontendUrl + "/LunchPick/naverlogin");
 	        
 	        HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(body, headers);
 	        
@@ -397,7 +398,7 @@ public class MemberService {
      */
     public void sendPasswordResetMail(String email, int memberId, String passwordKey) {
 
-        String resetUrl = "http://localhost:3000/password/reset" + "?memberId=" + memberId + "&key=" + passwordKey;
+        String resetUrl = frontendUrl + "/password/reset" + "?memberId=" + memberId + "&key=" + passwordKey;
 
         SimpleMailMessage message = new SimpleMailMessage();
 

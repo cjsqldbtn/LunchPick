@@ -53,7 +53,7 @@ const Map = () => {
         window.kakao.maps.load(() => {
             const container = document.getElementById("map");
 			
-			selectedMarkerImageRef.current = new window.kakao.maps.MarkerImage('/map-marker.png', new window.kakao.maps.Size(37,40), new window.kakao.maps.Point(19, 40));
+			selectedMarkerImageRef.current = new window.kakao.maps.MarkerImage('/LunchPick/map-marker.png', new window.kakao.maps.Size(37,40), new window.kakao.maps.Point(19, 40));
 
             const options = {
                 center: new window.kakao.maps.LatLng(37.5884, 127.0062),

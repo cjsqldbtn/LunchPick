@@ -13,12 +13,12 @@ const LoginPopup = ({ isOpen, onClose, onJoin, onFindPassword }) => {
 
     // 네이버 로그인 버튼 클릭 (전체 페이지 이동)
     const naverLogin = () => {
-		window.location.href = 'http://localhost:9090/LunchPick/member/naverLogin';
+		window.location.href = `${window.location.origin}/LunchPick/member/naverLogin`;
     };
 
     // 카카오 로그인 버튼 클릭 (전체 페이지 이동)
     const kakaoLogin = () => {
-        window.location.href = 'http://localhost:9090/LunchPick/member/kakaoLogin';
+        window.location.href = `${window.location.origin}/LunchPick/member/kakaoLogin`;
     };
 
     const handleChange = (e) => {
@@ -29,7 +29,7 @@ const LoginPopup = ({ isOpen, onClose, onJoin, onFindPassword }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
 		localStorage.removeItem('jwt');
-        axios.post('/member/login', member)
+        axios.post('/LunchPick/member/login', member)
             .then((res) => {
                 if (res.status === 200) {
                     const jwts = res.headers.authorization;
@@ -46,7 +46,7 @@ const LoginPopup = ({ isOpen, onClose, onJoin, onFindPassword }) => {
                             background: 'linear-gradient(to left, #F4A261, #ea580c)',
                         }
                     }).showToast();
-					console.log('로그인 성공!',res);
+					//console.log('로그인 성공!',res);
 					setMemberId(res.data);
                     onClose();
                     login();
@@ -54,7 +54,18 @@ const LoginPopup = ({ isOpen, onClose, onJoin, onFindPassword }) => {
             })
             .catch((err) => {
                 console.error('로그인 실패! : ' + err);
-                alert('로그인에 실패했습니다. 아이디와 비밀번호를 확인해 주세요.');
+				window.Toastify({
+	                text: '로그인에 실패했습니다. 아이디와 비밀번호를 확인해 주세요.',
+	                duration: 3000,
+	                newWindow: true,
+	                close: true,
+	                gravity: 'top',
+	                position: 'center',
+	                stopOnFocus: true,
+	                style: {
+	                    background: 'linear-gradient(to left, #F4A261, #ea580c)',
+	                }
+	            }).showToast();
             });
     };
 

@@ -8,7 +8,6 @@ import org.springframework.context.annotation.PropertySource;
 import com.openai.client.OpenAIClient;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
 
-@PropertySource("classpath:secret.properties")
 @Configuration
 public class OpenAiConfig {
 	@Value("${openai.api.key}")
