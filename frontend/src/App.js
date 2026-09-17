@@ -28,8 +28,8 @@ function App() {
 		    <Routes>
 		        <Route path="/" element={<Home />} />
 				<Route path="/logout" element={<Logout/>}/>
-				<Route path="/LunchPick/naverlogin" element={<NaverCallback />} />
-				<Route path="/LunchPick/kakaologin" element={<KakaoCallback/>} />
+				<Route path="/naverlogin" element={<NaverCallback />} />
+				<Route path="/kakaologin" element={<KakaoCallback/>} />
 				<Route path="/password/reset" element={<PasswordReset />}/>
 		    </Routes>
 		</AuthContext.Provider>
