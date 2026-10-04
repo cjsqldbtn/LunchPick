@@ -3,7 +3,7 @@ import "../css/placePopup.css";
 import { AuthContext } from '../App';
 import { HistoryContext } from "../pages/Home";
 
-const PlacePopup = ({ place, menu, needMenu, onClose }) => {
+const PlacePopup = ({ place, menu, needMenu, onClose, budget }) => {
 	const { isLogin } = useContext(AuthContext);
 	const { addHistory } = useContext(HistoryContext);
 	const [selectedMenu, setSelectedMenu] = useState(null);
@@ -25,7 +25,15 @@ const PlacePopup = ({ place, menu, needMenu, onClose }) => {
 			recommandMenu = menu;
 		} else if(needMenu) {
 			// 메뉴 룰렛 (시간 남으면 효과 넣어주기)
-			recommandMenu = place.menuList[Math.floor(Math.random()*place.menuList.length)];
+			//recommandMenu = place.menuList[Math.floor(Math.random()*place.menuList.length)];
+			const filteredMenus = place.menuList.filter(
+	            menu => menu.price <= budget
+	        );
+
+	        // 조건에 맞는 메뉴가 없는 경우
+	        if (filteredMenus.length === 0) return;
+
+	        recommandMenu = filteredMenus[Math.floor(Math.random() * filteredMenus.length)];
 		}
 		
 		// 둘 다 아닌 경우 초기 메뉴를 선택하지 않음

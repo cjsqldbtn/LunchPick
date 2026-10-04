@@ -357,6 +357,7 @@ const Home = () => {
 					                    place={selectedPlace}
 										menu={historyMenu}
 										needMenu={needMenu}
+										budget={budget}
 					                    onClose={() => {
 											setSelectedPlace(null);
 											setNeedMenu(false);
